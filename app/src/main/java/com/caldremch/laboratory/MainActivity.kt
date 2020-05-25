@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         var x:Int? = null
         tv.text = "$x"
         tv.text = x?.toString()
+        sv.setOnClickListener {
+            sv.startAnim(104f)
+        }
     }
 
     fun start(view: View) {

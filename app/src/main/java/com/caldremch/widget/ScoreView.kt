@@ -1,10 +1,12 @@
 package com.caldremch.widget
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import com.caldremch.laboratory.BuildConfig
 import kotlin.math.absoluteValue
 
@@ -105,6 +107,7 @@ class ScoreView @JvmOverloads constructor(
         scorePaint.textSize = scoreViewAttr.svScoreTextSize
         scorePaint.style = Paint.Style.FILL
         scorePaint.isAntiAlias = true
+        scorePaint.color = scoreViewAttr.svScoreTextColor
 
         maxFlagScoreDescTextSize = scorePaint.measureText(maxFlagScoreDescText)
         scorePaint.getTextBounds(
@@ -176,6 +179,7 @@ class ScoreView @JvmOverloads constructor(
         arcInfo.handleInfo(rectF)
 
         if (BuildConfig.DEBUG) {
+            helperPaint.style = Paint.Style.STROKE
             helperPaint.color = Color.RED
             canvas.drawRect(rectF, helperPaint)
         }
@@ -284,11 +288,9 @@ class ScoreView @JvmOverloads constructor(
         paint.style = Paint.Style.FILL
         helperPaint.style = Paint.Style.FILL
 
-        scorePaint.color = scoreViewAttr.svScoreTextColor
-        scorePaint.textSize = scoreViewAttr.svScoreTextSize
-
         for (scoreInfo in scoreViewAttr.scoreInfoList) {
 
+            //todo 这里换成 measureText 是否更加准确?
             scorePaint.getTextBounds(
                 scoreInfo.scoreDesc,
                 0,
@@ -380,7 +382,21 @@ class ScoreView @JvmOverloads constructor(
         return (dp * displayMetrics.density + 0.5).toFloat()
     }
 
+    //todo view detect 把动画销毁
+    fun startAnim(currentScore:Float){
+      val objectAnimator =  ObjectAnimator.ofFloat(currentScore)
+        objectAnimator.addUpdateListener {
+            scoreViewAttr.svCurrentScoreToAngle = scoreViewAttr.scoreToAngle(it.animatedValue as Float)
+            postInvalidate()
+        }
+        objectAnimator.duration = 3000
+        objectAnimator.interpolator = DecelerateInterpolator()
+        objectAnimator.start()
+
+    }
+
 }
+
 
 /**
  * 圆弧信息

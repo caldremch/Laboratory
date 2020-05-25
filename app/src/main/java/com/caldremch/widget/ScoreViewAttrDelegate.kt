@@ -99,7 +99,7 @@ class ScoreViewAttrDelegate(val context: Context) {
             svScoreFlag = ta.getString(R.styleable.ScoreView_sv_score_flag)
             svScoreFlagDesc = ta.getString(R.styleable.ScoreView_sv_score_flag_desc)
             svCurrentScore = ta.getFloat(R.styleable.ScoreView_sv_current_score, 0f)
-            svCurrentScoreToAngle = (svCurrentScore / svFullScore) * svFullAngle
+            svCurrentScoreToAngle = scoreToAngle(svCurrentScore)
             handleScoreAndDesc()
             ta.recycle()
         }
@@ -126,11 +126,15 @@ class ScoreViewAttrDelegate(val context: Context) {
             val scoreInfo = ScoreInfo()
             scoreInfo.score = scoreFlags[x].toFloat()
             scoreInfo.scoreDesc = scoreFlagDescs[x]
-            val angle = (scoreInfo.score / svFullScore) * svFullAngle
+            val angle = scoreToAngle(scoreInfo.score)
             scoreInfo.scoreAngle = angle - middleAngle
             scoreInfoList.add(scoreInfo)
         }
 
+    }
+
+    fun scoreToAngle(score: Float): Float {
+        return (score / svFullScore) * svFullAngle
     }
 
 }
