@@ -38,7 +38,8 @@
         <attr name="sv_flag_line_width" format="dimension|reference" />
         <!--圆弧刻线高度-->
         <attr name="sv_flag_line_height" format="dimension|reference" />
-
+        <!--当前分数-->
+        <attr name="sv_current_score" format="float" />
     </declare-styleable>
 
 </resources>

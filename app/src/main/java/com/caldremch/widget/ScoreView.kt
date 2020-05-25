@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import com.caldremch.laboratory.BuildConfig
+import kotlin.math.absoluteValue
 
 /**
  *
@@ -188,37 +189,17 @@ class ScoreView @JvmOverloads constructor(
 
         //圆弧下
         paint.color = scoreViewAttr.svArcBackColor
-        canvas.drawArc(rectF, 145f, 360f, false, paint)
+        canvas.drawArc(rectF, 145f, 250f, false, paint)
 
         //圆弧上
         paint.color = scoreViewAttr.svArcFrontColor
-        canvas.drawArc(rectF, 145f, 100.5f, false, paint)
+        canvas.drawArc(rectF, 145f, scoreViewAttr.svCurrentScoreToAngle, false, paint)
 
-        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
-        //刻线边距
-        val smallLineMarigin = dp2px(10)
-        //刻线长度
-        val smallLineSize = scoreViewAttr.svArcLineWidth
-        //刻线 startY
-        val smallLineStartY = rectF.top + scoreViewAttr.svArcLineWidth / 2 + smallLineMarigin
-        //画刻线, 根据设计图, 一共有 35根, 顶部 1 根, 左右两边旋转 17 跟 , 每根旋转 250/35 个度数
-        //旋转度数
-        val rotateLineAngle = scoreViewAttr.svFullAngle / 35
 
-        canvas.save()
-        canvas.drawLine(
-            arcInfo.centerX, smallLineStartY,
-            arcInfo.centerX, smallLineStartY + smallLineSize, paint
-        )
-        //正方向旋转画刻线
-        drawLineByAngle(canvas, rotateLineAngle, smallLineStartY, smallLineSize)
-        canvas.restore()
+        //圆弧内的小短线
+        drawShortLine(canvas)
 
-        canvas.save()
-        //逆方向旋转画刻线
-        drawLineByAngle(canvas, -rotateLineAngle, smallLineStartY, smallLineSize)
-        canvas.restore()
-
+        //分数和描述
         drawScoreAndDesc(canvas)
 
         if (BuildConfig.DEBUG) {
@@ -251,6 +232,7 @@ class ScoreView @JvmOverloads constructor(
             scoreViewAttr.svCenterSubText.length,
             subTitleTextBound
         )
+
         val subTitleMarginTop = dp2px(10)
         canvas.drawText(
             scoreViewAttr.svCenterSubText, arcInfo.centerX - subTitleTextBound.width() / 2,
@@ -259,12 +241,49 @@ class ScoreView @JvmOverloads constructor(
         )
     }
 
+    private fun drawShortLine(canvas: Canvas) {
+
+        paint.color = scoreViewAttr.svFlagLineBackColor
+        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
+        //刻线边距
+        val smallLineMarigin = dp2px(10)
+        //刻线长度
+        val smallLineSize = scoreViewAttr.svArcLineWidth
+        //刻线 startY
+        val smallLineStartY = rectF.top + scoreViewAttr.svArcLineWidth / 2 + smallLineMarigin
+        //画刻线, 根据设计图, 一共有 35根, 顶部 1 根, 左右两边旋转 17 跟 , 每根旋转 250/35 个度数
+        //旋转度数
+        val rotateLineAngle = scoreViewAttr.svFullAngle / 35
+
+
+        canvas.drawLine(
+            arcInfo.centerX, smallLineStartY,
+            arcInfo.centerX, smallLineStartY + smallLineSize, paint
+        )
+
+        //正方向旋转画刻线
+        canvas.save()
+        drawLineByAngle(canvas, rotateLineAngle, smallLineStartY, smallLineSize)
+        canvas.restore()
+
+
+        //逆方向旋转画刻线
+        canvas.save()
+        drawLineByAngle(canvas, -rotateLineAngle, smallLineStartY, smallLineSize)
+        canvas.restore()
+    }
+
     private fun drawScoreAndDesc(canvas: Canvas) {
-        Log.d("tag", "刻线数量:${scoreViewAttr.scoreInfoList.size}")
-        paint.color = Color.GREEN
+        Log.d("tag", "分数标志数量:${scoreViewAttr.scoreInfoList.size}")
+
+        paint.color = scoreViewAttr.svScoreFlagLineColor
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         paint.style = Paint.Style.FILL
         helperPaint.style = Paint.Style.FILL
+
+        scorePaint.color = scoreViewAttr.svScoreTextColor
+        scorePaint.textSize = scoreViewAttr.svScoreTextSize
+
         for (scoreInfo in scoreViewAttr.scoreInfoList) {
 
             scorePaint.getTextBounds(
@@ -325,7 +344,22 @@ class ScoreView @JvmOverloads constructor(
         smallLineStartY: Float,
         smallLineSize: Float
     ) {
+
+        var collectAngles = 0f
         for (i in 0 until 17) {
+
+//            if (scoreViewAttr.svCurrentScoreToAngle > 0) {
+//                //左边
+//                if (rotateLineAngle < 0) {
+//                    if (collectAngles.absoluteValue < scoreViewAttr.svCurrentScoreToAngle) {
+//                        paint.color = scoreViewAttr.svFlagLineFrontColor
+//                    } else {
+//                        paint.color = scoreViewAttr.svFlagLineBackColor
+//                    }
+//                }
+//            }
+
+            collectAngles += rotateLineAngle
             canvas.rotate(rotateLineAngle, arcInfo.centerX, arcInfo.centerY)
             canvas.drawLine(
                 arcInfo.centerX, smallLineStartY,

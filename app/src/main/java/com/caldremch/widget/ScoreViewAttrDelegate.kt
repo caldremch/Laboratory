@@ -32,6 +32,10 @@ class ScoreViewAttrDelegate(val context: Context) {
     //默认总角度为 250度
     var svFullAngle: Float = DEFAULT_FULL_ANGLE
 
+
+    //分数在圆弧上的标志的颜色
+    var svScoreFlagLineColor: Int = Color.WHITE
+
     //颜色
     var svScoreTextColor: Int = Color.parseColor("#9699A0")
 
@@ -67,7 +71,6 @@ class ScoreViewAttrDelegate(val context: Context) {
     //圆弧高亮色
     var svArcFrontColor = Color.parseColor("#257BF4")
 
-
     //圆弧刻线相关
     //圆弧刻线底色
     var svFlagLineBackColor = Color.parseColor("#F5F5F7")
@@ -79,8 +82,8 @@ class ScoreViewAttrDelegate(val context: Context) {
     var svFlagLineWidth: Float = dp2px(2)
     var svFlagLineHeight: Float = dp2px(2)
 
-    val scoreFlagList = mutableListOf<Float>()
-    val scoreFlagDescList = mutableListOf<String>()
+    private var svCurrentScore: Float = 0f //当前分数
+    var svCurrentScoreToAngle: Float = 0f //当前分数对应的角度
 
 
     fun dp2px(dp: Int): Float {
@@ -95,6 +98,8 @@ class ScoreViewAttrDelegate(val context: Context) {
             svFullScore = ta.getFloat(R.styleable.ScoreView_sv_full_score, DEFAULT_FULL_SCORE)
             svScoreFlag = ta.getString(R.styleable.ScoreView_sv_score_flag)
             svScoreFlagDesc = ta.getString(R.styleable.ScoreView_sv_score_flag_desc)
+            svCurrentScore = ta.getFloat(R.styleable.ScoreView_sv_current_score, 0f)
+            svCurrentScoreToAngle = (svCurrentScore / svFullScore) * svFullAngle
             handleScoreAndDesc()
             ta.recycle()
         }
