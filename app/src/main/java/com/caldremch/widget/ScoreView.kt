@@ -34,32 +34,20 @@ class ScoreView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    //最小宽度 170+2*50
-    val MIN_SIZE = dp2px(170 + 2 * 50)
-
-    //View大小 正方形 todo 最小为主
+    //View 容器宽度
     var viewSize: Float = 0f
 
     val paint = Paint()
     val scorePaint = Paint() //分数画笔
     var rectF = RectF()
     var lineHeight: Float = 0f
+
+    //圆弧距离顶部边距
     var circleMarginTop = dp2px(20)
-    val titleTextSize = dp2px(40)
-    val subTitleTextSize = dp2px(12)
 
     val titleTextBound = Rect()
     val subTitleTextBound = Rect()
-    val text = "8.8"
-    val subText = "今日得分"
-    val score60 = "达标(60)"
-    val score80 = "优秀(80)"
-    val score0 = "0"
-    val score104 = "104"
     val scoreRectBounds = Rect()
-
-    var textFlagWidth: Float = 0f //分数刻度描述文字的宽度
-    var textFlagHeight: Float = 0f //分数刻度描述文字的高度
 
     //圆弧参数
     var arcWidth: Float = 0f //圆弧的宽度
@@ -67,34 +55,19 @@ class ScoreView @JvmOverloads constructor(
 
     //圆弧信息
     val arcInfo = ArcInfo()
+    val helperPaint = Paint() //辅助画笔(开发阶段)
 
-    val helperPaint = Paint() //测试用的
-
+    //自定义 View 属性
     val scoreViewAttr = ScoreViewAttrDelegate(context)
 
     init {
 
         //处理属性
         scoreViewAttr.initAttr(attrs)
-
         initHelper()
-
         paint.isAntiAlias = true
         scoreViewAttr.svArcLineWidth = dp2px(20)
         lineHeight = dp2px(30)
-
-        paint.color = Color.BLACK
-        paint.textSize = titleTextSize
-        paint.style = Paint.Style.FILL
-
-        //分数刻度
-        scorePaint.color = scoreViewAttr.svScoreTextColor
-        scorePaint.textSize = subTitleTextSize
-        scorePaint.style = Paint.Style.FILL
-
-        scorePaint.getTextBounds(score80, 0, score80.length, scoreRectBounds)
-        textFlagWidth = scoreRectBounds.width().toFloat()
-        textFlagHeight = scoreRectBounds.height().toFloat()
 
     }
 
@@ -131,6 +104,7 @@ class ScoreView @JvmOverloads constructor(
         scorePaint.textSize = scoreViewAttr.svScoreTextSize
         scorePaint.style = Paint.Style.FILL
         scorePaint.isAntiAlias = true
+
         maxFlagScoreDescTextSize = scorePaint.measureText(maxFlagScoreDescText)
         scorePaint.getTextBounds(
             maxFlagScoreDescText,
@@ -147,7 +121,7 @@ class ScoreView @JvmOverloads constructor(
                     2 * dp2px(10) + //刻线距离圆弧的margin
                     2 * scoreViewAttr.svArcLineWidth +
                     2 * maxFlagScoreDescTextSize +
-                    2 * descTextMargin+ scoreRectBounds.width()/4
+                    2 * descTextMargin + scoreRectBounds.width() / 4
         /*************计算最小尺寸**************/
 
 
@@ -191,12 +165,10 @@ class ScoreView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        paint.color = Color.BLUE
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = scoreViewAttr.svArcLineWidth
-        //dp2px(3) 文字和圆弧的间隔,
+
+        //圆弧矩形
         rectF.left = maxFlagScoreDescTextSize + descTextMargin
-        rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + textFlagHeight
+        rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + scoreRectBounds.height()
         rectF.right = rectF.left + arcWidth
         rectF.bottom = rectF.top + arcWidth
 
@@ -207,10 +179,12 @@ class ScoreView @JvmOverloads constructor(
             canvas.drawRect(rectF, helperPaint)
         }
 
-
-
         Log.d("tag", "right-left:" + (rectF.right - rectF.left))
         Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
+
+        paint.color = Color.BLUE
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = scoreViewAttr.svArcLineWidth
 
         //圆弧下
         paint.color = scoreViewAttr.svArcBackColor
@@ -219,8 +193,6 @@ class ScoreView @JvmOverloads constructor(
         //圆弧上
         paint.color = scoreViewAttr.svArcFrontColor
         canvas.drawArc(rectF, 145f, 100.5f, false, paint)
-
-
 
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         //刻线边距
@@ -231,7 +203,7 @@ class ScoreView @JvmOverloads constructor(
         val smallLineStartY = rectF.top + scoreViewAttr.svArcLineWidth / 2 + smallLineMarigin
         //画刻线, 根据设计图, 一共有 35根, 顶部 1 根, 左右两边旋转 17 跟 , 每根旋转 250/35 个度数
         //旋转度数
-        val rotateLineAngle = 250f / 35
+        val rotateLineAngle = scoreViewAttr.svFullAngle / 35
 
         canvas.save()
         canvas.drawLine(
@@ -249,29 +221,7 @@ class ScoreView @JvmOverloads constructor(
 
         drawScoreAndDesc(canvas)
 
-        if (true) {
-
-            val rotateAngle = 65f
-            //圆弧顶部文字
-//            canvas.drawText(
-//                score80,
-//                arcInfo.centerX - scoreRectBounds.width() / 2,
-//                circleMarginTop,
-//                scorePaint
-//            )
-            canvas.save()
-            //画出文字中心点
-//            canvas.drawCircle(arcInfo.centerX, 0f, dp2px(2), helperPaint)
-            //旋转画布
-            canvas.rotate(-rotateAngle, arcInfo.centerX, arcInfo.centerY)
-            //旋转后的文字中心点, 中心点应该向左移动文字宽度一半的距离, 因为文字平放会比较长
-            canvas.drawCircle(arcInfo.centerX, 0f, dp2px(2), helperPaint)
-            //根据文字的中心点旋转文字
-            canvas.rotate(rotateAngle, arcInfo.centerX, 0f)
-            scorePaint.color = Color.RED
-            canvas.drawText(score80, arcInfo.centerX - scoreRectBounds.width() / 2, 0f, scorePaint)
-            canvas.restore()
-
+        if (BuildConfig.DEBUG) {
             //画出辅助线,居中辅助线
             canvas.drawLine(arcInfo.centerX, 0f, arcInfo.centerX, height.toFloat(), helperPaint)
             canvas.drawLine(0f, arcInfo.centerY, width.toFloat(), arcInfo.centerY, helperPaint)
@@ -280,37 +230,33 @@ class ScoreView @JvmOverloads constructor(
 
         //圆弧中心画分数
         paint.color = scoreViewAttr.svCenterTextColor
-        paint.textSize = titleTextSize
+        paint.textSize = scoreViewAttr.svCenterTextSize
         paint.style = Paint.Style.FILL
-        paint.getTextBounds(text, 0, text.length, titleTextBound)
+        paint.getTextBounds(
+            scoreViewAttr.svCenterText,
+            0,
+            scoreViewAttr.svCenterText.length,
+            titleTextBound
+        )
+        val titleWidth = paint.measureText(scoreViewAttr.svCenterText)
         val titleY = arcInfo.centerY + titleTextBound.height() / 2
-        canvas.drawText(text, arcInfo.centerX - titleTextBound.width() / 2, titleY, paint)
+        canvas.drawText(scoreViewAttr.svCenterText, arcInfo.centerX - titleWidth / 2, titleY, paint)
+
         //今日得分
         paint.color = scoreViewAttr.svCenterSubTextColor
-        paint.textSize = subTitleTextSize
-        paint.getTextBounds(subText, 0, subText.length, subTitleTextBound)
+        paint.textSize = scoreViewAttr.svCenterSubTextSize
+        paint.getTextBounds(
+            scoreViewAttr.svCenterSubText,
+            0,
+            scoreViewAttr.svCenterSubText.length,
+            subTitleTextBound
+        )
         val subTitleMarginTop = dp2px(10)
         canvas.drawText(
-            subText, arcInfo.centerX - subTitleTextBound.width() / 2,
+            scoreViewAttr.svCenterSubText, arcInfo.centerX - subTitleTextBound.width() / 2,
             titleY + subTitleTextBound.height() + subTitleMarginTop,
             paint
         )
-
-
-        //圆 helper
-        if (false) {
-            paint.strokeWidth = 10f
-            paint.color = Color.GREEN
-            paint.style = Paint.Style.STROKE
-            val helperCircleHeight = circleMarginTop + scoreRectBounds.height() + arcWidth / 2
-            canvas.drawCircle(
-                (rectF.right - rectF.left) / 2 + rectF.left,
-                (rectF.bottom - rectF.top) / 2 + rectF.top,
-                (rectF.bottom - rectF.top) / 2,
-                paint
-            )
-        }
-
     }
 
     private fun drawScoreAndDesc(canvas: Canvas) {
@@ -320,16 +266,6 @@ class ScoreView @JvmOverloads constructor(
         paint.style = Paint.Style.FILL
         helperPaint.style = Paint.Style.FILL
         for (scoreInfo in scoreViewAttr.scoreInfoList) {
-
-//
-//            if (true){
-//                canvas.save()
-//                helperPaint.color = Color.BLUE
-//                helperPaint.style = Paint.Style.FILL
-//                canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
-//                canvas.drawCircle(arcInfo.centerX, scoreRectBounds.height().toFloat(), dp2px(2), helperPaint)
-//                canvas.restore()
-//            }
 
             scorePaint.getTextBounds(
                 scoreInfo.scoreDesc,
@@ -357,11 +293,9 @@ class ScoreView @JvmOverloads constructor(
             )
 
             canvas.restore()
+
             //注意文字旋转画布的中心
-            //为什么旋转画布以后, 文字中心店往外靠了? todo , 因为两次旋转了, 但是画布没有回归
             canvas.save()
-//            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, 0f)
-//            canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, scoreRectBounds.height().toFloat())
             canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
             helperPaint.color = Color.RED
 
