@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:sv_current_score="35"
+        app:sv_current_score="80"
         app:sv_score_flag="10,20,30,40,52,60,70,80,90,99,0,104"
         app:sv_score_flag_desc="10不行, 20也不行, 30也不行, 40也不行, 52中间啊,60及格了,70(很棒),80(优秀),90超强,99(非常棒),0,104" />
 

@@ -196,19 +196,6 @@ class ScoreView @JvmOverloads constructor(
         canvas.drawArc(rectF, 145f, scoreViewAttr.svCurrentScoreToAngle, false, paint)
 
 
-        //圆弧内的小短线
-        drawShortLine(canvas)
-
-        //分数和描述
-        drawScoreAndDesc(canvas)
-
-        if (BuildConfig.DEBUG) {
-            //画出辅助线,居中辅助线
-            canvas.drawLine(arcInfo.centerX, 0f, arcInfo.centerX, height.toFloat(), helperPaint)
-            canvas.drawLine(0f, arcInfo.centerY, width.toFloat(), arcInfo.centerY, helperPaint)
-        }
-
-
         //圆弧中心画分数
         paint.color = scoreViewAttr.svCenterTextColor
         paint.textSize = scoreViewAttr.svCenterTextSize
@@ -232,13 +219,28 @@ class ScoreView @JvmOverloads constructor(
             scoreViewAttr.svCenterSubText.length,
             subTitleTextBound
         )
-
         val subTitleMarginTop = dp2px(10)
         canvas.drawText(
-            scoreViewAttr.svCenterSubText, arcInfo.centerX - subTitleTextBound.width() / 2,
+            scoreViewAttr.svCenterSubText,
+            arcInfo.centerX - subTitleTextBound.width() / 2,
             titleY + subTitleTextBound.height() + subTitleMarginTop,
             paint
         )
+
+
+        //圆弧内的小短线
+        drawShortLine(canvas)
+
+        //分数和描述
+        drawScoreAndDesc(canvas)
+
+        if (BuildConfig.DEBUG) {
+            //画出辅助线,居中辅助线
+            canvas.drawLine(arcInfo.centerX, 0f, arcInfo.centerX, height.toFloat(), helperPaint)
+            canvas.drawLine(0f, arcInfo.centerY, width.toFloat(), arcInfo.centerY, helperPaint)
+        }
+
+
     }
 
     private fun drawShortLine(canvas: Canvas) {
@@ -256,21 +258,22 @@ class ScoreView @JvmOverloads constructor(
         val rotateLineAngle = scoreViewAttr.svFullAngle / 35
 
 
+        paint.color = scoreViewAttr.svFlagLineBackColor
         canvas.drawLine(
             arcInfo.centerX, smallLineStartY,
             arcInfo.centerX, smallLineStartY + smallLineSize, paint
         )
-
-        //正方向旋转画刻线
         canvas.save()
+        //-rotateLineAngle/2 误差度数
+        canvas.rotate(
+            -scoreViewAttr.svFullAngle / 2 - rotateLineAngle / 2,
+            arcInfo.centerX,
+            arcInfo.centerY
+        )
+        //正方向旋转画刻线
         drawLineByAngle(canvas, rotateLineAngle, smallLineStartY, smallLineSize)
         canvas.restore()
 
-
-        //逆方向旋转画刻线
-        canvas.save()
-        drawLineByAngle(canvas, -rotateLineAngle, smallLineStartY, smallLineSize)
-        canvas.restore()
     }
 
     private fun drawScoreAndDesc(canvas: Canvas) {
@@ -316,11 +319,16 @@ class ScoreView @JvmOverloads constructor(
             //注意文字旋转画布的中心
             canvas.save()
             canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
-            helperPaint.color = Color.RED
 
-            val rotateY = circleMarginTop - scoreRectBounds.height() / 2
-            canvas.drawCircle(arcInfo.centerX, rotateY, dp2px(2), helperPaint)
-            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, rotateY)
+
+            if (BuildConfig.DEBUG) {
+                helperPaint.color = Color.RED
+                val rotateY = circleMarginTop - scoreRectBounds.height() / 2
+                //辅助原点
+                canvas.drawCircle(arcInfo.centerX, rotateY, dp2px(2), helperPaint)
+                canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, rotateY)
+            }
+
             //移动长度, 文字宽度的 1/4
             var translateX = (scoreRectBounds.width() / 4).toFloat()
             if (scoreInfo.scoreAngle < 0) {
@@ -346,18 +354,15 @@ class ScoreView @JvmOverloads constructor(
     ) {
 
         var collectAngles = 0f
-        for (i in 0 until 17) {
+        for (i in 0 until 35) {
 
-//            if (scoreViewAttr.svCurrentScoreToAngle > 0) {
-//                //左边
-//                if (rotateLineAngle < 0) {
-//                    if (collectAngles.absoluteValue < scoreViewAttr.svCurrentScoreToAngle) {
-//                        paint.color = scoreViewAttr.svFlagLineFrontColor
-//                    } else {
-//                        paint.color = scoreViewAttr.svFlagLineBackColor
-//                    }
-//                }
-//            }
+            if (scoreViewAttr.svCurrentScoreToAngle > 0) {
+                if (collectAngles < scoreViewAttr.svCurrentScoreToAngle) {
+                    paint.color = scoreViewAttr.svFlagLineFrontColor
+                } else {
+                    paint.color = scoreViewAttr.svFlagLineBackColor
+                }
+            }
 
             collectAngles += rotateLineAngle
             canvas.rotate(rotateLineAngle, arcInfo.centerX, arcInfo.centerY)
