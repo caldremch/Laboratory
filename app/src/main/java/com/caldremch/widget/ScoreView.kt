@@ -108,12 +108,48 @@ class ScoreView @JvmOverloads constructor(
     }
 
 
+    val descTextMargin = dp2px(10)
+    var maxFlagScoreDescTextSize: Float = 0f
+    var maxCenterTitleSize: Float = 0f
+
     //todo padding 未算
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
         val specMode = MeasureSpec.getMode(widthMeasureSpec); //获取测量模式
         val specWidthSize = MeasureSpec.getSize(widthMeasureSpec); //获取测量的宽度
         val specHeightSize = MeasureSpec.getSize(heightMeasureSpec); //获取测量的高度
+
+
+        /*************计算最小尺寸**************/
+        val maxText = "10.8"
+        paint.textSize = scoreViewAttr.svCenterTextSize
+        paint.style = Paint.Style.FILL
+        paint.isAntiAlias = true
+        maxCenterTitleSize = paint.measureText(maxText)
+
+        val maxFlagScoreDescText = "104(优秀)"
+        scorePaint.textSize = scoreViewAttr.svScoreTextSize
+        scorePaint.style = Paint.Style.FILL
+        scorePaint.isAntiAlias = true
+        maxFlagScoreDescTextSize = scorePaint.measureText(maxFlagScoreDescText)
+        scorePaint.getTextBounds(
+            maxFlagScoreDescText,
+            0,
+            maxFlagScoreDescText.length,
+            scoreRectBounds
+        )
+
+        //中间标题宽度+距离刻线两边边距+2*刻线宽度+2*刻线距离圆弧的margin+2*圆弧线宽度+侧边刻度描述文字的宽度+ 描述文字的边距+ 描述文字宽度/4 的宽度(调整位置,移动文字)
+        val minViewSize =
+            maxCenterTitleSize +
+                    2 * dp2px(40) +
+                    2 * scoreViewAttr.svFlagLineHeight +
+                    2 * dp2px(10) + //刻线距离圆弧的margin
+                    2 * scoreViewAttr.svArcLineWidth +
+                    2 * maxFlagScoreDescTextSize +
+                    2 * descTextMargin+ scoreRectBounds.width()/4
+        /*************计算最小尺寸**************/
+
 
         //宽度能小于最小宽度
         when (specMode) {
@@ -126,20 +162,31 @@ class ScoreView @JvmOverloads constructor(
                     viewSize = specHeightSize.toFloat()
                 }
 
-                if (viewSize < MIN_SIZE) {
-                    viewSize = MIN_SIZE
+                if (viewSize < minViewSize) {
+                    viewSize = minViewSize
                 }
-
-                arcWidth = viewSize - 2 * scoreViewAttr.svArcLineWidth - 2 * textFlagWidth
-                arcRadius = arcWidth / 2
             }
 
             MeasureSpec.AT_MOST, MeasureSpec.UNSPECIFIED -> {
-                viewSize = 2 * textFlagWidth + dp2px(170)
+                viewSize = minViewSize
+
             }
         }
 
-        setMeasuredDimension(viewSize.toInt(), viewSize.toInt())
+        //如果大于屏幕宽度处理
+        val screenWidth = resources.displayMetrics.widthPixels
+        Log.d("tag", "screenWidth=$screenWidth,viewSize=$viewSize")
+        if (viewSize > screenWidth) {
+            viewSize = screenWidth.toFloat()
+        }
+
+        arcWidth = viewSize - 2 * maxFlagScoreDescTextSize - 2 * descTextMargin
+        arcRadius = arcWidth / 2
+
+        val viewHeight =
+            viewSize.toInt() - 2 * maxFlagScoreDescTextSize + 2 * scoreRectBounds.height() + 2 * circleMarginTop
+
+        setMeasuredDimension(viewSize.toInt(), viewHeight.toInt())
 
     }
 
@@ -148,12 +195,19 @@ class ScoreView @JvmOverloads constructor(
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = scoreViewAttr.svArcLineWidth
         //dp2px(3) 文字和圆弧的间隔,
-        rectF.left = textFlagWidth + dp2px(3) + scoreViewAttr.svArcLineWidth
+        rectF.left = maxFlagScoreDescTextSize + descTextMargin
         rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + textFlagHeight
         rectF.right = rectF.left + arcWidth
         rectF.bottom = rectF.top + arcWidth
 
         arcInfo.handleInfo(rectF)
+
+        if (BuildConfig.DEBUG) {
+            helperPaint.color = Color.RED
+            canvas.drawRect(rectF, helperPaint)
+        }
+
+
 
         Log.d("tag", "right-left:" + (rectF.right - rectF.left))
         Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
@@ -166,9 +220,7 @@ class ScoreView @JvmOverloads constructor(
         paint.color = scoreViewAttr.svArcFrontColor
         canvas.drawArc(rectF, 145f, 100.5f, false, paint)
 
-        if (BuildConfig.DEBUG) {
-            canvas.drawRect(rectF, helperPaint)
-        }
+
 
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         //刻线边距
@@ -246,7 +298,7 @@ class ScoreView @JvmOverloads constructor(
 
 
         //圆 helper
-        if (true) {
+        if (false) {
             paint.strokeWidth = 10f
             paint.color = Color.GREEN
             paint.style = Paint.Style.STROKE
@@ -266,16 +318,30 @@ class ScoreView @JvmOverloads constructor(
         paint.color = Color.GREEN
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         paint.style = Paint.Style.FILL
+        helperPaint.style = Paint.Style.FILL
         for (scoreInfo in scoreViewAttr.scoreInfoList) {
-            Log.d("tag", "start drawing....")
-            canvas.save()
-            /************画文字描述*************/
+
+//
+//            if (true){
+//                canvas.save()
+//                helperPaint.color = Color.BLUE
+//                helperPaint.style = Paint.Style.FILL
+//                canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
+//                canvas.drawCircle(arcInfo.centerX, scoreRectBounds.height().toFloat(), dp2px(2), helperPaint)
+//                canvas.restore()
+//            }
+
             scorePaint.getTextBounds(
                 scoreInfo.scoreDesc,
                 0,
                 scoreInfo.scoreDesc.length,
                 scoreRectBounds
             )
+
+            Log.d("tag", "start drawing....")
+            canvas.save()
+            /************画文字描述*************/
+
             /************画文刻度线*************/
             // rectF边线切在圆弧线宽的中间
 
@@ -286,14 +352,28 @@ class ScoreView @JvmOverloads constructor(
                 arcInfo.centerX,
                 rectF.top - scoreViewAttr.svArcLineWidth / 2,
                 arcInfo.centerX,
-                rectF.top - scoreViewAttr.svArcLineWidth / 2 + scoreViewAttr.svArcLineWidth ,
+                rectF.top - scoreViewAttr.svArcLineWidth / 2 + scoreViewAttr.svArcLineWidth,
                 paint
             )
 
+            canvas.restore()
             //注意文字旋转画布的中心
-            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, 0f)
-//            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, scoreRectBounds.height().toFloat())
-            canvas.drawCircle(arcInfo.centerX, scoreRectBounds.height().toFloat(), dp2px(2), helperPaint)
+            //为什么旋转画布以后, 文字中心店往外靠了? todo , 因为两次旋转了, 但是画布没有回归
+            canvas.save()
+//            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, 0f)
+//            canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, scoreRectBounds.height().toFloat())
+            canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
+            helperPaint.color = Color.RED
+
+            val rotateY = circleMarginTop - scoreRectBounds.height() / 2
+            canvas.drawCircle(arcInfo.centerX, rotateY, dp2px(2), helperPaint)
+            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, rotateY)
+            //移动长度, 文字宽度的 1/4
+            var translateX = (scoreRectBounds.width() / 4).toFloat()
+            if (scoreInfo.scoreAngle < 0) {
+                translateX = -translateX
+            }
+            canvas.translate(translateX, 0f)
             canvas.drawText(
                 scoreInfo.scoreDesc,
                 arcInfo.centerX - scoreRectBounds.width() / 2,
