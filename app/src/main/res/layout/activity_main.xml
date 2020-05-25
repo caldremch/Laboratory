@@ -15,13 +15,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:sv_score_flag="10,20,30,40,52,60,70,80,90,0,104"
+        app:sv_score_flag_desc="10不行, 20也不行, 30也不行, 40也不行, 52中间啊,60及格了,70(很棒),80(优秀),90 超强,0,104" />
 
     <TextView
         android:id="@+id/tv"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -36,6 +36,7 @@ class ScoreView @JvmOverloads constructor(
 
     //最小宽度 170+2*50
     val MIN_SIZE = dp2px(170 + 2 * 50)
+
     //View大小 正方形 todo 最小为主
     var viewSize: Float = 0f
 
@@ -119,9 +120,9 @@ class ScoreView @JvmOverloads constructor(
 
             MeasureSpec.EXACTLY -> {
 
-                if (specWidthSize<specHeightSize){
+                if (specWidthSize < specHeightSize) {
                     viewSize = specWidthSize.toFloat()
-                }else{
+                } else {
                     viewSize = specHeightSize.toFloat()
                 }
 
@@ -143,7 +144,6 @@ class ScoreView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.save()
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = scoreViewAttr.svArcLineWidth
@@ -179,7 +179,8 @@ class ScoreView @JvmOverloads constructor(
         val smallLineStartY = rectF.top + scoreViewAttr.svArcLineWidth / 2 + smallLineMarigin
         //画刻线, 根据设计图, 一共有 35根, 顶部 1 根, 左右两边旋转 17 跟 , 每根旋转 250/35 个度数
         //旋转度数
-        val rotateLineAngle = 250f/35
+        val rotateLineAngle = 250f / 35
+
         canvas.save()
         canvas.drawLine(
             arcInfo.centerX, smallLineStartY,
@@ -188,61 +189,24 @@ class ScoreView @JvmOverloads constructor(
         //正方向旋转画刻线
         drawLineByAngle(canvas, rotateLineAngle, smallLineStartY, smallLineSize)
         canvas.restore()
+
         canvas.save()
         //逆方向旋转画刻线
         drawLineByAngle(canvas, -rotateLineAngle, smallLineStartY, smallLineSize)
         canvas.restore()
-        canvas.restore()
 
+        drawScoreAndDesc(canvas)
 
-        canvas.save()
-
-        //60 分刻线 与文字描述
-        //旋转度数299-270 = 29
-        scorePaint.getTextBounds(score60, 0, score60.length, scoreRectBounds)
-        canvas.rotate(29f, (width / 2).toFloat(), (height / 2).toFloat())
-        canvas.drawText(score60, (width / 2).toFloat(), 0f, scorePaint)
-        paint.color = Color.WHITE
-        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
-        paint.style = Paint.Style.FILL
-        canvas.drawLine(
-            (width / 2).toFloat(),
-            circleMarginTop - scoreViewAttr.svArcLineWidth / 2,
-            (width / 2).toFloat(),
-            circleMarginTop + scoreViewAttr.svArcLineWidth / 2,
-            paint
-        )
-
-        //80 分刻线 与文字描述
-        // 在 60 刻度基础上, 再旋转48 度
-        scorePaint.getTextBounds(score80, 0, score80.length, scoreRectBounds)
-        canvas.rotate(48f, (width / 2).toFloat(), (height / 2).toFloat())
-        canvas.drawText(score80, (width / 2).toFloat(), 0f, scorePaint)
-        canvas.drawLine(
-            (width / 2).toFloat(),
-            circleMarginTop - scoreViewAttr.svArcLineWidth / 2,
-            (width / 2).toFloat(),
-            circleMarginTop + scoreViewAttr.svArcLineWidth / 2,
-            paint
-        )
-
-        canvas.rotate(48f, (width / 2).toFloat(), (height / 2).toFloat())
-        canvas.drawText(score104, (width / 2).toFloat(), 0f, scorePaint)
-
-        canvas.rotate(110f, (width / 2).toFloat(), (height / 2).toFloat())
-        canvas.drawText(score0, (width / 2).toFloat(), 0f, scorePaint)
-        canvas.restore()
-
-        if (BuildConfig.DEBUG) {
+        if (true) {
 
             val rotateAngle = 65f
             //圆弧顶部文字
-            canvas.drawText(
-                score80,
-                arcInfo.centerX - scoreRectBounds.width() / 2,
-                circleMarginTop,
-                scorePaint
-            )
+//            canvas.drawText(
+//                score80,
+//                arcInfo.centerX - scoreRectBounds.width() / 2,
+//                circleMarginTop,
+//                scorePaint
+//            )
             canvas.save()
             //画出文字中心点
 //            canvas.drawCircle(arcInfo.centerX, 0f, dp2px(2), helperPaint)
@@ -282,16 +246,62 @@ class ScoreView @JvmOverloads constructor(
 
 
         //圆 helper
-        paint.strokeWidth = 10f
+        if (true) {
+            paint.strokeWidth = 10f
+            paint.color = Color.GREEN
+            paint.style = Paint.Style.STROKE
+            val helperCircleHeight = circleMarginTop + scoreRectBounds.height() + arcWidth / 2
+            canvas.drawCircle(
+                (rectF.right - rectF.left) / 2 + rectF.left,
+                (rectF.bottom - rectF.top) / 2 + rectF.top,
+                (rectF.bottom - rectF.top) / 2,
+                paint
+            )
+        }
+
+    }
+
+    private fun drawScoreAndDesc(canvas: Canvas) {
+        Log.d("tag", "刻线数量:${scoreViewAttr.scoreInfoList.size}")
         paint.color = Color.GREEN
-        paint.style = Paint.Style.STROKE
-        val helperCircleHeight = circleMarginTop + scoreRectBounds.height() + arcWidth / 2
-        canvas.drawCircle(
-            (rectF.right - rectF.left) / 2 + rectF.left,
-            (rectF.bottom - rectF.top) / 2 + rectF.top,
-            (rectF.bottom - rectF.top) / 2,
-            paint
-        )
+        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
+        paint.style = Paint.Style.FILL
+        for (scoreInfo in scoreViewAttr.scoreInfoList) {
+            Log.d("tag", "start drawing....")
+            canvas.save()
+            /************画文字描述*************/
+            scorePaint.getTextBounds(
+                scoreInfo.scoreDesc,
+                0,
+                scoreInfo.scoreDesc.length,
+                scoreRectBounds
+            )
+            /************画文刻度线*************/
+            // rectF边线切在圆弧线宽的中间
+
+            val startY = rectF.top - scoreViewAttr.svArcLineWidth / 2
+            Log.d("tag", "startY:$startY")
+            canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
+            canvas.drawLine(
+                arcInfo.centerX,
+                rectF.top - scoreViewAttr.svArcLineWidth / 2,
+                arcInfo.centerX,
+                rectF.top - scoreViewAttr.svArcLineWidth / 2 + scoreViewAttr.svArcLineWidth ,
+                paint
+            )
+
+            //注意文字旋转画布的中心
+            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, 0f)
+//            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, scoreRectBounds.height().toFloat())
+            canvas.drawCircle(arcInfo.centerX, scoreRectBounds.height().toFloat(), dp2px(2), helperPaint)
+            canvas.drawText(
+                scoreInfo.scoreDesc,
+                arcInfo.centerX - scoreRectBounds.width() / 2,
+                circleMarginTop,
+                scorePaint
+            )
+            canvas.restore()
+        }
 
     }
 
