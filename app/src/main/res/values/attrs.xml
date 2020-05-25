@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ScoreView">
+        <!--满分-->
+        <attr name="sv_full_score" format="float" />
+        <!--颜色-->
+        <attr name="sv_score_text_color" format="color|reference" />
+        <!--文字大小-->
+        <attr name="sv_score_text_size" format="dimension|reference" />
+        <!--分数标志, 比如 60 , 80 , 用逗号隔开: 60,80-->
+        <attr name="sv_score_flag" format="string" />
+        <!--分数标志描述, 比如 60及格, 80分优秀, 用逗号隔开: 60及格,80分优秀-->
+        <attr name="sv_score_flag_desc" format="string" />
+        <!-- 中间标题-->
+        <attr name="sv_center_text" format="string" />
+        <attr name="sv_center_text_color" format="color|reference" />
+        <attr name="sv_center_text_size" format="dimension|reference" />
+
+        <!--中间子标题-->
+        <attr name="sv_center_sub_text" format="string" />
+        <attr name="sv_center_sub_text_color" format="color|reference" />
+        <attr name="sv_center_sub_text_size" format="dimension|reference" />
+        <!--圆弧线宽-->
+        <attr name="sv_arc_line_width" format="dimension|reference" />
+        <!--圆弧底色-->
+        <attr name="sv_arc_back_color" format="color|reference" />
+        <!-- 圆弧高亮色-->
+        <attr name="sv_arc_front_color" format="color|reference" />
+
+        <!-- 圆弧刻线底色-->
+        <attr name="sv_flag_line_back_color" format="color|reference" />
+        <!-- 圆弧刻线高亮色-->
+        <attr name="sv_line_front_color" format="color|reference" />
+        <!--圆弧刻线线宽-->
+        <attr name="sv_flag_line_width" format="dimension|reference" />
+
+
+    </declare-styleable>
+
+</resources>
