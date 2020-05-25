@@ -36,22 +36,17 @@ class ScoreView @JvmOverloads constructor(
 
     //最小宽度 170+2*50
     val MIN_SIZE = dp2px(170 + 2 * 50)
+    //View大小 正方形 todo 最小为主
     var viewSize: Float = 0f
 
     val paint = Paint()
     val scorePaint = Paint() //分数画笔
     var rectF = RectF()
-    var lineWidth: Float = 0f
     var lineHeight: Float = 0f
     var circleMarginTop = dp2px(20)
     val titleTextSize = dp2px(40)
     val subTitleTextSize = dp2px(12)
-    val titleTextColor = Color.parseColor("#191919")
-    val subTitleTextColor = Color.parseColor("#4C4C4C")
-    val scoreTextColor = Color.parseColor("#9699A0")
 
-    val backColor = Color.parseColor("#E5E9ED")
-    val frontColor = Color.parseColor("#257BF4")
     val titleTextBound = Rect()
     val subTitleTextBound = Rect()
     val text = "8.8"
@@ -62,13 +57,12 @@ class ScoreView @JvmOverloads constructor(
     val score104 = "104"
     val scoreRectBounds = Rect()
 
-    var textFlagWidth: Float = 0f //分数刻度的宽度
-    var textFlagHeight: Float = 0f //分数刻度的高度
+    var textFlagWidth: Float = 0f //分数刻度描述文字的宽度
+    var textFlagHeight: Float = 0f //分数刻度描述文字的高度
 
     //圆弧参数
     var arcWidth: Float = 0f //圆弧的宽度
     var arcRadius: Float = 0f //圆弧半径
-    var arcHeight: Float = 0f //圆弧的高度
 
     //圆弧信息
     val arcInfo = ArcInfo()
@@ -86,7 +80,6 @@ class ScoreView @JvmOverloads constructor(
 
         paint.isAntiAlias = true
         scoreViewAttr.svArcLineWidth = dp2px(20)
-        lineWidth = dp2px(2)
         lineHeight = dp2px(30)
 
         paint.color = Color.BLACK
@@ -94,7 +87,7 @@ class ScoreView @JvmOverloads constructor(
         paint.style = Paint.Style.FILL
 
         //分数刻度
-        scorePaint.color = scoreTextColor
+        scorePaint.color = scoreViewAttr.svScoreTextColor
         scorePaint.textSize = subTitleTextSize
         scorePaint.style = Paint.Style.FILL
 
@@ -118,17 +111,24 @@ class ScoreView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
         val specMode = MeasureSpec.getMode(widthMeasureSpec); //获取测量模式
-        val specSize = MeasureSpec.getSize(widthMeasureSpec); //获取测量的宽度
+        val specWidthSize = MeasureSpec.getSize(widthMeasureSpec); //获取测量的宽度
+        val specHeightSize = MeasureSpec.getSize(heightMeasureSpec); //获取测量的高度
 
         //宽度能小于最小宽度
         when (specMode) {
 
             MeasureSpec.EXACTLY -> {
-                if (specSize < MIN_SIZE) {
-                    viewSize = MIN_SIZE
-                } else {
-                    viewSize = specSize.toFloat()
+
+                if (specWidthSize<specHeightSize){
+                    viewSize = specWidthSize.toFloat()
+                }else{
+                    viewSize = specHeightSize.toFloat()
                 }
+
+                if (viewSize < MIN_SIZE) {
+                    viewSize = MIN_SIZE
+                }
+
                 arcWidth = viewSize - 2 * scoreViewAttr.svArcLineWidth - 2 * textFlagWidth
                 arcRadius = arcWidth / 2
             }
@@ -159,19 +159,18 @@ class ScoreView @JvmOverloads constructor(
         Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
 
         //圆弧下
-        paint.color = backColor
+        paint.color = scoreViewAttr.svArcBackColor
         canvas.drawArc(rectF, 145f, 360f, false, paint)
-//        canvas.drawArc(rectF, 145f, 250f, false, paint)
 
         //圆弧上
-        paint.color = frontColor
+        paint.color = scoreViewAttr.svArcFrontColor
         canvas.drawArc(rectF, 145f, 100.5f, false, paint)
 
         if (BuildConfig.DEBUG) {
             canvas.drawRect(rectF, helperPaint)
         }
 
-        paint.strokeWidth = lineWidth
+        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         //刻线边距
         val smallLineMarigin = dp2px(10)
         //刻线长度
@@ -204,7 +203,7 @@ class ScoreView @JvmOverloads constructor(
         canvas.rotate(29f, (width / 2).toFloat(), (height / 2).toFloat())
         canvas.drawText(score60, (width / 2).toFloat(), 0f, scorePaint)
         paint.color = Color.WHITE
-        paint.strokeWidth = lineWidth
+        paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         paint.style = Paint.Style.FILL
         canvas.drawLine(
             (width / 2).toFloat(),
@@ -264,14 +263,14 @@ class ScoreView @JvmOverloads constructor(
 
 
         //圆弧中心画分数
-        paint.color = Color.RED
+        paint.color = scoreViewAttr.svCenterTextColor
         paint.textSize = titleTextSize
         paint.style = Paint.Style.FILL
         paint.getTextBounds(text, 0, text.length, titleTextBound)
         val titleY = arcInfo.centerY + titleTextBound.height() / 2
         canvas.drawText(text, arcInfo.centerX - titleTextBound.width() / 2, titleY, paint)
         //今日得分
-        paint.color = subTitleTextColor
+        paint.color = scoreViewAttr.svCenterSubTextColor
         paint.textSize = subTitleTextSize
         paint.getTextBounds(subText, 0, subText.length, subTitleTextBound)
         val subTitleMarginTop = dp2px(10)

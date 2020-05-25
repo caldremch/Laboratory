@@ -2,8 +2,11 @@ package com.caldremch.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.text.TextUtils
 import android.util.AttributeSet
 import com.caldremch.laboratory.R
+import java.lang.Exception
+import java.lang.RuntimeException
 
 /**
  *
@@ -18,8 +21,16 @@ import com.caldremch.laboratory.R
  **/
 class ScoreViewAttrDelegate(val context: Context) {
 
+    val DEFAULT_SCORE_FLAG = "60,80"
+    val DEFAULT_SCORE_FLAG_DESC = "达标(60),优秀(80)"
+    val DEFAULT_FULL_SCORE = 104f
+    val DEFAULT_FULL_ANGLE = 250f
+
     //满分 默认 104 分
-    var svFullScore: Float = 104f
+    var svFullScore: Float = DEFAULT_FULL_SCORE
+
+    //默认总角度为 250度
+    var svFullAngle: Float = DEFAULT_FULL_ANGLE
 
     //颜色
     var svScoreTextColor: Int = Color.parseColor("#9699A0")
@@ -28,10 +39,13 @@ class ScoreViewAttrDelegate(val context: Context) {
     var svScoreTextSize: Float = dp2px(12)
 
     //分数刻线 60,80 等
-    var svScoreFlag = "60,80"
+    var svScoreFlag: String? = DEFAULT_SCORE_FLAG
 
     //分数标志描述, 比如 60及格, 80分优秀, 用逗号隔开: 60及格,80分优秀
-    var svScoreFlagDesc = "达标(60),优秀(80)"
+    var svScoreFlagDesc: String? = DEFAULT_SCORE_FLAG_DESC
+
+    var scoreInfoList = mutableListOf<ScoreInfo>()
+
 
     // 中间标题-相关
     var svCenterText = "8.8"
@@ -63,6 +77,10 @@ class ScoreViewAttrDelegate(val context: Context) {
 
     //圆弧刻线线宽
     var svFlagLineWidth: Float = dp2px(2)
+    var svFlagLineHeight: Float = dp2px(2)
+
+    val scoreFlagList = mutableListOf<Float>()
+    val scoreFlagDescList = mutableListOf<String>()
 
 
     fun dp2px(dp: Int): Float {
@@ -74,9 +92,52 @@ class ScoreViewAttrDelegate(val context: Context) {
     fun initAttr(attrs: AttributeSet?) {
         attrs?.let {
             val ta = context.obtainStyledAttributes(it, R.styleable.ScoreView)
-
+            svFullScore = ta.getFloat(R.styleable.ScoreView_sv_full_score, DEFAULT_FULL_SCORE)
+            svScoreFlag = ta.getString(R.styleable.ScoreView_sv_score_flag)
+            svScoreFlagDesc = ta.getString(R.styleable.ScoreView_sv_score_flag_desc)
+            handleScoreAndDesc()
             ta.recycle()
         }
     }
+
+    private fun handleScoreAndDesc() {
+
+
+        if (TextUtils.isEmpty(svScoreFlag) || TextUtils.isEmpty(svScoreFlagDesc)) {
+            return
+        }
+        val scoreFlags = svScoreFlag!!.split(",")
+
+        val scoreFlagDescs = svScoreFlagDesc!!.split(",")
+
+        if (scoreFlags.size != scoreFlagDescs.size) {
+            return
+        }
+
+        //分割线, 左边向左边旋转, 右边向右边旋转
+        val middleAngle = svFullAngle / 2
+
+        for (x in scoreFlags.indices) {
+            val scoreInfo = ScoreInfo()
+            scoreInfo.score = scoreFlags[x].toFloat()
+            scoreInfo.scoreDesc = scoreFlagDescs[x]
+            val angle = (scoreInfo.score / svFullScore) * svFullAngle
+            scoreInfo.scoreAngle = angle - middleAngle
+            scoreInfoList.add(scoreInfo)
+        }
+
+    }
+
+}
+
+class ScoreInfo() {
+    //分数
+    var score: Float = 0f
+
+    //分数描述
+    var scoreDesc = ""
+
+    //分数所在的位置, 对应的角度
+    var scoreAngle = 0f
 
 }
