@@ -5,10 +5,10 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import com.caldremch.laboratory.BuildConfig
-import kotlin.math.absoluteValue
 
 /**
  *
@@ -62,6 +62,9 @@ class ScoreView @JvmOverloads constructor(
 
     //自定义 View 属性
     val scoreViewAttr = ScoreViewAttrDelegate(context)
+
+    val cameraMatrix = Matrix()
+    val camera = Camera()
 
     init {
 
@@ -169,6 +172,8 @@ class ScoreView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        this.canvas = canvas
+        cameraRotate()
 
         //圆弧矩形
         rectF.left = maxFlagScoreDescTextSize + descTextMargin
@@ -247,8 +252,8 @@ class ScoreView @JvmOverloads constructor(
 
     }
 
+    private lateinit var canvas: Canvas
     private fun drawShortLine(canvas: Canvas) {
-
         paint.color = scoreViewAttr.svFlagLineBackColor
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         //刻线边距
@@ -383,10 +388,11 @@ class ScoreView @JvmOverloads constructor(
     }
 
     //todo view detect 把动画销毁
-    fun startAnim(currentScore:Float){
-      val objectAnimator =  ObjectAnimator.ofFloat(currentScore)
+    fun startAnim(currentScore: Float) {
+        val objectAnimator = ObjectAnimator.ofFloat(currentScore)
         objectAnimator.addUpdateListener {
-            scoreViewAttr.svCurrentScoreToAngle = scoreViewAttr.scoreToAngle(it.animatedValue as Float)
+            scoreViewAttr.svCurrentScoreToAngle =
+                scoreViewAttr.scoreToAngle(it.animatedValue as Float)
             postInvalidate()
         }
         objectAnimator.duration = 3000
@@ -395,6 +401,60 @@ class ScoreView @JvmOverloads constructor(
 
     }
 
+    var cameraRotateX = 0f
+    var cameraRotateY = 0f
+
+    /* camera旋转的最大角度 */
+    private val mMaxCameraRotate = 10f
+    fun cameraRotate() {
+        cameraMatrix.reset()
+        camera.save()
+        camera.rotateX(cameraRotateX)
+        camera.rotateY(cameraRotateY)
+        camera.getMatrix(cameraMatrix)
+        camera.restore()
+        //修改旋转中心点
+        cameraMatrix.preTranslate(-arcInfo.centerX, -arcInfo.centerY)
+        cameraMatrix.postTranslate(arcInfo.centerX, arcInfo.centerY)
+        canvas.concat(cameraMatrix)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                getCameraRotate(event)
+                invalidate()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                getCameraRotate(event)
+                invalidate()
+            }
+        }
+        return true
+    }
+
+    private fun getCameraRotate(event: MotionEvent) {
+
+        val rotateX = -(event.y - height / 2)
+        val rotateY = event.x - width / 2
+        var percentX: Float = rotateX / arcWidth
+        var percentY: Float = rotateY / arcWidth
+        if (percentX > 1) {
+            percentX = 1f
+        } else if (percentX < -1) {
+            percentX = -1f
+        }
+        if (percentY > 1) {
+            percentY = 1f
+        } else if (percentY < -1) {
+            percentY = -1f
+        }
+        cameraRotateX = percentX * mMaxCameraRotate
+        cameraRotateY = percentY * mMaxCameraRotate
+        Log.d("tag", "cameraRotateX=$cameraRotateX")
+        cameraRotate()
+    }
 }
 
 
