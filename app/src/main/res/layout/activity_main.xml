@@ -34,16 +34,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <com.caldremch.date.DatePickerView
+        android:id="@+id/dpv"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"/>
+
     <com.caldremch.pickerview.WheelView
         android:id="@+id/wv"
         android:layout_width="match_parent"
-        app:selectType="string"
+        app:wv_selectType="string"
         android:background="@android:color/darker_gray"
         android:layout_height="wrap_content"
-        app:string_select_text_size="20dp"
+        app:wv_string_select_text_size="20dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:dividerColor="#EAEAEC"
+        app:wv_dividerColor="#EAEAEC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

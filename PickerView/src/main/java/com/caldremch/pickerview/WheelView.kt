@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -48,9 +49,9 @@ class WheelView @JvmOverloads constructor(
         val SELECT_TYPE_STRING = 0
 
         //年月日
-        val SELECT_TYPE_DATE_YEAR = 0x00000224
-        val SELECT_TYPE_DATE_MONTH = 0x00000225
-        val SELECT_TYPE_DATE_DAY = 0x00000226
+        val SELECT_TYPE_DATE_YEAR = 1
+        val SELECT_TYPE_DATE_MONTH = 2
+        val SELECT_TYPE_DATE_DAY = 3
 
     }
 
@@ -103,22 +104,31 @@ class WheelView @JvmOverloads constructor(
     private var lastSelectedPosition = IDLE_POSITION
     private var selectedPosition = IDLE_POSITION
 
+    //时间选择器的类型: 年月日
+    private var datePickerType = SELECT_TYPE_DATE_YEAR
+
     init {
 
         stringSelectTextSize = Utils.dp2px(context, 14) //默认 14
 
         attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.WheelView)
-            itemCount = a.getInt(R.styleable.WheelView_wheelItemCount, itemCount)
-            dividerColor = a.getColor(R.styleable.WheelView_dividerColor, dividerColor)
-            itemSize = a.getDimensionPixelOffset(R.styleable.WheelView_wheelItemSize, itemSize)
+            itemCount = a.getInt(R.styleable.WheelView_wv_wheelItemCount, itemCount)
+            dividerColor = a.getColor(R.styleable.WheelView_wv_dividerColor, dividerColor)
+            itemSize = a.getDimensionPixelOffset(R.styleable.WheelView_wv_wheelItemSize, itemSize)
             dividerSize =
-                a.getDimensionPixelOffset(R.styleable.WheelView_wheelDividerSize, dividerSize)
-            orientation = a.getInt(R.styleable.WheelView_wheelOrientation, orientation)
-            gravity = a.getInt(R.styleable.WheelView_wheelGravity, gravity)
-            selectType = a.getInt(R.styleable.WheelView_selectType, selectType)
+                a.getDimensionPixelOffset(R.styleable.WheelView_wv_wheelDividerSize, dividerSize)
+            orientation = a.getInt(R.styleable.WheelView_wv_wheelOrientation, orientation)
+            gravity = a.getInt(R.styleable.WheelView_wv_wheelGravity, gravity)
+            selectType = a.getInt(R.styleable.WheelView_wv_selectType, selectType)
             stringSelectTextSize =
-                a.getDimension(R.styleable.WheelView_string_select_text_size, stringSelectTextSize)
+                a.getDimension(
+                    R.styleable.WheelView_wv_string_select_text_size,
+                    stringSelectTextSize
+                )
+
+            datePickerType = a.getInt(R.styleable.WheelView_wv_date_type, SELECT_TYPE_DATE_YEAR)
+
             a.recycle()
         }
 
@@ -127,20 +137,32 @@ class WheelView @JvmOverloads constructor(
         paint.textSize = stringSelectTextSize
 
         //时间选择器, 宽高设置, 这里设置的高度, 决定了 ViewHolder 的高度
-//        if (selectType == SELECT_TYPE_DATE) {
-//
-//        }else if (selectType == SELECT_TYPE_STRING){
-//
-//        }
-
         //根据字体测量出宽度
-        val year = "2019年"
-        itemWidth = paint.measureText(year)
+        var measureText = "十"
+        if (selectType == SELECT_TYPE_DATE) {
+            when (datePickerType) {
+                SELECT_TYPE_DATE_YEAR -> {
+                    measureText = "2020年"
+                }
+                SELECT_TYPE_DATE_MONTH -> {
+                    measureText = "12月"
+                }
+                SELECT_TYPE_DATE_DAY -> {
+                    measureText = "30日"
+                }
+            }
+        }
+
+        //文字padding
+        val padding = Utils.dp2px(context, 5)
+
+        itemWidth = paint.measureText(measureText) + 2 * padding
+
+        //测量文字高度
         val textRect = Rect()
-        paint.getTextBounds(year, 0, year.length, textRect)
+        paint.getTextBounds(measureText, 0, measureText.length, textRect)
         val fontMer = Paint.FontMetrics()
         paint.getFontMetrics(fontMer)
-        val padding = Utils.dp2px(context, 5)
 
         //设置 item 的高度
         itemSize = ((fontMer.bottom - fontMer.top).toInt() + 2 * padding).toInt()
@@ -163,10 +185,11 @@ class WheelView @JvmOverloads constructor(
             dividerSize = dividerSize
         )
 
+        myRecyclerView.setBackgroundColor(Color.RED)
         myRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
         val totalItemSize = (itemCount * 2 + 1) * itemSize
         LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
-        var layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, totalItemSize)
+        var layoutParams = LayoutParams(itemWidth.toInt(), totalItemSize)
         //字符串选择, MATCH_PARENT
         if (selectType == SELECT_TYPE_STRING) {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
@@ -252,6 +275,7 @@ class WheelView @JvmOverloads constructor(
             }
             itemWidth = myWidth.toFloat()
         }
+        Log.d("tag","myWidth-->$datePickerType-->$myWidth")
         setMeasuredDimension(myWidth, myHeight)
     }
 
@@ -264,7 +288,8 @@ class WheelView @JvmOverloads constructor(
             myRecyclerView.adapter = null
             return
         }
-        val wheelAdapter = SimpleWheelAdapter(adapter, orientation, itemSize, itemCount, itemWidth)
+
+        val wheelAdapter = SimpleWheelAdapter(adapter, orientation, itemSize, itemCount,itemWidth)
         adapter.adapter = wheelAdapter
         myRecyclerView.adapter = wheelAdapter
         adapter.notifyDataSetChanged()

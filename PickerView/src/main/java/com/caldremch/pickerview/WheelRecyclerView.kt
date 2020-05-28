@@ -170,6 +170,7 @@ class WheelRecyclerView(
     }
 
     override fun drawChild(canvas: Canvas, child: View, drawingTime: Long): Boolean {
+
         canvas.save()
         if (orientation == LinearLayoutManager.VERTICAL) {
             verticalCanvasForDrawChild(canvas, child, myTranslateX(centerX))

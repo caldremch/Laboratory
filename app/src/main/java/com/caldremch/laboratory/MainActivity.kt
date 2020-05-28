@@ -19,19 +19,20 @@ class MainActivity : AppCompatActivity() {
         Utils.init(this)
 
         val context = this
-        wv.post {
-            wv.setAdapter(TestAdapter())
-        }
-
-        wv.listener = object : OnItemSelectedListener{
-            override fun onItemSelected(index: Int) {
-                Toast.makeText(context, "index = $index", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        wv.post {
+//            wv.setAdapter(TestAdapter())
+//        }
+//
+//        wv.listener = object : OnItemSelectedListener{
+//            override fun onItemSelected(index: Int) {
+//                Toast.makeText(context, "index = $index", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     fun start(view: View) {
         wv.setAdapter(TestAdapter())
+        dpv.refresh()
     }
 
     fun tost(view: View) {
