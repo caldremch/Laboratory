@@ -14,12 +14,16 @@ import com.caldremch.pickerview.adapter.WheelAdapter
  *
  * @email caldremch@163.com
  *
- * @describe
+ * @describe 日期列表 Adapter
  *
  **/
+class DateAdapter(val type: Int) : WheelAdapter<DateViewHolder>() {
 
-
-class YearAdapter : WheelAdapter<DateViewHolder>() {
+    companion object {
+        val YEAR = 1
+        val MONTH = 2
+        val DAY = 3
+    }
 
     val data = mutableListOf<String>()
 
@@ -28,9 +32,13 @@ class YearAdapter : WheelAdapter<DateViewHolder>() {
     }
 
     override fun onCreateViewHolder(inflater: LayoutInflater, viewType: Int): DateViewHolder {
-        return DateViewHolder(
-            inflater.inflate(R.layout.picker_view_year_item, null, false)
-        )
+        var layoutResId = R.layout.picker_view_year_item
+        when (type) {
+            YEAR -> layoutResId = R.layout.picker_view_year_item
+            MONTH -> layoutResId = R.layout.picker_view_month_item
+            DAY -> layoutResId = R.layout.picker_view_day_item
+        }
+        return DateViewHolder(inflater.inflate(layoutResId, null, false))
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {

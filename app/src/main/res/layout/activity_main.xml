@@ -56,7 +56,7 @@
         app:wv_selectType="string"
         android:background="@android:color/darker_gray"
         android:layout_height="wrap_content"
-        app:wv_string_select_text_size="20dp"
+        app:wv_item_text_size="20dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

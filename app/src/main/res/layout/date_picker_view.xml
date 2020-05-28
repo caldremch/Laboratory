@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:orientation="horizontal">
 
     <com.caldremch.pickerview.WheelView
         android:id="@+id/wv_year"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="3.2"
+        app:layout_constraintEnd_toStartOf="@+id/wv_month"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/colorAccent"
         app:wv_date_type="year"
-        app:wv_string_select_text_size="20dp"
-        app:wv_selectType="date" />
+        app:wv_wheelGravity="left"
+        app:wv_selectType="date"
+        app:wv_item_text_size="20dp" />
 
     <com.caldremch.pickerview.WheelView
         android:id="@+id/wv_month"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintEnd_toStartOf="@+id/wv_day"
         android:layout_height="wrap_content"
-        app:wv_string_select_text_size="20dp"
-
+        app:layout_constraintStart_toEndOf="@+id/wv_year"
+        app:layout_constraintTop_toTopOf="@+id/wv_year"
         app:wv_date_type="month"
-        app:wv_selectType="date" />
+        app:wv_selectType="date"
+        app:wv_item_text_size="20dp" />
 
     <com.caldremch.pickerview.WheelView
         android:id="@+id/wv_day"
-        app:wv_date_type="day"
-        app:wv_string_select_text_size="20dp"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="3"
         android:layout_height="wrap_content"
-        app:wv_selectType="date" />
+        app:layout_constraintStart_toEndOf="@+id/wv_month"
+        app:layout_constraintTop_toTopOf="@+id/wv_year"
+        app:wv_date_type="day"
+        app:wv_wheelGravity="right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:wv_selectType="date"
+        app:wv_item_text_size="20dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.caldremch.pickerview.Utils
@@ -54,7 +55,8 @@ open class SimpleWheelAdapter<T : ViewHolder>(
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.context)
         }
-        val params = ViewGroup.LayoutParams(itemWidth.toInt(), itemSize)
+//        val params = ViewGroup.LayoutParams(itemWidth.toInt(), itemSize)
+        val params = ViewGroup.LayoutParams(MATCH_PARENT, itemSize)
 
         if (viewType == EMPTY_TYPE) {
             val view = View(parent.context)

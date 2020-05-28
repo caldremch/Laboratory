@@ -4,10 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.caldremch.laboratory.R
 import com.caldremch.pickerview.callback.OnItemSelectedListener
-import com.caldremch.wheel.YearAdapter
+import com.caldremch.wheel.DateAdapter
 import kotlinx.android.synthetic.main.date_picker_view.view.*
 import java.util.*
 
@@ -27,9 +26,9 @@ class DatePickerView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private lateinit var maxDaysMap: MutableMap<Int, MutableList<String>>
-    val yearAdapter = YearAdapter()
-    val monthAdapter = YearAdapter()
-    val dayAdapter = YearAdapter()
+    val yearAdapter = DateAdapter(DateAdapter.YEAR)
+    val monthAdapter = DateAdapter(DateAdapter.MONTH)
+    val dayAdapter = DateAdapter(DateAdapter.DAY)
 
     private var cYear = 0
     private var cMonth = 0
@@ -55,7 +54,7 @@ class DatePickerView @JvmOverloads constructor(
 
         //年份数据
         yearAdapter.data.clear()
-        yearAdapter.data.addAll(DateInfoUtils.getYears(2010, 2020))
+        yearAdapter.data.addAll(DateInfoUtils.getYears(2010, 2030))
 
         //月份数据
         monthAdapter.data.addAll(DateInfoUtils.getMonth())

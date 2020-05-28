@@ -123,7 +123,7 @@ class WheelView @JvmOverloads constructor(
             selectType = a.getInt(R.styleable.WheelView_wv_selectType, selectType)
             stringSelectTextSize =
                 a.getDimension(
-                    R.styleable.WheelView_wv_string_select_text_size,
+                    R.styleable.WheelView_wv_item_text_size,
                     stringSelectTextSize
                 )
 
@@ -189,12 +189,14 @@ class WheelView @JvmOverloads constructor(
         myRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
         val totalItemSize = (itemCount * 2 + 1) * itemSize
         LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
-        var layoutParams = LayoutParams(itemWidth.toInt(), totalItemSize)
-        //字符串选择, MATCH_PARENT
-        if (selectType == SELECT_TYPE_STRING) {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
-        }
 
+//        var layoutParams = LayoutParams(itemWidth.toInt(), totalItemSize)
+
+        //字符串选择, MATCH_PARENT
+//        if (selectType == SELECT_TYPE_STRING) {
+//            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
+//        }
+        var layoutParams   = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
         addView(myRecyclerView, layoutParams)
 
         myRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

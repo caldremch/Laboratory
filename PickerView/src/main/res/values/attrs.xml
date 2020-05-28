@@ -14,7 +14,7 @@
         </attr>
 
         <!--        文字选择的时候有效-->
-        <attr name="wv_string_select_text_size" format="dimension|reference" />
+        <attr name="wv_item_text_size" format="dimension|reference" />
 
         <!-- 中间分割线外的item数量,整个滑动数量就为 wheelItemCount * 2 + 1  -->
         <attr name="wv_wheelItemCount" format="integer" />
