@@ -65,8 +65,6 @@ class WheelView @JvmOverloads constructor(
      */
     private var itemSize = 90  //垂直布局中, itemSize 为高度
 
-    private var itemWidth = 0f //宽度, 用于设置选择器的宽度限制
-
     /**
      * 分割线颜色
      */
@@ -156,8 +154,6 @@ class WheelView @JvmOverloads constructor(
         //文字padding
         val padding = Utils.dp2px(context, 5)
 
-        itemWidth = paint.measureText(measureText) + 2 * padding
-
         //测量文字高度
         val textRect = Rect()
         paint.getTextBounds(measureText, 0, measureText.length, textRect)
@@ -167,7 +163,8 @@ class WheelView @JvmOverloads constructor(
         //设置 item 的高度
         itemSize = ((fontMer.bottom - fontMer.top).toInt() + 2 * padding).toInt()
         //两条分割线之间的距离 > item 的高度
-        dividerSize = (itemSize + Utils.dp2px(context, 2)).toInt()
+//        dividerSize = (itemSize + Utils.dp2px(context, 2)).toInt()
+        dividerSize = itemSize
 
         initRecyclerView()
     }
@@ -190,15 +187,11 @@ class WheelView @JvmOverloads constructor(
         val totalItemSize = (itemCount * 2 + 1) * itemSize
         LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
 
-//        var layoutParams = LayoutParams(itemWidth.toInt(), totalItemSize)
-
-        //字符串选择, MATCH_PARENT
-//        if (selectType == SELECT_TYPE_STRING) {
-//            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
-//        }
-        var layoutParams   = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
+        //设置 RecyclerView的布局
+        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
         addView(myRecyclerView, layoutParams)
 
+        //添加选中监听
         myRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) {
@@ -262,28 +255,29 @@ class WheelView @JvmOverloads constructor(
 
         //垂直方向EXACTLY 意义不大
         val child = getChildAt(0)
+
         myHeight = child.measuredHeight + paddingTop + paddingBottom
 
-        if (selectType == SELECT_TYPE_DATE) {
-            //时间选择器宽度固定
-            myWidth = (itemWidth + paddingLeft + paddingRight).toInt()
+        myHeight = if (heightMode == MeasureSpec.EXACTLY) {
+            MeasureSpec.getSize(heightMeasureSpec)
         } else {
-
-            myWidth = if (widthMode == MeasureSpec.EXACTLY) {
-                MeasureSpec.getSize(widthMeasureSpec)
-            } else {
-                //默认 itemsize
-                itemSize + paddingLeft + paddingRight
-            }
-            itemWidth = myWidth.toFloat()
+            val child = getChildAt(0)
+            child.measuredHeight + paddingTop + paddingBottom
         }
-        Log.d("tag","myWidth-->$datePickerType-->$myWidth")
+        myWidth = if (widthMode == MeasureSpec.EXACTLY) {
+            MeasureSpec.getSize(widthMeasureSpec)
+        } else {
+            itemSize + paddingLeft + paddingRight
+        }
+
+
+        Log.d("tag", "myWidth-->$datePickerType-->$myWidth")
         setMeasuredDimension(myWidth, myHeight)
     }
 
 
     /**
-     * 注意: itemWidth, 如果是不是日期选择,  那么需要等当前View 测量完毕 ,否则 itemWidth 是默认值
+     * 设置适配器
      */
     fun <T : RecyclerView.ViewHolder> setAdapter(adapter: WheelAdapter<T>?) {
         if (adapter == null) {
@@ -291,7 +285,7 @@ class WheelView @JvmOverloads constructor(
             return
         }
 
-        val wheelAdapter = SimpleWheelAdapter(adapter, orientation, itemSize, itemCount,itemWidth)
+        val wheelAdapter = SimpleWheelAdapter(adapter, orientation, itemSize, itemCount)
         adapter.adapter = wheelAdapter
         myRecyclerView.adapter = wheelAdapter
         adapter.notifyDataSetChanged()
@@ -299,7 +293,7 @@ class WheelView @JvmOverloads constructor(
 
     fun setCurrentPos(indexOfCurrentYear: Int) {
         myRecyclerView.post {
-            myRecyclerView.scrollToPosition(itemCount*2+indexOfCurrentYear)
+            myRecyclerView.scrollToPosition(itemCount * 2 + indexOfCurrentYear)
         }
     }
 

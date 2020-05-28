@@ -35,41 +35,40 @@
 
     <TextView
         android:id="@+id/tvDate"
-        android:textSize="18dp"
         android:layout_width="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/dpv"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <com.caldremch.date.DatePickerView
         android:id="@+id/dpv"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     <com.caldremch.pickerview.WheelView
         android:id="@+id/wv"
         android:layout_width="match_parent"
-        app:wv_selectType="string"
-        android:background="@android:color/darker_gray"
         android:layout_height="wrap_content"
-        app:wv_item_text_size="20dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:wv_dividerColor="#EAEAEC"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:wv_dividerColor="#EAEAEC"
+        app:wv_item_text_size="20dp"
+        app:wv_selectType="date" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv2"
         android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:background="@android:color/white"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sv"
@@ -77,10 +76,11 @@
 
     <Button
         android:id="@+id/button"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
         android:onClick="start"
+        android:text="Button"
         tools:layout_editor_absoluteY="44dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,16 +6,18 @@ import com.caldremch.date.DateViewHolder
 import com.caldremch.laboratory.R
 import com.caldremch.pickerview.adapter.WheelAdapter
 
-class TestAdapter : WheelAdapter<DateViewHolder>() {
+class StringAdapter : WheelAdapter<DateViewHolder>() {
+
+    val data = mutableListOf<String>()
 
     override fun getItemCount(): Int {
-        return 20
+        return data.size
     }
 
     override fun onCreateViewHolder(inflater: LayoutInflater, viewType: Int): DateViewHolder {
         return DateViewHolder(
             inflater.inflate(
-                R.layout.test_item,
+                R.layout.picker_string_item,
                 null,
                 false
             )

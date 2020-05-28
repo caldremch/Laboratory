@@ -28,9 +28,7 @@ open class SimpleWheelAdapter<T : ViewHolder>(
     var adapter: WheelAdapter<T>,
     private var orientation: Int,//recyclerview 布局方向
     var itemSize: Int, //item 高度
-    var myItemCount: Int, //上或下的 item 数量
-    var itemWidth: Float
-
+    var myItemCount: Int//上或下的 item 数量
 ) : RecyclerView.Adapter<T>() {
 
     /**
@@ -55,9 +53,8 @@ open class SimpleWheelAdapter<T : ViewHolder>(
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.context)
         }
-//        val params = ViewGroup.LayoutParams(itemWidth.toInt(), itemSize)
-        val params = ViewGroup.LayoutParams(MATCH_PARENT, itemSize)
 
+        val params = ViewGroup.LayoutParams(MATCH_PARENT, itemSize)
         if (viewType == EMPTY_TYPE) {
             val view = View(parent.context)
             view.layoutParams = params
@@ -65,7 +62,6 @@ open class SimpleWheelAdapter<T : ViewHolder>(
         }
         val vh = adapter.onCreateViewHolder(inflater!!, viewType)
         vh.itemView.layoutParams = params
-        Log.d("tag", "onCreateViewHolder=${params.width}-->$itemWidth")
         return vh
     }
 
