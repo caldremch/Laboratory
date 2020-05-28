@@ -54,16 +54,16 @@ open class SimpleWheelAdapter<T : ViewHolder>(
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.context)
         }
-
         val params = ViewGroup.LayoutParams(itemWidth.toInt(), itemSize)
+
         if (viewType == EMPTY_TYPE) {
             val view = View(parent.context)
             view.layoutParams = params
             return EmptyViewHolder(view) as T
         }
-
         val vh = adapter.onCreateViewHolder(inflater!!, viewType)
         vh.itemView.layoutParams = params
+        Log.d("tag", "onCreateViewHolder=${params.width}-->$itemWidth")
         return vh
     }
 

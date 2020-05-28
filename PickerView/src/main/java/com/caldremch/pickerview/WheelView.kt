@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.pickerview.adapter.SimpleWheelAdapter
 import com.caldremch.pickerview.adapter.WheelAdapter
+import com.caldremch.pickerview.callback.OnItemSelectedListener
 
 /**
  *
@@ -32,6 +33,13 @@ class WheelView @JvmOverloads constructor(
      */
 
     companion object {
+
+        /**
+         * 无效的位置
+         */
+        const val IDLE_POSITION = -1
+
+        //滚轮方向
         val WHEEL_VERTICAL: Int = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
         val WHEEL_HORIZONTAL: Int = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 
@@ -56,7 +64,7 @@ class WheelView @JvmOverloads constructor(
      */
     private var itemSize = 90  //垂直布局中, itemSize 为高度
 
-    private var itemWidth = 0f //宽度, 用于设置时间选择器的宽度限制,其他选择器类型不适用
+    private var itemWidth = 0f //宽度, 用于设置选择器的宽度限制
 
     /**
      * 分割线颜色
@@ -74,9 +82,14 @@ class WheelView @JvmOverloads constructor(
     private var dividerSize = 90
 
     /**
+     * item 文字大小-->跟ViewHolder 对应的文字大小一致
+     */
+    private var stringSelectTextSize: Float = 0f
+
+    /**
      * 对齐方式
      */
-    private var gravity: Int = WheelRecyclerView.GRAVITY_LEFT
+    private var gravity: Int = WheelRecyclerView.GRAVITY_CENTER
 
     private lateinit var myRecyclerView: WheelRecyclerView
 
@@ -84,7 +97,15 @@ class WheelView @JvmOverloads constructor(
     //2.普通文字列表选择
     var selectType = SELECT_TYPE_STRING
 
+    var listener: OnItemSelectedListener? = null
+
+    //选中位置
+    private var lastSelectedPosition = IDLE_POSITION
+    private var selectedPosition = IDLE_POSITION
+
     init {
+
+        stringSelectTextSize = Utils.dp2px(context, 14) //默认 14
 
         attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.WheelView)
@@ -96,25 +117,35 @@ class WheelView @JvmOverloads constructor(
             orientation = a.getInt(R.styleable.WheelView_wheelOrientation, orientation)
             gravity = a.getInt(R.styleable.WheelView_wheelGravity, gravity)
             selectType = a.getInt(R.styleable.WheelView_selectType, selectType)
+            stringSelectTextSize =
+                a.getDimension(R.styleable.WheelView_string_select_text_size, stringSelectTextSize)
             a.recycle()
         }
 
-        //时间选择器, 宽高设置
-        if (selectType == SELECT_TYPE_DATE) {
-            val paint = Paint()
-            paint.isAntiAlias = true
-            paint.textSize = Utils.dp2px(context, 14)
-            val year = "2019年"
-            itemWidth = paint.measureText(year)
-            val textRect = Rect()
-            paint.getTextBounds(year, 0, year.length, textRect)
-            val fontMer = Paint.FontMetrics()
-            paint.getFontMetrics(fontMer)
-            val padding = Utils.dp2px(context, 5)
+        val paint = Paint()
+        paint.isAntiAlias = true
+        paint.textSize = stringSelectTextSize
 
-            itemSize = ((fontMer.bottom - fontMer.top).toInt() + 2 * padding).toInt()
-            dividerSize = (itemSize + Utils.dp2px(context, 2)).toInt()
-        }
+        //时间选择器, 宽高设置, 这里设置的高度, 决定了 ViewHolder 的高度
+//        if (selectType == SELECT_TYPE_DATE) {
+//
+//        }else if (selectType == SELECT_TYPE_STRING){
+//
+//        }
+
+        //根据字体测量出宽度
+        val year = "2019年"
+        itemWidth = paint.measureText(year)
+        val textRect = Rect()
+        paint.getTextBounds(year, 0, year.length, textRect)
+        val fontMer = Paint.FontMetrics()
+        paint.getFontMetrics(fontMer)
+        val padding = Utils.dp2px(context, 5)
+
+        //设置 item 的高度
+        itemSize = ((fontMer.bottom - fontMer.top).toInt() + 2 * padding).toInt()
+        //两条分割线之间的距离 > item 的高度
+        dividerSize = (itemSize + Utils.dp2px(context, 2)).toInt()
 
         initRecyclerView()
     }
@@ -125,18 +156,16 @@ class WheelView @JvmOverloads constructor(
         myRecyclerView = WheelRecyclerView(
             context = context,
             gravity = gravity,
-            itemCount = itemCount,
+            myItemCount = itemCount,
             itemSize = itemSize,
             orientation = orientation,
             dividerColor = dividerColor,
             dividerSize = dividerSize
         )
-        myRecyclerView.setBackgroundColor(Color.RED)
 
         myRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
         val totalItemSize = (itemCount * 2 + 1) * itemSize
         LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
-
         var layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, totalItemSize)
         //字符串选择, MATCH_PARENT
         if (selectType == SELECT_TYPE_STRING) {
@@ -147,27 +176,33 @@ class WheelView @JvmOverloads constructor(
 
         myRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) return
-
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    return
+                }
+                val centerItemPosition: Int = myRecyclerView.findCenterItemPosition()
+                if (centerItemPosition == IDLE_POSITION) {
+                    return
+                }
+                selectedPosition = centerItemPosition
+                if (selectedPosition != lastSelectedPosition) {
+                    listener?.onItemSelected(centerItemPosition)
+                    lastSelectedPosition = selectedPosition
+                }
             }
         })
     }
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
         if (childCount <= 0) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             return
         }
-
         //测量子 View
         measureChildren(widthMeasureSpec, heightMeasureSpec)
-
         if (orientation == WHEEL_VERTICAL) {
             measureVertical(widthMeasureSpec, heightMeasureSpec)
         }
-
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -221,6 +256,9 @@ class WheelView @JvmOverloads constructor(
     }
 
 
+    /**
+     * 注意: itemWidth, 如果是不是日期选择,  那么需要等当前View 测量完毕 ,否则 itemWidth 是默认值
+     */
     fun <T : RecyclerView.ViewHolder> setAdapter(adapter: WheelAdapter<T>?) {
         if (adapter == null) {
             myRecyclerView.adapter = null

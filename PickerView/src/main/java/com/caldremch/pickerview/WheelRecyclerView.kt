@@ -27,13 +27,14 @@ import kotlin.math.sin
 class WheelRecyclerView(
     context: Context,
     val gravity: Int, //对齐方式
-    itemCount: Int, //显示的item数量, 多处的 item 数量
+    val myItemCount: Int, //显示的item数量, 多处的 item 数量
     val itemSize: Int, //每个item大小,  垂直布局时为item的高度, 水平布局时为item的宽度
     val orientation: Int, //布局方向
     val dividerColor: Int, //分割线颜色
     var dividerSize: Int //分割线宽度
 
 ) : RecyclerView(context) {
+
 
     /**
      * 阴影遮罩颜色渐变
@@ -45,16 +46,6 @@ class WheelRecyclerView(
     val RIGHTANGLE = 90f
 
     /**
-     * 垂直布局时的靠左,居中,靠右立体效果, 影响矩阵的移动
-     */
-
-    companion object {
-        val GRAVITY_LEFT = 1
-        val GRAVITY_CENTER = 2
-        val GRAVITY_RIGHT = 3
-    }
-
-    /**
      * 此参数影响左右旋转对齐时的效果,系数越大,越明显,自己体会......(0-1之间)
      */
     val DEF_SCALE = 0.75f
@@ -63,7 +54,6 @@ class WheelRecyclerView(
      * 此参数影响偏离中心item时效果(1-3)
      */
     var DEF_COFFICIENT = 3
-
 
     /**
      * 每个item平均下来后对应的旋转角度
@@ -102,10 +92,9 @@ class WheelRecyclerView(
     var topOrLeftGradient: LinearGradient? = null
     var rightOrBottomGradient: LinearGradient? = null
 
-
     init {
         //itemCount * 2 + 1 可见 item 的度数, 比如 itemCount 3 , 上边显示 3, 下边显示 3 个 +1 加上本身自己
-        itemDegree = 180f / (itemCount * 2 + 1)
+        itemDegree = 180f / (myItemCount * 2 + 1)
         wheelRadio = WheelUtils.radianToRadius(itemSize, itemDegree).toFloat()
         camera = Camera()
         myMatrix = Matrix()
@@ -121,22 +110,17 @@ class WheelRecyclerView(
         layoutManager = myLayoutManager
     }
 
-
-    fun logg(str:String){
+    fun logg(str: String) {
         Log.d("tag", str)
     }
 
-    //调用顺序
-
+    //调用顺序 onDraw --> dispatchDraw --> drawChild
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
         //中心点位置
         centerX = (l + r) * 0.5f
         centerY = (t + b) * 0.5f
-//        logg("centerX=$centerX,centerY=$centerY")
     }
-
-    val close = true
 
     //画分割线与遮罩层
     override fun dispatchDraw(c: Canvas) {
@@ -167,6 +151,7 @@ class WheelRecyclerView(
                 )
                 topOrLeftPaint.shader = topOrLeftGradient
             }
+
             if (rightOrBottomGradient == null) {
                 rightOrBottomGradient = LinearGradient(
                     0f,
@@ -203,7 +188,8 @@ class WheelRecyclerView(
         //垂直布局时要以X轴为中心旋转, 获取到当前 View 距离中心点旋转了多少度, 限制最多不能高于 90 度
         //比如 itemcout 4 , 那么 180/(2*4+1) = 20, 每个 item 旋转 20 度
         //为什么不能超过 90? 为 180 分两半, 一般最多有 90 可以旋转, 超过的这个度数, 就看不见了
-        val rotateDegreeX = rotateLimitRightAngle(scrollOffY * itemDegree / itemSize) //垂直布局时要以X轴为中心旋转
+        val rotateDegreeX =
+            rotateLimitRightAngle(scrollOffY * itemDegree / itemSize) //垂直布局时要以X轴为中心旋转
 
         //1度=π/180弧度
         //角度A1转换弧度A2：A2=A1*π/180
@@ -263,5 +249,31 @@ class WheelRecyclerView(
         if (degree >= RIGHTANGLE) return RIGHTANGLE
         return if (degree <= -RIGHTANGLE) -RIGHTANGLE else degree
     }
+
+    /**
+     * 获取中心点位置
+     * @return
+     */
+    fun findCenterItemPosition(): Int {
+        if (adapter == null || centerY == 0f || centerX == 0f) return -1
+        val centerView = findChildViewUnder(centerX, centerY)
+        if (centerView != null) {
+            val adapterPosition: Int = getChildAdapterPosition(centerView) - myItemCount
+            if (adapterPosition >= 0) {
+                return adapterPosition
+            }
+        }
+        return -1
+    }
+
+    /**
+     * 垂直布局时的靠左,居中,靠右立体效果, 影响矩阵的移动
+     */
+    companion object {
+        val GRAVITY_LEFT = 1
+        val GRAVITY_CENTER = 2
+        val GRAVITY_RIGHT = 3
+    }
+
 
 }

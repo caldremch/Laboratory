@@ -38,9 +38,12 @@
         android:id="@+id/wv"
         android:layout_width="match_parent"
         app:selectType="string"
+        android:background="@android:color/darker_gray"
         android:layout_height="wrap_content"
+        app:string_select_text_size="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:dividerColor="#EAEAEC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
