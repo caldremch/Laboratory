@@ -419,20 +419,20 @@ class ScoreView @JvmOverloads constructor(
         canvas.concat(cameraMatrix)
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                getCameraRotate(event)
-                invalidate()
-            }
-            MotionEvent.ACTION_MOVE -> {
-                getCameraRotate(event)
-                invalidate()
-            }
-        }
-        return true
-    }
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//
+//        when (event.action) {
+//            MotionEvent.ACTION_DOWN -> {
+//                getCameraRotate(event)
+//                invalidate()
+//            }
+//            MotionEvent.ACTION_MOVE -> {
+//                getCameraRotate(event)
+//                invalidate()
+//            }
+//        }
+//        return true
+//    }
 
     private fun getCameraRotate(event: MotionEvent) {
 
