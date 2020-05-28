@@ -138,12 +138,13 @@ class WheelRecyclerView(
 
             //渐变阴影
             //阴影部分: 中间item 以上部分和以下部分
+            //在设置dividerSize的时候,已经加了 padding 了, 所以这里也要加上, 不然选中的 item, 上下两个阴影效果不明显
             val rectTop = firstY - wheelRadio
             val rectBottom = secondY + wheelRadio
             if (topOrLeftGradient == null) {
                 topOrLeftGradient = LinearGradient(
                     0f,
-                    firstY,
+                    firstY+ itemSize,
                     0f,
                     rectTop,
                     CENTER_COLOR,
@@ -156,7 +157,7 @@ class WheelRecyclerView(
             if (rightOrBottomGradient == null) {
                 rightOrBottomGradient = LinearGradient(
                     0f,
-                    secondY,
+                    secondY- itemSize,
                     0f,
                     rectBottom,
                     CENTER_COLOR,
