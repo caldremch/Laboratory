@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.pickerview.Utils
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.TestAdapter
@@ -28,6 +29,13 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(context, "index = $index", Toast.LENGTH_SHORT).show()
 //            }
 //        }
+
+        dpv.listener = object : OnDateSelectedListener{
+            override fun onItemSelected(dateStr: String) {
+                tvDate.text = dateStr
+            }
+
+        }
     }
 
     fun start(view: View) {

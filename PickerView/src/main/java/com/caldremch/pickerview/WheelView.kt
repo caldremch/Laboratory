@@ -185,7 +185,7 @@ class WheelView @JvmOverloads constructor(
             dividerSize = dividerSize
         )
 
-        myRecyclerView.setBackgroundColor(Color.RED)
+//        myRecyclerView.setBackgroundColor(Color.RED)
         myRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
         val totalItemSize = (itemCount * 2 + 1) * itemSize
         LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
@@ -293,6 +293,12 @@ class WheelView @JvmOverloads constructor(
         adapter.adapter = wheelAdapter
         myRecyclerView.adapter = wheelAdapter
         adapter.notifyDataSetChanged()
+    }
+
+    fun setCurrentPos(indexOfCurrentYear: Int) {
+        myRecyclerView.post {
+            myRecyclerView.scrollToPosition(itemCount*2+indexOfCurrentYear)
+        }
     }
 
 

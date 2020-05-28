@@ -20,7 +20,8 @@ import kotlin.math.sin
  *
  * @describe 使用 matrix 和 camera 实现 3D 效果
  *
- * 基于 https://github.com/youxiaochen/WheelView2-3d 用 Kotlin重写,并添加了详细注释
+ * 基于 https://github.com/youxiaochen/WheelView2-3d 用 Kotlin重写
+ * 并添加了详细注释 以及时间选择器的扩展
  *
  **/
 

@@ -2,8 +2,7 @@ package com.caldremch.wheel
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import com.caldremch.date.DateViewHolder
 import com.caldremch.laboratory.R
 import com.caldremch.pickerview.adapter.WheelAdapter
 
@@ -20,18 +19,22 @@ import com.caldremch.pickerview.adapter.WheelAdapter
  **/
 
 
-class YearAdapter : WheelAdapter<TestViewHolder>() {
+class YearAdapter : WheelAdapter<DateViewHolder>() {
+
+    val data = mutableListOf<String>()
 
     override fun getItemCount(): Int {
-        return 20
+        return data.size
     }
 
-    override fun onCreateViewHolder(inflater: LayoutInflater, viewType: Int): TestViewHolder {
-        return TestViewHolder(inflater.inflate(R.layout.picker_view_year_item, null, false))
+    override fun onCreateViewHolder(inflater: LayoutInflater, viewType: Int): DateViewHolder {
+        return DateViewHolder(
+            inflater.inflate(R.layout.picker_view_year_item, null, false)
+        )
     }
 
-    override fun onBindViewHolder(holder: TestViewHolder, position: Int) {
-        Log.d("tag", "111")
+    override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
+        holder.textView.text = data[position]
     }
 
 
