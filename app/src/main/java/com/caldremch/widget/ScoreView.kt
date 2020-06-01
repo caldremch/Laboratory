@@ -49,7 +49,6 @@ class ScoreView @JvmOverloads constructor(
     private val paint = Paint()
     private val scorePaint = Paint() //分数画笔
     private var rectF = RectF()
-    private var lineHeight: Float = 0f
 
     //圆弧距离顶部边距
     private var circleMarginTop = dp2px(20)
@@ -101,9 +100,6 @@ class ScoreView @JvmOverloads constructor(
         scoreViewAttr.initAttr(attrs)
         initHelper()
         paint.isAntiAlias = true
-        scoreViewAttr.svArcLineWidth = dp2px(20)
-        lineHeight = dp2px(30)
-
     }
 
     private fun initHelper() {
@@ -147,7 +143,7 @@ class ScoreView @JvmOverloads constructor(
         //中间标题宽度+距离刻线两边边距+2*刻线宽度+2*刻线距离圆弧的margin+2*圆弧线宽度+侧边刻度描述文字的宽度+ 描述文字的边距+ 描述文字宽度/4 的宽度(调整位置,移动文字)
         val minViewSize =
             maxCenterTitleSize +
-                    2 * dp2px(40) +
+                    2 * dp2px(20) +
                     2 * scoreViewAttr.svFlagLineHeight +
                     2 * dp2px(10) + //刻线距离圆弧的margin
                     2 * scoreViewAttr.svArcLineWidth +
@@ -188,8 +184,7 @@ class ScoreView @JvmOverloads constructor(
         arcWidth = viewSize - 2 * maxFlagScoreDescTextSize - 2 * descTextMargin
         arcRadius = arcWidth / 2
 
-        viewHeight =
-            viewSize.toInt() - 2 * maxFlagScoreDescTextSize + 2 * scoreRectBounds.height() + 2 * circleMarginTop
+        viewHeight = arcRadius + (scoreRectBounds.bottom - scoreRectBounds.top) + circleMarginTop+ arcRadius * 3.8f/4
 
         Log.d("tag", "viewSize=$viewSize,viewHeight=$viewHeight")
 
@@ -283,9 +278,9 @@ class ScoreView @JvmOverloads constructor(
         paint.color = scoreViewAttr.svFlagLineBackColor
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
         //刻线边距
-        val smallLineMarigin = dp2px(10)
+        val smallLineMarigin = dp2px(5)
         //刻线长度
-        val smallLineSize = scoreViewAttr.svArcLineWidth
+        val smallLineSize = scoreViewAttr.svArcLineWidth*0.7f
         //刻线 startY
         val smallLineStartY = rectF.top + scoreViewAttr.svArcLineWidth / 2 + smallLineMarigin
         //画刻线, 根据设计图, 一共有 35根, 顶部 1 根, 左右两边旋转 17 跟 , 每根旋转 250/35 个度数
@@ -412,7 +407,7 @@ class ScoreView @JvmOverloads constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         objectAnimator?.let {
-            if (it.isRunning){
+            if (it.isRunning) {
                 //取消动画
                 it.cancel()
             }
@@ -422,8 +417,16 @@ class ScoreView @JvmOverloads constructor(
     //开始动画
     fun startAnim(currentScore: Float) {
 
+        var checkScore = 0f
+
+        if (currentScore>scoreViewAttr.svFullScore){
+            checkScore = scoreViewAttr.svFullScore
+        }else{
+            checkScore = currentScore
+        }
+
         if (objectAnimator == null) {
-            objectAnimator = ObjectAnimator.ofFloat(currentScore)
+            objectAnimator = ObjectAnimator.ofFloat(checkScore)
         }
 
         if (objectAnimator!!.isRunning) {

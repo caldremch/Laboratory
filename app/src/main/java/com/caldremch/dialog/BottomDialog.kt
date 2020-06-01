@@ -36,8 +36,11 @@ abstract class BottomDialog(myContext: Context) : Dialog(myContext,R.style.DateP
             it.attributes = attributes
         }
 
+        this.iniTest()
+
     }
 
     protected abstract fun getLayoutId(): Int
+    protected abstract fun iniTest()
 
 }

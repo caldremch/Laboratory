@@ -86,27 +86,28 @@ class MainActivity : AppCompatActivity() {
 
     fun start(view: View) {
 
-        val flag = "60,80,0,90"
-        val flagDesc = "60(达标),80(优秀),0,90"
-        sv.setScoreAndDesc(90f, flag, flagDesc)
-        sv.post {
-            Log.d("tag","width=${sv.width},height=${sv.height}")
-
-        }
-        sv.setTitle("9.8", "昨日得分")
-        sv.startAnim(70f)
+//        val flag = "60,80,0,90"
+//        val flagDesc = "60(达标),80(优秀),0,90"
+//        sv.setScoreAndDesc(90f, flag, flagDesc)
+//        sv.post {
+//            Log.d("tag","width=${sv.width},height=${sv.height}")
+//
+//        }
+//        sv.setTitle("9.8", "昨日得分")
+//        sv.startAnim(80f)
 
 //
-//        if (!dialog.isShowing) {
-//            dialog.listener = object : OnDateSelectedListener{
-//                override fun onDateSelected(startDate: Date, endDate: Date) {
-//                    Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
-//                    Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
-//                }
-//            }
-//            dialog.show()
-//            dialog.setDate(DatePickDialog.LAST_MONTH)
-//        }
+       val dialog = DatePickDialog(this)
+        if (!dialog.isShowing) {
+            dialog.listener = object : OnDateSelectedListener{
+                override fun onDateSelected(startDate: Date, endDate: Date) {
+                    Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
+                    Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
+                }
+            }
+            dialog.show()
+            dialog.setDate(DatePickDialog.LAST_MONTH)
+        }
 
     }
 
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setDatess(view: View) {
+      var   stringPickDialog  = StringPickDialog(this)
         if (!stringPickDialog.isShowing) {
             stringPickDialog.show()
         }

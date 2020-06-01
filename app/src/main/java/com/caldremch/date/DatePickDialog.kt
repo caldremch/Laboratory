@@ -23,7 +23,7 @@ import kotlin.math.abs
  * @describe 时间选择弹窗
  *
  **/
-class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
+class DatePickDialog(val myContext: Context, var limit: Boolean = false) : BottomDialog(myContext) {
 
 
     companion object {
@@ -36,9 +36,9 @@ class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
 
     }
 
-    private var pickerView: DatePickerView
-    private var tvStartDate: TextView
-    private var tvEndDate: TextView
+    private lateinit var pickerView: DatePickerView
+    private lateinit var tvStartDate: TextView
+    private lateinit var tvEndDate: TextView
 
     private var startDateStr: String? = null //当前选中开始日期字符串
     private var endDateStr: String? = null //当前选中结束日期字符串
@@ -66,79 +66,27 @@ class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
     //回调
     var listener: OnDateSelectedListener? = null
 
-    init {
 
-        setCanceledOnTouchOutside(true)
+    /**
+     * 超过 3 个月 || 结束时间大于其实时间
+     */
+    private fun isCheckOk(): Boolean {
 
-        pickerView = myContentView.findViewById(R.id.dpv)
-
-        tvStartDate = myContentView.findViewById<TextView>(R.id.tv_start_date)
-        tvEndDate = myContentView.findViewById<TextView>(R.id.tv_end_date)
-
-        tvStartDate.isSelected = false
-        tvEndDate.isSelected = false
-
-        tvStartDate.text = "开始时间"
-        tvEndDate.text = "结束时间"
-
-        tvStartDate.setOnClickListener {
-            setSelectStyle(tvStartDate, true)
-            setSelectStyle(tvEndDate, false)
-
-            if (TextUtils.isEmpty(startDateStr)) {
-                return@setOnClickListener
-            }
-            setDateInfo(startDateStr!!)
+        if (TextUtils.isEmpty(startDateStr) || TextUtils.isEmpty(endDateStr)) {
+            return false
         }
 
-        tvEndDate.setOnClickListener {
-            setSelectStyle(tvStartDate, false)
-            setSelectStyle(tvEndDate, true)
-            if (TextUtils.isEmpty(endDateStr)) {
-                return@setOnClickListener
-            }
-            setDateInfo(endDateStr!!)
-        }
+        val result =
+//
+//        if (result == DateInfoUtils.ERROR_OVER) {
+//            Toast.makeText(myContext, "起始时间必须在终止时间之前", Toast.LENGTH_SHORT).show()
+//            return false
+//        } else if (limit && (result == DateInfoUtils.ERROR_OVER_THREE_MONTH || result > 3)) {
+//            Toast.makeText(myContext, "查询时间的跨度不能超过3个月", Toast.LENGTH_SHORT).show()
+//            return false
+//        }
 
-        myContentView.findViewById<View>(R.id.tv_cancel).setOnClickListener {
-            dismiss()
-        }
-
-        myContentView.findViewById<View>(R.id.tv_confirm).setOnClickListener {
-            //回调给前端 时间戳回调
-            if (TextUtils.isEmpty(startDateStr)) {
-                return@setOnClickListener
-            }
-            if (TextUtils.isEmpty(endDateStr)) {
-                return@setOnClickListener
-            }
-            //回调事件
-            onCallback()
-            dismiss()
-        }
-
-        //时间选择回调
-        pickerView.listener = object : OnDateSelectedListener {
-            override fun onItemSelected(
-                year: String,
-                month: String,
-                day: String
-            ) {
-
-                //时间字符串回调
-                val str = "$year$splitCharater$month$splitCharater$day"
-                if (tvStartDate.isSelected) {
-                    tvStartDate.text = str
-                    startDateStr = str
-                } else {
-                    tvEndDate.text = str
-                    endDateStr = str
-                }
-
-                //检查限制范围
-                checkThreeLimit(tvStartDate.isSelected, year.toInt(), month.toInt(), day.toInt())
-            }
-        }
+        return DateInfoUtils.checkMonth(dateFormat, limit,  startDateStr!!, endDateStr!!)
     }
 
     //业务需求, 当结束时间-开始时间>3 个月的时候, 开始时间不能继续向前滑动
@@ -214,6 +162,84 @@ class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
 
     override fun getLayoutId(): Int {
         return R.layout.dialog_date_picker
+    }
+
+    override fun iniTest() {
+        setCanceledOnTouchOutside(true)
+
+        pickerView = myContentView.findViewById(R.id.dpv)
+
+        tvStartDate = myContentView.findViewById<TextView>(R.id.tv_start_date)
+        tvEndDate = myContentView.findViewById<TextView>(R.id.tv_end_date)
+
+        tvStartDate.isSelected = false
+        tvEndDate.isSelected = false
+
+        tvStartDate.text = "开始时间"
+        tvEndDate.text = "结束时间"
+
+        tvStartDate.setOnClickListener {
+            setSelectStyle(tvStartDate, true)
+            setSelectStyle(tvEndDate, false)
+
+            if (TextUtils.isEmpty(startDateStr)) {
+                return@setOnClickListener
+            }
+            setDateInfo(startDateStr!!)
+        }
+
+        tvEndDate.setOnClickListener {
+            setSelectStyle(tvStartDate, false)
+            setSelectStyle(tvEndDate, true)
+            if (TextUtils.isEmpty(endDateStr)) {
+                return@setOnClickListener
+            }
+            setDateInfo(endDateStr!!)
+        }
+
+        myContentView.findViewById<View>(R.id.tv_cancel).setOnClickListener {
+            dismiss()
+        }
+
+        myContentView.findViewById<View>(R.id.tv_confirm).setOnClickListener {
+            //回调给前端 时间戳回调
+            if (TextUtils.isEmpty(startDateStr)) {
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(endDateStr)) {
+                return@setOnClickListener
+            }
+
+            //检查限制范围
+            if (!isCheckOk()) {
+                return@setOnClickListener
+            }
+
+            //回调事件
+            onCallback()
+            dismiss()
+        }
+
+        //时间选择回调
+        pickerView.listener = object : OnDateSelectedListener {
+            override fun onItemSelected(
+                year: String,
+                month: String,
+                day: String
+            ) {
+
+                //时间字符串回调
+                val str = "$year$splitCharater$month$splitCharater$day"
+                if (tvStartDate.isSelected) {
+                    tvStartDate.text = str
+                    startDateStr = str
+                } else {
+                    tvEndDate.text = str
+                    endDateStr = str
+                }
+
+            }
+        }
     }
 
     private fun setSelectStyle(textView: TextView, isSelect: Boolean) {
@@ -315,7 +341,9 @@ class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
     private fun setDateInfo(dateStr: String) {
         val dateInfo = dateStr.split(splitCharater)
         if (dateInfo.size == 3) {
-            pickerView.setDate(dateInfo[0].toInt(), dateInfo[1].toInt(), dateInfo[2].toInt())
+            pickerView.post {
+                pickerView.setDate(dateInfo[0].toInt(), dateInfo[1].toInt(), dateInfo[2].toInt())
+            }
         }
     }
 

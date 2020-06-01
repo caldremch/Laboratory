@@ -17,12 +17,13 @@ import com.caldremch.laboratory.R
 class TestDialog(myContext: Context) : BottomDialog(myContext) {
 
     init {
-
     }
 
     override fun getLayoutId(): Int {
         return R.layout.dialog_test
     }
 
+    override fun iniTest() {
+    }
 
 }

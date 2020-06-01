@@ -1,11 +1,9 @@
 package com.caldremch.date
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import com.caldremch.dialog.BottomDialog
 import com.caldremch.laboratory.R
-import com.caldremch.pickerview.WheelView
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.StringAdapter
 
@@ -32,21 +30,27 @@ class StringPickDialog(myContext: Context) : BottomDialog(myContext) {
         return R.layout.dialog_string_picker
     }
 
+    override fun iniTest() {
+        myContentView.findViewById<View>(R.id.wv).setOnClickListener {
+
+        }
+    }
+
     init {
 
-        val wv = myContentView.findViewById<WheelView>(R.id.wv)
-        myContentView.setBackgroundColor(Color.WHITE)
-
-        initEvent()
-
-        wv.listener = object : OnItemSelectedListener {
-            override fun onItemSelected(index: Int) {
-                myIndex = index
-            }
-        }
-        wv.setAdapter(adapter)
-
-        setCanceledOnTouchOutside(true)
+//        val wv = myContentView.findViewById<WheelView>(R.id.wv)
+//        myContentView.setBackgroundColor(Color.WHITE)
+//
+//        initEvent()
+//
+//        wv.listener = object : OnItemSelectedListener {
+//            override fun onItemSelected(index: Int) {
+//                myIndex = index
+//            }
+//        }
+//        wv.setAdapter(adapter)
+//
+//        setCanceledOnTouchOutside(true)
     }
 
     private fun initEvent() {

@@ -166,6 +166,19 @@ class DatePickerView @JvmOverloads constructor(
     }
 
     fun callback() {
+
+        if (currentYearIndex>=yearAdapter.data.size){
+            currentYearIndex = yearAdapter.data.size-1
+        }
+
+        if (currentMonthIndex>=monthAdapter.data.size){
+            currentMonthIndex = monthAdapter.data.size-1
+        }
+
+        if (currentDayIndex>=dayAdapter.data.size){
+            currentDayIndex = dayAdapter.data.size-1
+        }
+
         //数据回调
         listener?.onItemSelected(
             yearAdapter.data[currentYearIndex].replace("年", ""),

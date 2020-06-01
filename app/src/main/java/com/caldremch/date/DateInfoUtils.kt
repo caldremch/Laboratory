@@ -1,7 +1,9 @@
 package com.caldremch.date
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 /**
  *
@@ -122,17 +124,16 @@ object DateInfoUtils {
     }
 
 
-
     /////////////////////周相关////////////////////
 
     //本周第一天--星期一
     fun thisWeekMonday(dateFormat: SimpleDateFormat): String {
         val calender = Calendar.getInstance()
         var dayOfWeek = calender.get(Calendar.DAY_OF_WEEK) - 1
-        if (dayOfWeek == 0){
+        if (dayOfWeek == 0) {
             dayOfWeek = 7
         }
-        calender.add(Calendar.DATE, -dayOfWeek+1)
+        calender.add(Calendar.DATE, -dayOfWeek + 1)
         return dateFormat.format(calender.time);
     }
 
@@ -140,10 +141,10 @@ object DateInfoUtils {
     fun thisWeekSunday(dateFormat: SimpleDateFormat): String {
         val calender = Calendar.getInstance()
         var dayOfWeek = calender.get(Calendar.DAY_OF_WEEK) - 1
-        if (dayOfWeek == 0){
+        if (dayOfWeek == 0) {
             dayOfWeek = 7
         }
-        calender.add(Calendar.DATE, -dayOfWeek+7)
+        calender.add(Calendar.DATE, -dayOfWeek + 7)
         return dateFormat.format(calender.time);
     }
 
@@ -167,13 +168,61 @@ object DateInfoUtils {
     //上周第日天--星期天
     fun lastWeekSunday(dateFormat: SimpleDateFormat): String {
         val calender = Calendar.getInstance()
-        calender.time  = lastWeekMondayDate()
+        calender.time = lastWeekMondayDate()
         calender.add(Calendar.DAY_OF_WEEK, 6)
         return dateFormat.format(calender.time);
     }
 
     /////////////////////周相关////////////////////
 
+
+    //月差
+
+    //计算月份差是否大于3月及时间前后判断
+    fun checkMonth(format: SimpleDateFormat, limit:Boolean, start: String, end: String): Boolean {
+
+        try {
+            val startDate = format.parse(start)
+            val endDate = format.parse(end)
+
+            val startCalendar = Calendar.getInstance()
+            val endCalendar = Calendar.getInstance()
+
+            startCalendar.time = startDate
+            endCalendar.time = endDate
+
+            if (startCalendar.after(endCalendar)) {
+                return false
+            }
+
+            if (limit){
+                val monthCha = endCalendar[Calendar.MONTH] - startCalendar[Calendar.MONTH]
+                val yearCha = (endCalendar[Calendar.YEAR] - startCalendar[Calendar.YEAR]) * 12
+                val dayCha = endCalendar[Calendar.DAY_OF_MONTH] - startCalendar[Calendar.DAY_OF_MONTH]
+                val detalMonth = abs(monthCha + yearCha)
+
+                //日部分超出
+                if (detalMonth == 3 && dayCha > 0) {
+                    Log.d("tag","超出 3 月了 day 部分多了")
+                    return false
+                }
+
+                //月部分超出
+                if (detalMonth > 3) {
+                    Log.d("tag","超出 3 月了")
+                    return false
+                }
+                Log.d("tag","月份合理")
+            }
+
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            //解析错误
+            return false
+        }
+
+    }
 
 
 }
