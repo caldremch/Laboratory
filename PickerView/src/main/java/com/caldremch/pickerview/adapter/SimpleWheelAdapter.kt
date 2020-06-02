@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
  *
  * @author Caldremch
  *
- * @date 2020-05-28 01:06
+ * @date 2020-05-28
  *
  * @email caldremch@163.com
  *
- * @describe
+ * @describe 滚轮适配器
  *
  **/
 open class SimpleWheelAdapter<T : ViewHolder>(

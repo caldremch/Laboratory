@@ -74,22 +74,6 @@ object DateInfoUtils {
         return years
     }
 
-    //获取本周第一天
-    fun getFirstDayOfCurrentWeek(dateFormat: SimpleDateFormat): String {
-        val calender = Calendar.getInstance()
-        calender.add(Calendar.WEEK_OF_MONTH, 0);
-        calender.set(Calendar.DAY_OF_WEEK, 2);
-        return dateFormat.format(calender.time);
-    }
-
-    //获取本周最后一天
-    fun getLastDayOfCurrentWeek(dateFormat: SimpleDateFormat): String {
-        val calender = Calendar.getInstance()
-        calender.add(Calendar.DAY_OF_WEEK, calender.getActualMaximum(Calendar.DAY_OF_WEEK));
-        calender.set(Calendar.DAY_OF_WEEK, 1);
-        return dateFormat.format(calender.time);
-    }
-
     //获取昨天日期
     fun getYesterday(dateFormat: SimpleDateFormat): String {
         val calender = Calendar.getInstance()
@@ -129,7 +113,7 @@ object DateInfoUtils {
     }
 
     //获取上月最后一天
-    fun getEndDayOfLastMonth(dateFormat: SimpleDateFormat): String {
+    fun getLastDayOfLastMonth(dateFormat: SimpleDateFormat): String {
         val calender = Calendar.getInstance()
         calender.add(Calendar.MONTH, -1);
         calender.set(Calendar.DAY_OF_MONTH, calender.getActualMaximum(Calendar.DAY_OF_MONTH));

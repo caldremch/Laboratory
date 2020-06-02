@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             dialog.show()
-            dialog.setDate(DatePickDialog.LAST_WEEK)
+            dialog.setDate(DatePickDialog.LAST_MONTH)
         }
 
     }

@@ -257,8 +257,8 @@ class DatePickDialog(val myContext: Context) : BottomDialog(myContext) {
             }
             LAST_MONTH -> {
                 setTextViewDate(
-                    DateInfoUtils.getFirstDayOfCurrentMonth(dateFormat),
-                    DateInfoUtils.getLastDayOfCurrentMonth(dateFormat)
+                    DateInfoUtils.getFirstDayOfLastMonth(dateFormat),
+                    DateInfoUtils.getLastDayOfLastMonth(dateFormat)
                 )
                 setDateInfo(DateInfoUtils.getFirstDayOfLastMonth(dateFormat))
             }
