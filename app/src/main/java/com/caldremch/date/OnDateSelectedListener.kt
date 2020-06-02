@@ -1,5 +1,7 @@
 package com.caldremch.date
 
+import java.util.*
+
 /**
  *
  * @author Caldremch
@@ -13,5 +15,11 @@ package com.caldremch.date
  **/
 interface OnDateSelectedListener {
 
-    fun onItemSelected(dateStr:String)
+    fun onItemSelected(year: String, month: String, day: String){
+
+    }
+
+    fun onDateSelected(startDate:Date, endDate:Date){
+
+    }
 }

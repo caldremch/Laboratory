@@ -2,7 +2,6 @@ package com.caldremch.pickerview
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,9 +19,7 @@ import kotlin.math.sin
  *
  * @describe 使用 matrix 和 camera 实现 3D 效果
  *
- * 基于 https://github.com/youxiaochen/WheelView2-3d 用 Kotlin重写
- * 并添加了详细注释 以及时间选择器的扩展
- *
+ * 核心参考WheelView3d(github)实现
  **/
 
 class WheelRecyclerView(
@@ -111,9 +108,6 @@ class WheelRecyclerView(
         layoutManager = myLayoutManager
     }
 
-    fun logg(str: String) {
-        Log.d("tag", str)
-    }
 
     //调用顺序 onDraw --> dispatchDraw --> drawChild
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {

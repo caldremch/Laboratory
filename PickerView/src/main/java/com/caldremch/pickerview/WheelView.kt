@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.pickerview.adapter.SimpleWheelAdapter
@@ -98,6 +100,10 @@ class WheelView @JvmOverloads constructor(
 
     var listener: OnItemSelectedListener? = null
 
+    //平滑滚动
+    private lateinit var  smoothScroller:LinearSmoothScroller
+    private val linearSnapHelper =  LinearSnapHelper()
+
     //选中位置
     private var lastSelectedPosition = IDLE_POSITION
     private var selectedPosition = IDLE_POSITION
@@ -107,7 +113,7 @@ class WheelView @JvmOverloads constructor(
 
     init {
 
-        stringSelectTextSize = Utils.dp2px(context, 14) //默认 14
+        stringSelectTextSize = dp2px(14) //默认 14
 
         attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.WheelView)
@@ -152,7 +158,7 @@ class WheelView @JvmOverloads constructor(
         }
 
         //文字padding
-        val padding = Utils.dp2px(context, 5)
+        val padding = dp2px( 5)
 
         //测量文字高度
         val textRect = Rect()
@@ -185,7 +191,17 @@ class WheelView @JvmOverloads constructor(
 //        myRecyclerView.setBackgroundColor(Color.RED)
         myRecyclerView.overScrollMode = View.OVER_SCROLL_NEVER
         val totalItemSize = (itemCount * 2 + 1) * itemSize
-        LinearSnapHelper().attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
+        linearSnapHelper.attachToRecyclerView(myRecyclerView) //让滑动结束时都能定到中心位置
+
+        smoothScroller = object : LinearSmoothScroller(context){
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+
+            override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+                return 120f / displayMetrics.densityDpi;
+            }
+        }
 
         //设置 RecyclerView的布局
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, totalItemSize)
@@ -271,7 +287,7 @@ class WheelView @JvmOverloads constructor(
         }
 
 
-        Log.d("tag", "myWidth-->$datePickerType-->$myWidth")
+//        Log.d("tag", "myWidth-->$datePickerType-->$myWidth")
         setMeasuredDimension(myWidth, myHeight)
     }
 
@@ -291,11 +307,17 @@ class WheelView @JvmOverloads constructor(
         adapter.notifyDataSetChanged()
     }
 
-    fun setCurrentPos(indexOfCurrentYear: Int) {
+
+    fun setCurrentPos(indexOfCurrent: Int) {
         myRecyclerView.post {
-            myRecyclerView.scrollToPosition(itemCount * 2 + indexOfCurrentYear)
+            smoothScroller.targetPosition = indexOfCurrent
+            myRecyclerView.layoutManager?.startSmoothScroll(smoothScroller)
         }
     }
 
-
+    fun dp2px(dp: Int): Float {
+        val displayMetrics = context.resources
+            .displayMetrics
+        return (dp * displayMetrics.density + 0.5).toFloat()
+    }
 }

@@ -38,6 +38,9 @@ class DatePickerView @JvmOverloads constructor(
     private var currentMonthIndex = 0
     private var currentDayIndex = 0
 
+    val calender by lazy { Calendar.getInstance(Locale.CHINA) }
+
+
     var listener: OnDateSelectedListener? = null
 
     init {
@@ -49,6 +52,7 @@ class DatePickerView @JvmOverloads constructor(
     private fun initData() {
         //获取当前时间
         initCurrentDate()
+
         //获取最大天数的Map
         maxDaysMap = DateInfoUtils.initMaxDaysByMap()
 
@@ -67,35 +71,52 @@ class DatePickerView @JvmOverloads constructor(
         //设置年份 adapter, 并滑到当前年分
         wv_year.post {
             wv_year.setAdapter(yearAdapter)
-            val indexOfCurrentYear = yearAdapter.data.indexOf("${cYear}年")
-            if (indexOfCurrentYear != -1) {
-                //滑动到当前日期
-                wv_year.setCurrentPos(indexOfCurrentYear)
-            }
+            setCurrentYear(cYear)
         }
 
         //设置月份 adapter, 并滑到当前月份
         wv_month.post {
             wv_month.setAdapter(monthAdapter)
-            val indexOfCurrentMonth = monthAdapter.data.indexOf("${cMonth}月")
-            if (indexOfCurrentMonth != -1) {
-                //滑动到当前月份
-                wv_month.setCurrentPos(indexOfCurrentMonth)
-            }
-
+            setCurrentMonth(cMonth)
         }
 
         //设置天数 adapter, 当前日期
         wv_day.post {
             wv_day.setAdapter(dayAdapter)
-            val indexOfCurrentDay = dayAdapter.data.indexOf("${cDay}日")
-            if (indexOfCurrentDay != -1) {
-                //初始化当前的日期
-                wv_day.setCurrentPos(indexOfCurrentDay)
-            }
+            setCurrentDay(cDay)
         }
 
 
+    }
+
+    private fun setCurrentDay(day: Int) {
+        currentDayIndex = dayAdapter.data.indexOf("${day}日")
+        if (currentDayIndex != -1) {
+            //初始化当前的日期
+            wv_day.post {
+                wv_day.setCurrentPos(currentDayIndex)
+            }
+        }
+    }
+
+    private fun setCurrentMonth(month: Int) {
+         currentMonthIndex = monthAdapter.data.indexOf("${month}月")
+        if (currentMonthIndex != -1) {
+            //滑动到当前月份
+            wv_month.post {
+                wv_month.setCurrentPos(currentMonthIndex)
+            }
+        }
+    }
+
+    private fun setCurrentYear(year: Int) {
+         currentYearIndex = yearAdapter.data.indexOf("${year}年")
+        if (currentYearIndex != -1) {
+            //滑动到当前日期
+            wv_year.post {
+                wv_year.setCurrentPos(currentYearIndex)
+            }
+        }
     }
 
     private fun initEvent() {
@@ -137,10 +158,12 @@ class DatePickerView @JvmOverloads constructor(
 
     fun callback() {
         //数据回调
-        val dateStr = yearAdapter.data[currentYearIndex] +
-                monthAdapter.data[currentMonthIndex] +
-                dayAdapter.data[currentDayIndex]
-        listener?.onItemSelected(dateStr)
+        listener?.onItemSelected(
+            yearAdapter.data[currentYearIndex].replace("年", ""),
+            monthAdapter.data[currentMonthIndex].replace("月", "") ,
+            dayAdapter.data[currentDayIndex].replace("日", "")
+        )
+
     }
 
     //根据 index 获取年份
@@ -173,16 +196,26 @@ class DatePickerView @JvmOverloads constructor(
      * 获取当前日期信息
      */
     private fun initCurrentDate() {
-        val instance = Calendar.getInstance(Locale.CHINA)
-        cYear = instance[Calendar.YEAR]
-        cMonth = instance[Calendar.MONTH] + 1
-        cDay = instance[Calendar.DAY_OF_MONTH]
+        cYear = calender[Calendar.YEAR]
+        cMonth = calender[Calendar.MONTH] + 1
+        cDay = calender[Calendar.DAY_OF_MONTH]
     }
 
-    fun refresh() {
-//        wv_month.post { wv_month.setAdapter(MonthAdapter()) }
-//        wv_day.post { wv_day.setAdapter(DayAdapter()) }
+
+    //设置为当前系统时间
+    fun today() {
+        setDate(cYear, cMonth, cDay)
     }
 
+    //设置时间, 要注意的是, 当设置了月份的时候, 这里的最大日是会有变动的
+    fun setDate(year:Int, month: Int, day: Int){
+        setCurrentYear(year)
+        setCurrentMonth(month)
+        //改变最大日
+        val days = getMaxDayByYearAndMonth(year, month)
+        dayAdapter.data.clear()
+        dayAdapter.data.addAll(maxDaysMap[days]!!)
+        setCurrentDay(day)
+    }
 
 }

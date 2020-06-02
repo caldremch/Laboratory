@@ -1,16 +1,11 @@
 package com.caldremch.pickerview.adapter
 
-import android.graphics.Paint
-import android.graphics.Rect
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.caldremch.pickerview.Utils
-import com.caldremch.pickerview.WheelUtils
 
 /**
  *

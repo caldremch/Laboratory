@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion Dependencies.a
     buildToolsVersion "29.0.2"
 
     defaultConfig {
@@ -37,4 +37,6 @@ dependencies {
 
     implementation project(':PickerView')
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation Libs.glide
 }
