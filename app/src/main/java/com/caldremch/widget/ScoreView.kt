@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import com.caldremch.laboratory.BuildConfig
 
 /**
  *
@@ -38,33 +37,45 @@ class ScoreView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     //View 容器宽度
-    var viewSize: Float = 0f
+    private var viewSize: Float = 0f
+    private var viewHeight: Float = 0f
 
-    val paint = Paint()
-    val scorePaint = Paint() //分数画笔
-    var rectF = RectF()
-    var lineHeight: Float = 0f
+    private val paint = Paint()
+    private val scorePaint = Paint() //分数画笔
+    private var rectF = RectF()
+    private var lineHeight: Float = 0f
 
     //圆弧距离顶部边距
-    var circleMarginTop = dp2px(20)
+    private var circleMarginTop = dp2px(20)
 
-    val titleTextBound = Rect()
-    val subTitleTextBound = Rect()
-    val scoreRectBounds = Rect()
+    private val titleTextBound = Rect()
+    private val subTitleTextBound = Rect()
+    private val scoreRectBounds = Rect()
 
     //圆弧参数
-    var arcWidth: Float = 0f //圆弧的宽度
-    var arcRadius: Float = 0f //圆弧半径
+    private var arcWidth: Float = 0f //圆弧的宽度
+    private var arcRadius: Float = 0f //圆弧半径
 
     //圆弧信息
-    val arcInfo = ArcInfo()
-    val helperPaint = Paint() //辅助画笔(开发阶段)
+    private val arcInfo = ArcInfo()
+    private val helperPaint = Paint() //辅助画笔(开发阶段)
 
     //自定义 View 属性
-    val scoreViewAttr = ScoreViewAttrDelegate(context)
+    private val scoreViewAttr = ScoreViewAttrDelegate(context)
 
-    val cameraMatrix = Matrix()
-    val camera = Camera()
+    private val cameraMatrix = Matrix()
+    private val camera = Camera()
+
+    private var cameraRotateX = 0f
+    private var cameraRotateY = 0f
+
+    /* camera旋转的最大角度 */
+    private val mMaxCameraRotate = 10f
+
+
+    private val descTextMargin = dp2px(10)
+    private var maxFlagScoreDescTextSize: Float = 0f
+    private var maxCenterTitleSize: Float = 0f
 
     init {
 
@@ -78,18 +89,13 @@ class ScoreView @JvmOverloads constructor(
     }
 
     private fun initHelper() {
-        if (BuildConfig.DEBUG) {
-            helperPaint.color = Color.RED
-            helperPaint.textSize = 12f
-            helperPaint.style = Paint.Style.STROKE
-            helperPaint.isAntiAlias = true
-        }
+//        if (BuildConfig.DEBUG) {
+//            helperPaint.color = Color.RED
+//            helperPaint.textSize = 12f
+//            helperPaint.style = Paint.Style.STROKE
+//            helperPaint.isAntiAlias = true
+//        }
     }
-
-
-    val descTextMargin = dp2px(10)
-    var maxFlagScoreDescTextSize: Float = 0f
-    var maxCenterTitleSize: Float = 0f
 
     //todo padding 未算
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -156,7 +162,7 @@ class ScoreView @JvmOverloads constructor(
 
         //如果大于屏幕宽度处理
         val screenWidth = resources.displayMetrics.widthPixels
-        Log.d("tag", "screenWidth=$screenWidth,viewSize=$viewSize")
+//        Log.d("tag", "screenWidth=$screenWidth,viewSize=$viewSize")
         if (viewSize > screenWidth) {
             viewSize = screenWidth.toFloat()
         }
@@ -164,8 +170,10 @@ class ScoreView @JvmOverloads constructor(
         arcWidth = viewSize - 2 * maxFlagScoreDescTextSize - 2 * descTextMargin
         arcRadius = arcWidth / 2
 
-        val viewHeight =
+        viewHeight =
             viewSize.toInt() - 2 * maxFlagScoreDescTextSize + 2 * scoreRectBounds.height() + 2 * circleMarginTop
+
+        Log.d("tag","viewSize=$viewSize,viewHeight=$viewHeight")
 
         setMeasuredDimension(viewSize.toInt(), viewHeight.toInt())
 
@@ -173,24 +181,27 @@ class ScoreView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         this.canvas = canvas
-        cameraRotate()
+//        cameraRotate()
 
         //圆弧矩形
         rectF.left = maxFlagScoreDescTextSize + descTextMargin
-        rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + scoreRectBounds.height()
+        rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + ( scoreRectBounds.bottom - scoreRectBounds.top)
         rectF.right = rectF.left + arcWidth
         rectF.bottom = rectF.top + arcWidth
 
+
         arcInfo.handleInfo(rectF)
 
-        if (BuildConfig.DEBUG) {
-            helperPaint.style = Paint.Style.STROKE
-            helperPaint.color = Color.RED
-            canvas.drawRect(rectF, helperPaint)
-        }
+//        Log.d("tag",  rectF.toShortString())
 
-        Log.d("tag", "right-left:" + (rectF.right - rectF.left))
-        Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
+//        if (BuildConfig.DEBUG) {
+//            helperPaint.style = Paint.Style.STROKE
+//            helperPaint.color = Color.RED
+//            canvas.drawRect(rectF, helperPaint)
+//        }
+
+//        Log.d("tag", "right-left:" + (rectF.right - rectF.left))
+//        Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
 
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
@@ -243,11 +254,11 @@ class ScoreView @JvmOverloads constructor(
         //分数和描述
         drawScoreAndDesc(canvas)
 
-        if (BuildConfig.DEBUG) {
-            //画出辅助线,居中辅助线
-            canvas.drawLine(arcInfo.centerX, 0f, arcInfo.centerX, height.toFloat(), helperPaint)
-            canvas.drawLine(0f, arcInfo.centerY, width.toFloat(), arcInfo.centerY, helperPaint)
-        }
+//        if (BuildConfig.DEBUG) {
+//            //画出辅助线,居中辅助线
+//            canvas.drawLine(arcInfo.centerX, 0f, arcInfo.centerX, height.toFloat(), helperPaint)
+//            canvas.drawLine(0f, arcInfo.centerY, width.toFloat(), arcInfo.centerY, helperPaint)
+//        }
 
 
     }
@@ -286,7 +297,7 @@ class ScoreView @JvmOverloads constructor(
     }
 
     private fun drawScoreAndDesc(canvas: Canvas) {
-        Log.d("tag", "分数标志数量:${scoreViewAttr.scoreInfoList.size}")
+//        Log.d("tag", "分数标志数量:${scoreViewAttr.scoreInfoList.size}")
 
         paint.color = scoreViewAttr.svScoreFlagLineColor
         paint.strokeWidth = scoreViewAttr.svFlagLineWidth
@@ -295,15 +306,9 @@ class ScoreView @JvmOverloads constructor(
 
         for (scoreInfo in scoreViewAttr.scoreInfoList) {
 
-            //todo 这里换成 measureText 是否更加准确?
-            scorePaint.getTextBounds(
-                scoreInfo.scoreDesc,
-                0,
-                scoreInfo.scoreDesc.length,
-                scoreRectBounds
-            )
+            val measureTextWidth = scorePaint.measureText(scoreInfo.scoreDesc)
 
-            Log.d("tag", "start drawing....")
+//            Log.d("tag", "start drawing....")
             canvas.save()
             /************画文字描述*************/
 
@@ -311,7 +316,7 @@ class ScoreView @JvmOverloads constructor(
             // rectF边线切在圆弧线宽的中间
 
             val startY = rectF.top - scoreViewAttr.svArcLineWidth / 2
-            Log.d("tag", "startY:$startY")
+//            Log.d("tag", "startY:$startY")
             canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
             canvas.drawLine(
                 arcInfo.centerX,
@@ -328,23 +333,26 @@ class ScoreView @JvmOverloads constructor(
             canvas.rotate(scoreInfo.scoreAngle, arcInfo.centerX, arcInfo.centerY)
 
 
-            if (BuildConfig.DEBUG) {
-                helperPaint.color = Color.RED
-                val rotateY = circleMarginTop - scoreRectBounds.height() / 2
-                //辅助原点
-                canvas.drawCircle(arcInfo.centerX, rotateY, dp2px(2), helperPaint)
-                canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, rotateY)
-            }
+//            if (BuildConfig.DEBUG) {
+//                helperPaint.color = Color.RED
+//                val rotateY = circleMarginTop - (scoreRectBounds.bottom - scoreRectBounds.top) / 2
+//                //辅助原点
+//                canvas.drawCircle(arcInfo.centerX, rotateY, dp2px(2), helperPaint)
+//            }
+
+            //根据文字中心旋转文字
+            val rotateY = circleMarginTop - (scoreRectBounds.bottom - scoreRectBounds.top) / 2
+            canvas.rotate(-scoreInfo.scoreAngle, arcInfo.centerX, rotateY)
 
             //移动长度, 文字宽度的 1/4
-            var translateX = (scoreRectBounds.width() / 4).toFloat()
+            var translateX = (measureTextWidth / 4).toFloat()
             if (scoreInfo.scoreAngle < 0) {
                 translateX = -translateX
             }
             canvas.translate(translateX, 0f)
             canvas.drawText(
                 scoreInfo.scoreDesc,
-                arcInfo.centerX - scoreRectBounds.width() / 2,
+                arcInfo.centerX - measureTextWidth / 2,
                 circleMarginTop,
                 scorePaint
             )
@@ -381,7 +389,7 @@ class ScoreView @JvmOverloads constructor(
     }
 
 
-    fun dp2px(dp: Int): Float {
+    private fun dp2px(dp: Int): Float {
         val displayMetrics = context.resources
             .displayMetrics
         return (dp * displayMetrics.density + 0.5).toFloat()
@@ -401,12 +409,7 @@ class ScoreView @JvmOverloads constructor(
 
     }
 
-    var cameraRotateX = 0f
-    var cameraRotateY = 0f
-
-    /* camera旋转的最大角度 */
-    private val mMaxCameraRotate = 10f
-    fun cameraRotate() {
+    private fun cameraRotate() {
         cameraMatrix.reset()
         camera.save()
         camera.rotateX(cameraRotateX)
@@ -452,8 +455,16 @@ class ScoreView @JvmOverloads constructor(
         }
         cameraRotateX = percentX * mMaxCameraRotate
         cameraRotateY = percentY * mMaxCameraRotate
-        Log.d("tag", "cameraRotateX=$cameraRotateX")
+//        Log.d("tag", "cameraRotateX=$cameraRotateX")
         cameraRotate()
+    }
+
+    /**
+     * 设置标志刻度
+     */
+    fun setScoreAndDesc(svScoreFlag: String?, svScoreFlagDesc: String?) {
+        scoreViewAttr.handleScoreAndDesc(svScoreFlag, svScoreFlagDesc)
+        invalidate()
     }
 }
 

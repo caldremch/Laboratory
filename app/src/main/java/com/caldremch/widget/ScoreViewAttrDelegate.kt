@@ -5,8 +5,6 @@ import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import com.caldremch.laboratory.R
-import java.lang.Exception
-import java.lang.RuntimeException
 
 /**
  *
@@ -100,12 +98,12 @@ class ScoreViewAttrDelegate(val context: Context) {
             svScoreFlagDesc = ta.getString(R.styleable.ScoreView_sv_score_flag_desc)
             svCurrentScore = ta.getFloat(R.styleable.ScoreView_sv_current_score, 0f)
             svCurrentScoreToAngle = scoreToAngle(svCurrentScore)
-            handleScoreAndDesc()
+            handleScoreAndDesc(svScoreFlag, svScoreFlagDesc)
             ta.recycle()
         }
     }
 
-    private fun handleScoreAndDesc() {
+     fun handleScoreAndDesc(svScoreFlag:String?, svScoreFlagDesc:String?) {
 
 
         if (TextUtils.isEmpty(svScoreFlag) || TextUtils.isEmpty(svScoreFlagDesc)) {

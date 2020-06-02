@@ -6,21 +6,29 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context=".MainActivity">
-
-
     <com.caldremch.widget.ScoreView
         android:id="@+id/sv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:sv_current_score="0"
-        app:sv_score_flag="10,20,30,40,52,60,70,80,90,99,0,104"
-        app:sv_score_flag_desc="10不行, 20也不行, 30也不行, 40也不行, 52中间啊,60及格了,70(很棒),80(优秀),90超强,99(非常棒),0,104" />
+        app:sv_current_score="0" />
+
+<!--    <com.caldremch.widget.ScoreView-->
+<!--        android:id="@+id/sv"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@android:color/white"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:sv_current_score="0"-->
+<!--        app:sv_score_flag="10,20,30,40,52,60,70,80,90,99,0,104"-->
+<!--        app:sv_score_flag_desc="10不行, 20也不行, 30也不行, 40也不行, 52中间啊,60及格了,70(很棒),80(优秀),90超强,99(非常棒),0,104" />-->
 
 
     <com.caldremch.widget.CameraDemoView
@@ -44,8 +52,8 @@
 
     <com.caldremch.date.DatePickerView
         android:id="@+id/dpv"
-        android:visibility="visible"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +76,7 @@
         android:id="@+id/rv2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:background="@android:color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
