@@ -34,9 +34,9 @@ class DatePickerView @JvmOverloads constructor(
     private var cMonth = 0
     private var cDay = 0
 
-    private var currentYearIndex = 0
-    private var currentMonthIndex = 0
-    private var currentDayIndex = 0
+    private var currentYearIndex = -1
+    private var currentMonthIndex = -1
+    private var currentDayIndex = -1
 
     val calender by lazy { Calendar.getInstance(Locale.CHINA) }
 
@@ -71,19 +71,28 @@ class DatePickerView @JvmOverloads constructor(
         //设置年份 adapter, 并滑到当前年分
         wv_year.post {
             wv_year.setAdapter(yearAdapter)
-            setCurrentYear(cYear)
+            //dialog未显示的时候, 先设置了日期时间,这时候第一次开启弹窗的时候, 不需要初始化当前日期(仿干扰)
+            if (currentYearIndex == -1){
+                setCurrentYear(cYear)
+            }
         }
 
         //设置月份 adapter, 并滑到当前月份
         wv_month.post {
             wv_month.setAdapter(monthAdapter)
-            setCurrentMonth(cMonth)
+            //dialog未显示的时候, 先设置了日期时间,这时候第一次开启弹窗的时候, 不需要初始化当前日期(仿干扰)
+            if (currentMonthIndex == -1){
+                setCurrentMonth(cMonth)
+            }
         }
 
         //设置天数 adapter, 当前日期
         wv_day.post {
             wv_day.setAdapter(dayAdapter)
-            setCurrentDay(cDay)
+            //dialog未显示的时候, 先设置了日期时间,这时候第一次开启弹窗的时候, 不需要初始化当前日期(仿干扰)
+            if (currentDayIndex == -1){
+                setCurrentDay(cDay)
+            }
         }
 
 

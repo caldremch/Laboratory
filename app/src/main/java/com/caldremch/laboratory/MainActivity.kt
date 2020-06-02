@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
     fun start(view: View) {
 
         if (!dialog.isShowing) {
-            dialog.setDate(DatePickDialog.THIS_MONTH)
             dialog.listener = object : OnDateSelectedListener{
                 override fun onDateSelected(startDate: Date, endDate: Date) {
                     Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
@@ -95,6 +94,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             dialog.show()
+            dialog.setDate(DatePickDialog.LAST_WEEK)
         }
 
     }
