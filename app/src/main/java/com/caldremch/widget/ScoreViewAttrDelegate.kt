@@ -50,12 +50,12 @@ class ScoreViewAttrDelegate(val context: Context) {
 
 
     // 中间标题-相关
-    var svCenterText = "8.8"
+    var svCenterText = ""
     var svCenterTextColor = Color.parseColor("#191919")
     var svCenterTextSize: Float = dp2px(40)
 
     //中间子标题-相关
-    var svCenterSubText = "今日得分"
+    var svCenterSubText = ""
     var svCenterSubTextColor = Color.parseColor("#4C4C4C")
     var svCenterSubTextSize: Float = dp2px(12)
 
@@ -98,17 +98,20 @@ class ScoreViewAttrDelegate(val context: Context) {
             svScoreFlagDesc = ta.getString(R.styleable.ScoreView_sv_score_flag_desc)
             svCurrentScore = ta.getFloat(R.styleable.ScoreView_sv_current_score, 0f)
             svCurrentScoreToAngle = scoreToAngle(svCurrentScore)
-            handleScoreAndDesc(svScoreFlag, svScoreFlagDesc)
+            handleScoreAndDesc(svFullScore, svScoreFlag, svScoreFlagDesc)
             ta.recycle()
         }
     }
 
-     fun handleScoreAndDesc(svScoreFlag:String?, svScoreFlagDesc:String?) {
 
+    fun handleScoreAndDesc(fullScore: Float, svScoreFlag: String?, svScoreFlagDesc: String?) {
 
         if (TextUtils.isEmpty(svScoreFlag) || TextUtils.isEmpty(svScoreFlagDesc)) {
             return
         }
+
+        svFullScore = fullScore
+
         val scoreFlags = svScoreFlag!!.split(",")
 
         val scoreFlagDescs = svScoreFlagDesc!!.split(",")

@@ -1,13 +1,19 @@
 package com.caldremch.widget
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 
 /**
  *
@@ -34,7 +40,7 @@ import android.view.animation.DecelerateInterpolator
  **/
 class ScoreView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr) {
+) : View(context, attrs, defStyleAttr), LifecycleObserver {
 
     //View 容器宽度
     private var viewSize: Float = 0f
@@ -72,12 +78,24 @@ class ScoreView @JvmOverloads constructor(
     /* camera旋转的最大角度 */
     private val mMaxCameraRotate = 10f
 
-
+    //描述文本的 margin
     private val descTextMargin = dp2px(10)
+
+    //中间字标题最大宽度
     private var maxFlagScoreDescTextSize: Float = 0f
+
+    //中间标题最大宽度
     private var maxCenterTitleSize: Float = 0f
 
+    //动画
+    private var objectAnimator: ValueAnimator? = null
+
     init {
+
+        //监听声明周期
+        if (context is LifecycleOwner) {
+            (context as LifecycleOwner).lifecycle.addObserver(this)
+        }
 
         //处理属性
         scoreViewAttr.initAttr(attrs)
@@ -173,7 +191,7 @@ class ScoreView @JvmOverloads constructor(
         viewHeight =
             viewSize.toInt() - 2 * maxFlagScoreDescTextSize + 2 * scoreRectBounds.height() + 2 * circleMarginTop
 
-        Log.d("tag","viewSize=$viewSize,viewHeight=$viewHeight")
+        Log.d("tag", "viewSize=$viewSize,viewHeight=$viewHeight")
 
         setMeasuredDimension(viewSize.toInt(), viewHeight.toInt())
 
@@ -185,7 +203,8 @@ class ScoreView @JvmOverloads constructor(
 
         //圆弧矩形
         rectF.left = maxFlagScoreDescTextSize + descTextMargin
-        rectF.top = circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + ( scoreRectBounds.bottom - scoreRectBounds.top)
+        rectF.top =
+            circleMarginTop + scoreViewAttr.svArcLineWidth / 2 + (scoreRectBounds.bottom - scoreRectBounds.top)
         rectF.right = rectF.left + arcWidth
         rectF.bottom = rectF.top + arcWidth
 
@@ -200,9 +219,7 @@ class ScoreView @JvmOverloads constructor(
 //            canvas.drawRect(rectF, helperPaint)
 //        }
 
-//        Log.d("tag", "right-left:" + (rectF.right - rectF.left))
-//        Log.d("tag", "bottom-top:" + (rectF.bottom - rectF.top))
-
+        //设置圆弧画笔
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = scoreViewAttr.svArcLineWidth
@@ -214,7 +231,6 @@ class ScoreView @JvmOverloads constructor(
         //圆弧上
         paint.color = scoreViewAttr.svArcFrontColor
         canvas.drawArc(rectF, 145f, scoreViewAttr.svCurrentScoreToAngle, false, paint)
-
 
         //圆弧中心画分数
         paint.color = scoreViewAttr.svCenterTextColor
@@ -247,7 +263,6 @@ class ScoreView @JvmOverloads constructor(
             paint
         )
 
-
         //圆弧内的小短线
         drawShortLine(canvas)
 
@@ -277,7 +292,6 @@ class ScoreView @JvmOverloads constructor(
         //旋转度数
         val rotateLineAngle = scoreViewAttr.svFullAngle / 35
 
-
         paint.color = scoreViewAttr.svFlagLineBackColor
         canvas.drawLine(
             arcInfo.centerX, smallLineStartY,
@@ -293,7 +307,6 @@ class ScoreView @JvmOverloads constructor(
         //正方向旋转画刻线
         drawLineByAngle(canvas, rotateLineAngle, smallLineStartY, smallLineSize)
         canvas.restore()
-
     }
 
     private fun drawScoreAndDesc(canvas: Canvas) {
@@ -361,6 +374,7 @@ class ScoreView @JvmOverloads constructor(
 
     }
 
+    //画短线
     private fun drawLineByAngle(
         canvas: Canvas,
         rotateLineAngle: Float,
@@ -395,17 +409,35 @@ class ScoreView @JvmOverloads constructor(
         return (dp * displayMetrics.density + 0.5).toFloat()
     }
 
-    //todo view detect 把动画销毁
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        objectAnimator?.let {
+            if (it.isRunning){
+                //取消动画
+                it.cancel()
+            }
+        }
+    }
+
+    //开始动画
     fun startAnim(currentScore: Float) {
-        val objectAnimator = ObjectAnimator.ofFloat(currentScore)
-        objectAnimator.addUpdateListener {
+
+        if (objectAnimator == null) {
+            objectAnimator = ObjectAnimator.ofFloat(currentScore)
+        }
+
+        if (objectAnimator!!.isRunning) {
+            return
+        }
+
+        objectAnimator!!.addUpdateListener {
             scoreViewAttr.svCurrentScoreToAngle =
                 scoreViewAttr.scoreToAngle(it.animatedValue as Float)
             postInvalidate()
         }
-        objectAnimator.duration = 3000
-        objectAnimator.interpolator = DecelerateInterpolator()
-        objectAnimator.start()
+        objectAnimator!!.duration = 3000
+        objectAnimator!!.interpolator = DecelerateInterpolator()
+        objectAnimator!!.start()
 
     }
 
@@ -462,10 +494,24 @@ class ScoreView @JvmOverloads constructor(
     /**
      * 设置标志刻度
      */
-    fun setScoreAndDesc(svScoreFlag: String?, svScoreFlagDesc: String?) {
-        scoreViewAttr.handleScoreAndDesc(svScoreFlag, svScoreFlagDesc)
+    fun setScoreAndDesc(fullScore: Float, svScoreFlag: String?, svScoreFlagDesc: String?) {
+        scoreViewAttr.handleScoreAndDesc(fullScore, svScoreFlag, svScoreFlagDesc)
         invalidate()
     }
+
+    fun setTitle(title: String?, subTitle: String?) {
+        if (!TextUtils.isEmpty(subTitle)) {
+            scoreViewAttr.svCenterSubText = subTitle!!
+        }
+
+        if (!TextUtils.isEmpty(title)) {
+            scoreViewAttr.svCenterText = title!!
+        }
+        invalidate()
+
+    }
+
+
 }
 
 

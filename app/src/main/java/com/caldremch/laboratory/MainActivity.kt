@@ -86,13 +86,14 @@ class MainActivity : AppCompatActivity() {
 
     fun start(view: View) {
 
-        val flag = "60,80,0,104"
-        val flagDesc = "60(达标),80(优秀),0,104"
-        sv.setScoreAndDesc(flag, flagDesc)
+        val flag = "60,80,0,90"
+        val flagDesc = "60(达标),80(优秀),0,90"
+        sv.setScoreAndDesc(90f, flag, flagDesc)
         sv.post {
             Log.d("tag","width=${sv.width},height=${sv.height}")
 
         }
+        sv.setTitle("9.8", "昨日得分")
         sv.startAnim(70f)
 
 //
