@@ -60,12 +60,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         dpv.listener = object : OnDateSelectedListener {
-            override fun onItemSelected(
-                year: String,
-                month: String,
-                day: String
-            ) {
-                tvDate.text = year
+            override fun onItemSelected(year: Int, month: Int, day: Int) {
+//                tvDate.text = year
             }
 
         }
@@ -100,13 +96,19 @@ class MainActivity : AppCompatActivity() {
        val dialog = DatePickDialog(this)
         if (!dialog.isShowing) {
             dialog.listener = object : OnDateSelectedListener{
+                override fun onItemSelected(year: Int, month: Int, day: Int) {
+
+
+                }
+
                 override fun onDateSelected(startDate: Date, endDate: Date) {
                     Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
                     Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
                 }
             }
             dialog.show()
-            dialog.setDate(DatePickDialog.LAST_MONTH)
+            dialog.limit
+            dialog.setDate(DatePickDialog.LAST_WEEK)
         }
 
     }

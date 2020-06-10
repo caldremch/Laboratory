@@ -15,9 +15,7 @@ import java.util.*
  **/
 interface OnDateSelectedListener {
 
-    fun onItemSelected(year: String, month: String, day: String){
-
-    }
+    fun onItemSelected(year: Int, month: Int, day: Int)
 
     fun onDateSelected(startDate:Date, endDate:Date){
 

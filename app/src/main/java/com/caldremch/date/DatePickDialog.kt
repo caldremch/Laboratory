@@ -222,22 +222,18 @@ class DatePickDialog(val myContext: Context, var limit: Boolean = false) : Botto
 
         //时间选择回调
         pickerView.listener = object : OnDateSelectedListener {
-            override fun onItemSelected(
-                year: String,
-                month: String,
-                day: String
-            ) {
+
+            override fun onItemSelected(year: Int, month: Int, day: Int) {
 
                 //时间字符串回调
-                val str = "$year$splitCharater$month$splitCharater$day"
-                if (tvStartDate.isSelected) {
-                    tvStartDate.text = str
-                    startDateStr = str
-                } else {
-                    tvEndDate.text = str
-                    endDateStr = str
-                }
-
+//                val str = "$year$splitCharater$month$splitCharater$day"
+//                if (tvStartDate.isSelected) {
+//                    tvStartDate.text = str
+//                    startDateStr = str
+//                } else {
+//                    tvEndDate.text = str
+//                    endDateStr = str
+//                }
             }
         }
     }

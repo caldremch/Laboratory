@@ -18,34 +18,39 @@ import kotlin.math.abs
  **/
 object DateInfoUtils {
 
+    const val YEAR_SUFFIX = "年"
+    const val MONTH_SUFFIX = "月"
+    const val DAY_SUFFIX = "日"
+
 
     //初始化好maxDay, 最大天数
 
-    fun initMaxDaysByMap(): MutableMap<Int, MutableList<String>> {
-        val maxDayMap = mutableMapOf<Int, MutableList<String>>()
+    fun initMaxDaysByMap(cDay: Int): MutableMap<Int, MutableList<Int>> {
+        val maxDayMap = mutableMapOf<Int, MutableList<Int>>()
 
-        val days28 = mutableListOf<String>()
-        val days29 = mutableListOf<String>()
-        val days30 = mutableListOf<String>()
-        val days31 = mutableListOf<String>()
-        val days32 = mutableListOf<String>()
+        val days28 = mutableListOf<Int>()
+        val days29 = mutableListOf<Int>()
+        val days30 = mutableListOf<Int>()
+        val days31 = mutableListOf<Int>()
+        val cdays = mutableListOf<Int>() //当前日
 
         for (i in 1..32) {
-            val iStr = "${i}日"
+
+            if (i<=cDay){
+                cdays.add(i)
+            }
+
             if (i <= 28) {
-                days28.add(iStr)
+                days28.add(i)
             }
             if (i <= 29) {
-                days29.add(iStr)
+                days29.add(i)
             }
             if (i <= 30) {
-                days30.add(iStr)
+                days30.add(i)
             }
             if (i <= 31) {
-                days31.add(iStr)
-            }
-            if (i <= 32) {
-                days32.add(iStr)
+                days31.add(i)
             }
         }
 
@@ -53,25 +58,26 @@ object DateInfoUtils {
         maxDayMap[29] = days29
         maxDayMap[30] = days30
         maxDayMap[31] = days31
-        maxDayMap[32] = days32
-
+        maxDayMap[cDay] = cdays
         return maxDayMap
     }
 
     //获取月份
-    fun getMonth(): MutableList<String> {
-        val months = mutableListOf<String>()
-        for (i in 1..12) {
-            months.add("${i}月")
+    fun getMonth(maxMonth:Int): MutableList<Int> {
+
+        val months = mutableListOf<Int>()
+
+        for (i in 1..maxMonth) {
+            months.add(i)
         }
         return months
     }
 
     //获取区间年份
-    fun getYears(startYear: Int, endYear: Int): MutableList<String> {
-        val years = mutableListOf<String>()
+    fun getYears(startYear: Int, endYear: Int): MutableList<Int> {
+        val years = mutableListOf<Int>()
         for (i in startYear..endYear) {
-            years.add("${i}年")
+            years.add(i)
         }
         return years
     }

@@ -1,7 +1,7 @@
 package com.caldremch.wheel
 
-import android.util.Log
 import android.view.LayoutInflater
+import com.caldremch.date.DateInfoUtils
 import com.caldremch.date.DateViewHolder
 import com.caldremch.laboratory.R
 import com.caldremch.pickerview.adapter.WheelAdapter
@@ -25,7 +25,7 @@ class DateAdapter(val type: Int) : WheelAdapter<DateViewHolder>() {
         val DAY = 3
     }
 
-    val data = mutableListOf<String>()
+    val data = mutableListOf<Int>()
 
     override fun getItemCount(): Int {
         return data.size
@@ -42,7 +42,12 @@ class DateAdapter(val type: Int) : WheelAdapter<DateViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        holder.textView.text = data[position]
+
+        when (type) {
+            YEAR -> holder.textView.text = "${data[position]}${DateInfoUtils.YEAR_SUFFIX}"
+            MONTH -> holder.textView.text = "${data[position]}${DateInfoUtils.MONTH_SUFFIX}"
+            DAY -> holder.textView.text = "${data[position]}${DateInfoUtils.DAY_SUFFIX}"
+        }
     }
 
 
