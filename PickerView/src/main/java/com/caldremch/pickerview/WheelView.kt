@@ -201,6 +201,10 @@ class WheelView @JvmOverloads constructor(
             override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
                 return 120f / displayMetrics.densityDpi;
             }
+
+            override fun onStop() {
+                super.onStop()
+            }
         }
 
         //设置 RecyclerView的布局
@@ -210,6 +214,7 @@ class WheelView @JvmOverloads constructor(
         //添加选中监听
         myRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) {
                     return
                 }
@@ -223,6 +228,7 @@ class WheelView @JvmOverloads constructor(
                     lastSelectedPosition = selectedPosition
                 }
             }
+
         })
     }
 

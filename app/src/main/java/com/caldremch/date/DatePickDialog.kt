@@ -3,6 +3,7 @@ package com.caldremch.date
 import android.content.Context
 import android.graphics.Color
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +22,8 @@ import kotlin.math.abs
  * @email caldremch@163.com
  *
  * @describe 时间选择弹窗
+ *
+ * limit: 三个月的限制
  *
  **/
 class DatePickDialog(val myContext: Context, var limit: Boolean = false) : BottomDialog(myContext) {
@@ -149,13 +152,9 @@ class DatePickDialog(val myContext: Context, var limit: Boolean = false) : Botto
         val calendar = Calendar.getInstance()
         calendar.time = date
         if (isStart) {
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
+            DateInfoUtils.dayStart(calendar)
         } else {
-            calendar.set(Calendar.HOUR_OF_DAY, 23)
-            calendar.set(Calendar.MINUTE, 59)
-            calendar.set(Calendar.SECOND, 59)
+            DateInfoUtils.dayEnd(calendar)
         }
         return calendar.time
     }
@@ -168,6 +167,9 @@ class DatePickDialog(val myContext: Context, var limit: Boolean = false) : Botto
         setCanceledOnTouchOutside(true)
 
         pickerView = myContentView.findViewById(R.id.dpv)
+
+        //截止今天
+        pickerView.limitUtilToday = true
 
         tvStartDate = myContentView.findViewById<TextView>(R.id.tv_start_date)
         tvEndDate = myContentView.findViewById<TextView>(R.id.tv_end_date)
@@ -225,15 +227,42 @@ class DatePickDialog(val myContext: Context, var limit: Boolean = false) : Botto
 
             override fun onItemSelected(year: Int, month: Int, day: Int) {
 
+
+                if (pickerView.todayForbidden){
+                    //转换当前选中的时间为日期对象
+                    val selectedDateCalendar = DateInfoUtils.transfer(year, month, day)
+                    //清除时分秒毫秒
+                    DateInfoUtils.clearDateHms(selectedDateCalendar)
+                    //和今天日期对比
+                    val compareResult = selectedDateCalendar.compareTo(pickerView.todayCalendarNoHms)
+
+                    Log.d("maxOver","selectedDateCalendar: ${dateFormat.format(selectedDateCalendar.time)}")
+                    Log.d("maxOver","todayCalendarNoHms: ${dateFormat.format(pickerView.todayCalendarNoHms.time)}")
+                    Log.d("maxOver","compareResult: ${compareResult}")
+
+
+                    if (compareResult > 0 || compareResult == 0) {
+                        //rollback to yesterday
+                        val yesterDayCalendar = DateInfoUtils.getYesterDayCalender()
+                        val resetToYear = yesterDayCalendar[Calendar.YEAR]
+                        val resetToMonth = yesterDayCalendar[Calendar.MONTH]+1
+                        val resetToDay = yesterDayCalendar[Calendar.DAY_OF_MONTH]
+
+                        //超过后, 设置为昨天
+                        pickerView.setDate(resetToYear, resetToMonth, resetToDay)
+                        return
+                    }
+                }
+
                 //时间字符串回调
-//                val str = "$year$splitCharater$month$splitCharater$day"
-//                if (tvStartDate.isSelected) {
-//                    tvStartDate.text = str
-//                    startDateStr = str
-//                } else {
-//                    tvEndDate.text = str
-//                    endDateStr = str
-//                }
+                val str = "$year$splitCharater$month$splitCharater$day"
+                if (tvStartDate.isSelected) {
+                    tvStartDate.text = str
+                    startDateStr = str
+                } else {
+                    tvEndDate.text = str
+                    endDateStr = str
+                }
             }
         }
     }
@@ -249,7 +278,14 @@ class DatePickDialog(val myContext: Context, var limit: Boolean = false) : Botto
             TODAY -> {
                 val todayStr = DateInfoUtils.getToday(dateFormat)
                 setTextViewDate(todayStr, todayStr)
-                pickerView.today()
+
+                //考核分的操作
+                if (true){
+                    val yesterDayStr = DateInfoUtils.getYesterday(dateFormat)
+                    //选择今天的时候, 滚轮滚到昨天, 但是现实是今天
+                    setDateInfo(yesterDayStr)
+                }
+//                pickerView.today()
             }
             YESTERDAY -> {
                 val yesterDayStr = DateInfoUtils.getYesterday(dateFormat)

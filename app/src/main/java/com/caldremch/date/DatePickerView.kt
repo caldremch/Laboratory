@@ -9,6 +9,7 @@ import com.caldremch.laboratory.R
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.DateAdapter
 import kotlinx.android.synthetic.main.date_picker_view.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -23,7 +24,11 @@ import java.util.*
  *
  **/
 
-class DateInfo(var year: Int = 0, var month: Int = 0, var day: Int = 0)
+class DateInfo(var year: Int = -1, var month: Int = -1, var day: Int = -1){
+    fun isUnsetValue():Boolean{
+        return year == -1 && month == -1 && day == -1
+    }
+}
 
 class DatePickerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -44,10 +49,12 @@ class DatePickerView @JvmOverloads constructor(
 
     private val INIT_START_YEAR = 2010
 
-    private val selectedDate = DateInfo()
-    private val selectedDateIndex = DateInfo()
+    private val selectedDate = DateInfo() //当前选中的时间 年月日对应的数字
+    private val selectedDateIndex = DateInfo() //当前选中的时间 index
+    private val lastDateIndex = DateInfo() //上次选中的时间 index
 
     val calender by lazy { Calendar.getInstance(Locale.CHINA) }
+    val todayCalendarNoHms by lazy {Calendar.getInstance(Locale.CHINA)}
 
     private val fullMonthList by lazy { DateInfoUtils.getMonth(12) }
     private lateinit var currentMonthList: List<Int>
@@ -55,12 +62,21 @@ class DatePickerView @JvmOverloads constructor(
     /**
      * 是否限制到今天的日期(滚轮无法滑动超过这个时间)
      */
-    var limitUtilToday = false
+    var limitUtilToday = true
+
+    /**
+     * 今天日期是否可选(滚动的时候, 会变为昨天), 开启后,最大可滑动到昨天,
+     */
+    var todayForbidden = true
 
     var listener: OnDateSelectedListener? = null
 
     init {
         View.inflate(context, R.layout.date_picker_view, this)
+        DateInfoUtils.clearDateHms(todayCalendarNoHms)
+        todayCalendarNoHms[Calendar.HOUR_OF_DAY] = 0
+        todayCalendarNoHms[Calendar.MINUTE] = 0
+        todayCalendarNoHms[Calendar.SECOND] = 0
         initData()
         initEvent()
     }
@@ -240,6 +256,7 @@ class DatePickerView @JvmOverloads constructor(
         }
     }
 
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS",Locale.CHINA)
     fun callback() {
 
         if (currentYearIndex >= yearAdapter.data.size) {
@@ -252,15 +269,56 @@ class DatePickerView @JvmOverloads constructor(
 
         if (currentDayIndex >= dayAdapter.data.size) {
             currentDayIndex = dayAdapter.data.size - 1
+            Log.d("maxOver","index out of bound: $currentDayIndex")
         }
 
+        val year = yearAdapter.data[currentYearIndex]
+        val month =  monthAdapter.data[currentMonthIndex]
+        val day = dayAdapter.data[currentDayIndex]
+
+        /*if (todayForbidden){
+
+            //转换当前选中的时间为日期对象
+            val selectedDateCalendar = DateInfoUtils.transfer(year, month, day)
+            //清除时分秒毫秒
+            DateInfoUtils.clearDateHms(selectedDateCalendar)
+            //和今天日期对比
+            val compareResult = selectedDateCalendar.compareTo(todayCalendarNoHms)
+
+            Log.d("maxOver","selectedDateCalendar: ${dateFormat.format(selectedDateCalendar.time)}")
+            Log.d("maxOver","todayCalendarNoHms: ${dateFormat.format(todayCalendarNoHms.time)}")
+
+
+            if (compareResult > 0 || compareResult == 0) {
+                //rollback to yesterday
+                val yesterDayCalendar = DateInfoUtils.getYesterDayCalender()
+                val resetToYear = yesterDayCalendar[Calendar.YEAR]
+                val resetToMonth = yesterDayCalendar[Calendar.MONTH]+1
+                val resetToDay = yesterDayCalendar[Calendar.DAY_OF_MONTH]
+
+                //超过后, 设置为昨天
+                setDate(resetToYear, resetToMonth, resetToDay)
+                onListener()
+                return
+            }
+        }*/
+
+        //用于回滚到上次的时间
+        lastDateIndex.year = currentYearIndex
+        lastDateIndex.month = currentMonthIndex
+        lastDateIndex.day = currentDayIndex
+
         //数据回调
+        onListener()
+
+    }
+
+    private fun onListener() {
         listener?.onItemSelected(
             yearAdapter.data[currentYearIndex],
             monthAdapter.data[currentMonthIndex],
             dayAdapter.data[currentDayIndex]
         )
-
     }
 
     //根据 index 获取年份
@@ -304,25 +362,10 @@ class DatePickerView @JvmOverloads constructor(
      */
     fun setDate(year: Int, month: Int, day: Int) {
 
-        val testStart = System.currentTimeMillis()
+        /**
+         * 如果只限定到今天, 那么需要判断 month和day的最大期限
+         */
         if (limitUtilToday) {
-            //要设定的时间
-            val settingDate = Calendar.getInstance()
-            settingDate.set(Calendar.YEAR, year)
-            settingDate.set(Calendar.MONTH, month - 1)
-            settingDate.set(Calendar.DAY_OF_MONTH, day)
-
-            //当前时间
-            val currentDate = Calendar.getInstance()
-            //消除时分秒进行比较
-            currentDate.clear(Calendar.HOUR_OF_DAY)
-            currentDate.clear(Calendar.MINUTE)
-            currentDate.clear(Calendar.SECOND)
-
-            if (settingDate.after(currentDate)) {
-                return
-            }
-
             //设置年
             setCurrentYear(year)
 
@@ -357,11 +400,6 @@ class DatePickerView @JvmOverloads constructor(
             dayAdapter.notifyDataSetChanged()
             setCurrentDay(day)
         }
-
-        val testEnd = System.currentTimeMillis()
-
-        Log.d("time", "间隔时间:${testEnd - testStart}")
-
 
     }
 }

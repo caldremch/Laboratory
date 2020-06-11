@@ -36,7 +36,7 @@ object DateInfoUtils {
 
         for (i in 1..32) {
 
-            if (i<=cDay){
+            if (i <= cDay) {
                 cdays.add(i)
             }
 
@@ -63,7 +63,7 @@ object DateInfoUtils {
     }
 
     //获取月份
-    fun getMonth(maxMonth:Int): MutableList<Int> {
+    fun getMonth(maxMonth: Int): MutableList<Int> {
 
         val months = mutableListOf<Int>()
 
@@ -84,9 +84,13 @@ object DateInfoUtils {
 
     //获取昨天日期
     fun getYesterday(dateFormat: SimpleDateFormat): String {
+        return dateFormat.format(getYesterDayCalender().time);
+    }
+
+    fun getYesterDayCalender():Calendar{
         val calender = Calendar.getInstance()
         calender.add(Calendar.DATE, -1)
-        return dateFormat.format(calender.time);
+        return calender
     }
 
 
@@ -185,7 +189,7 @@ object DateInfoUtils {
     //月差
 
     //计算月份差是否大于3月及时间前后判断
-    fun checkMonth(format: SimpleDateFormat, limit:Boolean, start: String, end: String): Boolean {
+    fun checkMonth(format: SimpleDateFormat, limit: Boolean, start: String, end: String): Boolean {
 
         try {
             val startDate = format.parse(start)
@@ -201,24 +205,25 @@ object DateInfoUtils {
                 return false
             }
 
-            if (limit){
+            if (limit) {
                 val monthCha = endCalendar[Calendar.MONTH] - startCalendar[Calendar.MONTH]
                 val yearCha = (endCalendar[Calendar.YEAR] - startCalendar[Calendar.YEAR]) * 12
-                val dayCha = endCalendar[Calendar.DAY_OF_MONTH] - startCalendar[Calendar.DAY_OF_MONTH]
+                val dayCha =
+                    endCalendar[Calendar.DAY_OF_MONTH] - startCalendar[Calendar.DAY_OF_MONTH]
                 val detalMonth = abs(monthCha + yearCha)
 
                 //日部分超出
                 if (detalMonth == 3 && dayCha > 0) {
-                    Log.d("tag","超出 3 月了 day 部分多了")
+                    Log.d("tag", "超出 3 月了 day 部分多了")
                     return false
                 }
 
                 //月部分超出
                 if (detalMonth > 3) {
-                    Log.d("tag","超出 3 月了")
+                    Log.d("tag", "超出 3 月了")
                     return false
                 }
-                Log.d("tag","月份合理")
+                Log.d("tag", "月份合理")
             }
 
             return true
@@ -228,6 +233,45 @@ object DateInfoUtils {
             return false
         }
 
+    }
+
+    /**
+     * 将年月日转为Calendar
+     */
+    fun transfer(year: Int, month: Int, day: Int): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+        clearDateHms(calendar)
+        return calendar
+    }
+
+    /**
+     * 消除时分秒
+     */
+    fun clearDateHms(calendar: Calendar) {
+        calendar[Calendar.HOUR_OF_DAY] = 0
+        calendar[Calendar.MINUTE] = 0
+        calendar[Calendar.SECOND] = 0
+        calendar[Calendar.MILLISECOND] = 0
+    }
+
+    /**
+     * 一天的开始
+     */
+    fun dayStart(calendar: Calendar) {
+        clearDateHms(calendar)
+    }
+
+    /**
+     * 一天的结束
+     */
+    fun dayEnd(calendar: Calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar[Calendar.MILLISECOND] = 0
     }
 
 

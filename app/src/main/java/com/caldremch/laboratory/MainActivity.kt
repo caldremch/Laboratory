@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             }
             dialog.show()
             dialog.limit
-            dialog.setDate(DatePickDialog.LAST_WEEK)
+            dialog.setDate(DatePickDialog.YESTERDAY)
         }
 
     }
