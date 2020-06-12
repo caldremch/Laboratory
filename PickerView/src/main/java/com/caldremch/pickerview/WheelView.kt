@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -216,15 +217,25 @@ class WheelView @JvmOverloads constructor(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    Log.d("selectedPosition", "newState=$newState")
                     return
                 }
+
                 val centerItemPosition: Int = myRecyclerView.findCenterItemPosition()
                 if (centerItemPosition == IDLE_POSITION) {
+                    Log.d("selectedPosition", "IDLE_POSITION centerItemPosition=$centerItemPosition")
                     return
                 }
+                Log.d("selectedPosition", "SCROLL_STATE_IDLE centerItemPosition=$centerItemPosition")
                 selectedPosition = centerItemPosition
+
+                //如果需要smothscroller动画指定, 或者回滚到某一个位置
+                //把回调放到外面, 不要判断当前位置和上次位置选中的位置是否相等
+                //否则不能回调回去, 如果连续drag到某个位置
+                listener?.onItemSelected(centerItemPosition)
                 if (selectedPosition != lastSelectedPosition) {
-                    listener?.onItemSelected(centerItemPosition)
+                    Log.d("selectedPosition", "selectedPosition=$selectedPosition")
+//                    listener?.onItemSelected(centerItemPosition)
                     lastSelectedPosition = selectedPosition
                 }
             }
