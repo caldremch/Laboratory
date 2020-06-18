@@ -12,44 +12,44 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
-        android:text="内容"
         android:textColor="#333333"
         android:textSize="18dp"
-        android:visibility="gone"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="内容" />
 
     <TextView
         android:id="@+id/tv_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_goneMarginTop="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
-        android:text="告知当前状态"
         android:textColor="#666666"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_goneMarginTop="24dp"
+        tools:text="告知当前状态" />
 
     <View
         android:id="@+id/v_horization"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.4dp"
         android:layout_marginTop="24dp"
-        android:background="@android:color/holo_red_dark"
+        android:background="#1A000000"
         app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
 
     <View
         android:id="@+id/v_vertical"
-        android:layout_width="0.3dp"
+        android:layout_width="0.4dp"
         android:layout_height="0dp"
         android:background="#1A000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,9 +63,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="16dp"
-        android:visibility="gone"
         android:paddingBottom="16dp"
-        android:text="取消"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/g"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,14 +78,13 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:layout_width="0dp"
         android:id="@+id/tv_positive"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="gone"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:text="取消"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/g"

@@ -2,6 +2,7 @@ package com.caldremch.laboratory
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -89,8 +90,24 @@ class MainActivity : AppCompatActivity() {
 
 
         tipDialog {
-            negativeText = "取消"
-            negativeColor = "#3282EF"
+            titleText = "我是标题"
+            titleColorRes = R.color.colorPrimary
+            descText="我是内容啊"
+            descColorStr = "#3282EF"
+            descSize = 20f
+            leftText = "取消"
+            leftColorStr = "#3282EF"
+            rightText = "确定啊"
+            rightColorRes = R.color.colorAccent
+            gravity = Gravity.CENTER
+            widthScale = 0.74f
+            cancelOutSide = false
+            leftClick {
+
+            }
+            rightClick {
+                Toast.makeText(this@MainActivity, "点击右边了", Toast.LENGTH_SHORT).show()
+            }
         }
 
 //        val dialog = TipDialog()

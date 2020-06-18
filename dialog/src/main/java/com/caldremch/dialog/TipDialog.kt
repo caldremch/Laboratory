@@ -1,12 +1,15 @@
 package com.caldremch.dialog
 
+import android.content.Context
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Guideline
-import androidx.fragment.app.FragmentManager
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import java.lang.RuntimeException
 
 /**
  *
@@ -15,6 +18,7 @@ import androidx.fragment.app.FragmentManager
  **/
 
 
+//Activity  dsl调用
 inline fun AppCompatActivity.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
     val dialog = TipDialog()
     dialog.apply(dsl)
@@ -22,21 +26,57 @@ inline fun AppCompatActivity.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
     return dialog
 }
 
+//fragment dsl调用
+inline fun Fragment.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
+    val dialog = TipDialog()
+    dialog.apply(dsl)
+    dialog.show(this.childFragmentManager, "tipDialog")
+    return dialog
+}
+
+//Context dsl调用
+inline fun tipDialog(context: Context, dsl: TipDialog.() -> Unit): TipDialog {
+    val dialog = TipDialog()
+    dialog.apply(dsl)
+    if (context is AppCompatActivity) {
+        dialog.show(context.supportFragmentManager, "tipDialog")
+    } else if (context is Fragment) {
+        dialog.show((context as Fragment).childFragmentManager, "tipDialog")
+    } else {
+        throw RuntimeException("啥也不是")
+    }
+    return dialog
+}
+
 open class TipDialog : BaseDialog() {
 
+    //标题文本
     var titleText: String? = null
+    var titleSize: Float? = null
+    var titleColorStr: String? = null
+    var titleColorRes: Int? = null  //R.color.xxx类型
+
+    //中间内容文本
     var descText: String? = null
-    var negativeText: String? = null
-    var negativeColor: String? = null
-    var positiveText: String? = null
-    var positiveColor: String? = null
+    var descSize: Float? = null
+    var descColorStr: String? = null
+    var descColorRes: Int? = null
 
-    //int color todo 更多属性定制
-//    var negativeColor: String? = null
-//    var positiveColor: String? = null
+    //左边文本
+    var leftText: String? = null
+    var leftColorStr: String? = null
+    var leftColorRes: Int? = null
+    var leftSize: Float? = null
 
-    var positiveListener: View.OnClickListener? = null
-    var negativeListener: View.OnClickListener? = null
+    //右边文本
+    var rightText: String? = null
+    var rightColorStr: String? = null
+    var rightColorRes: Int? = null
+    var rightSize: Float? = null
+
+    //点击事件
+    var leftBtnListener: (() -> Unit)? = null
+    var rightBtnListener: (() -> Unit)? = null
 
     private lateinit var tvTitle: TextView
     private lateinit var tvDesc: TextView
@@ -46,6 +86,14 @@ open class TipDialog : BaseDialog() {
     private lateinit var tvPositive: TextView
     private lateinit var guideline: Guideline
 
+    fun leftClick(left: () -> Unit) {
+        leftBtnListener = left
+    }
+
+
+    fun rightClick(right: () -> Unit) {
+        rightBtnListener = right
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.tips_dialog
@@ -60,49 +108,74 @@ open class TipDialog : BaseDialog() {
         vHorizontalDivider = rootView.findViewById(R.id.v_horization)
         vVerticalDivider = rootView.findViewById(R.id.v_vertical)
 
-        negativeText?.let {
-            tvNegative.text = it
-            tvNegative.visibility = View.VISIBLE
-            negativeColor?.let {
-                tvNegative.setTextColor(Color.parseColor(it))
-            }
-        }
+        tvStyle(
+            tv = tvNegative,
+            textStr = leftText,
+            size = leftSize,
+            colorStr = leftColorStr,
+            colorRes = leftColorRes
+        )
 
-        positiveText?.let {
-            tvPositive.text = it
-            tvPositive.visibility = View.VISIBLE
-            positiveColor?.let {
-                tvPositive.setTextColor(Color.parseColor(it))
-            }
-        }
+        tvStyle(
+            tv = tvPositive,
+            textStr = rightText,
+            size = rightSize,
+            colorStr = rightColorStr,
+            colorRes = rightColorRes
+        )
 
-        titleText?.let {
-            tvTitle.text = it
-            tvTitle.visibility = View.VISIBLE
-        }
 
-        descText?.let {
-            tvDesc.text = it
-        }
+        tvStyle(
+            tv = tvTitle,
+            textStr = titleText,
+            size = titleSize,
+            colorStr = titleColorStr,
+            colorRes = titleColorRes
+        )
+
+        tvStyle(
+            tv = tvDesc,
+            textStr = descText,
+            size = descSize,
+            colorStr = descColorStr,
+            colorRes = descColorRes
+        )
 
         tvNegative.setOnClickListener {
-            negativeListener?.onClick(it)
+            dismiss()
+            leftBtnListener?.let { clickInstance ->
+                clickInstance()
+            }
         }
 
         tvPositive.setOnClickListener {
-            positiveListener?.onClick(it)
+            dismiss()
+            rightBtnListener?.let { clickInstance ->
+                clickInstance()
+            }
         }
 
-        if (TextUtils.isEmpty(negativeText)) {
-            tvNegative.visibility = View.GONE
+        if (TextUtils.isEmpty(leftText)) {
             guideline.setGuidelinePercent(0f)
-
         }
 
-        if (TextUtils.isEmpty(positiveText)) {
-            tvPositive.visibility = View.GONE
+        if (TextUtils.isEmpty(rightText)) {
             guideline.setGuidelinePercent(1f)
+        }
 
+    }
+
+    //设置tv样式
+    fun tvStyle(tv: TextView, textStr: String?, size: Float?, colorStr: String?, colorRes: Int?) {
+        textStr?.let {
+            tv.text = it
+            tv.visibility = View.VISIBLE
+            if (colorRes != null) {
+                tv.setTextColor(ContextCompat.getColor(tv.context, colorRes))
+            } else if (colorStr != null) {
+                tv.setTextColor(Color.parseColor(colorStr))
+            }
+            size?.let { tv.textSize = it }
         }
     }
 
