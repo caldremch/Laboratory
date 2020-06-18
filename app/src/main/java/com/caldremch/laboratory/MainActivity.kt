@@ -9,6 +9,7 @@ import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.TestDialog
+import com.caldremch.dialog.tipDialog
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.StringAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 "不可能不可能不可能"
             )
             stringPickDialog.setData(stringList)
-            stringPickDialog.listener = object : OnItemSelectedListener{
+            stringPickDialog.listener = object : OnItemSelectedListener {
                 override fun onItemSelected(index: Int) {
                     Log.d("tag", "index=$index")
                 }
@@ -82,6 +83,23 @@ class MainActivity : AppCompatActivity() {
 
     fun start(view: View) {
 
+//        tipDialog(supportFragmentManager){
+//
+//        }
+
+
+        tipDialog {
+            negativeText = "取消"
+            negativeColor = "#3282EF"
+        }
+
+//        val dialog = TipDialog()
+//        dialog.show(supportFragmentManager, "tag")
+
+//        tipDialog {
+//
+//        }
+
 //        val flag = "60,80,0,90"
 //        val flagDesc = "60(达标),80(优秀),0,90"
 //        sv.setScoreAndDesc(90f, flag, flagDesc)
@@ -93,23 +111,23 @@ class MainActivity : AppCompatActivity() {
 //        sv.startAnim(80f)
 
 //
-       val dialog = DatePickDialog(this)
-        if (!dialog.isShowing) {
-            dialog.listener = object : OnDateSelectedListener{
-                override fun onItemSelected(year: Int, month: Int, day: Int) {
-
-
-                }
-
-                override fun onDateSelected(startDate: Date, endDate: Date) {
-                    Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
-                    Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
-                }
-            }
-            dialog.show()
-            dialog.limit
-            dialog.setDate(DatePickDialog.YESTERDAY)
-        }
+//       val dialog = DatePickDialog(this)
+//        if (!dialog.isShowing) {
+//            dialog.listener = object : OnDateSelectedListener{
+//                override fun onItemSelected(year: Int, month: Int, day: Int) {
+//
+//
+//                }
+//
+//                override fun onDateSelected(startDate: Date, endDate: Date) {
+//                    Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
+//                    Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
+//                }
+//            }
+//            dialog.show()
+//            dialog.limit
+//            dialog.setDate(DatePickDialog.YESTERDAY)
+//        }
 
     }
 
@@ -118,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setDatess(view: View) {
-      var   stringPickDialog  = StringPickDialog(this)
+        var stringPickDialog = StringPickDialog(this)
         if (!stringPickDialog.isShowing) {
             stringPickDialog.show()
         }
