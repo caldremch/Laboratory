@@ -1,7 +1,5 @@
 package com.caldremch.widget.single
 
-import com.caldremch.widget.SelectItem
-
 /**
  *
  * @author: Caldremch

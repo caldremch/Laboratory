@@ -1,9 +1,6 @@
 package com.caldremch.widget.single
 
 import androidx.recyclerview.widget.RecyclerView
-import com.caldremch.widget.SelectItem
-import com.caldremch.widget.SingleSelectAdapter
-import com.caldremch.widget.SingleSelectHolder
 
 /**
  *
@@ -16,11 +13,11 @@ import com.caldremch.widget.SingleSelectHolder
  **/
 
 class CacheOperation<T : SelectItem, D : SingleSelectHolder>(
-   private val rv: RecyclerView,
-   private val handle: SingleSelectAdapter<T, D>,
-   private val selectedPos: Int,
-   private val holder: D,
-   private val currentPosition: Int
+    private val rv: RecyclerView,
+    private val handle: SingleSelectAdapter<T, D>,
+    private val selectedPos: Int,
+    private val holder: D,
+    private val currentPosition: Int
 ) {
 
     fun goOn() {

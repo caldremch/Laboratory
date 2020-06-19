@@ -15,7 +15,6 @@ import com.caldremch.dialog.TestDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.StringAdapter
-import com.caldremch.widget.SingleSelectAdapter
 import com.caldremch.widget.single.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat

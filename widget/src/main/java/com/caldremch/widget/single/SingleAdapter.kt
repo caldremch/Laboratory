@@ -4,8 +4,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.widget.R
-import com.caldremch.widget.SingleSelectAdapter
-import com.caldremch.widget.SingleSelectHolder
 
 /**
  *
