@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
  *
  * Dialog弹窗基类, 简单功能
  *
+ * 动画: 后期加 todo 7/1
+ *
  **/
 abstract class BaseDialog : DialogFragment() {
 

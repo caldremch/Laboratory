@@ -6,6 +6,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
@@ -13,6 +15,8 @@ import com.caldremch.dialog.TestDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.wheel.StringAdapter
+import com.caldremch.widget.SingleSelectAdapter
+import com.caldremch.widget.single.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         val context = this
 
 
+        initSingleView()
         wv.post {
 
             val stringList = mutableListOf<String>(
@@ -69,6 +74,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var singleAdapter: SingleAdapter
+    private fun initSingleView() {
+
+        ssrv.layoutManager = GridLayoutManager(this, 3)
+        val stringList =
+            arrayListOf<StringItem>(StringItem("出租"), StringItem("出售"), StringItem("租售"))
+        stringList[0].isSelect = true
+        singleAdapter = SingleAdapter(stringList, ssrv)
+        ssrv.addItemDecoration(SingleItemDecoration())
+        ssrv.adapter = singleAdapter
+
+        singleAdapter.interruptISelectListener = object : ISelectListener.OnInterrupt {
+
+            override fun onInterrupt(
+                selectedPos: Int,
+                holder: RecyclerView.ViewHolder,
+                currentPosition: Int,
+                cacheOperation: CacheOperation<*, *>
+            ) {
+                tipDialog {
+                    titleText = "我是标题"
+                    titleColorRes = R.color.colorPrimary
+                    descText = "我是内容啊"
+                    descColorStr = "#3282EF"
+                    descBold = true
+                    descSize = 20f
+                    leftText = "取消"
+                    leftBold = true
+                    leftColorStr = "#3282EF"
+                    rightText = "确定啊"
+                    rightColorRes = R.color.colorAccent
+                    gravity = Gravity.CENTER
+                    widthScale = 0.74f
+                    cancelOutSide = false
+                    leftClick {
+
+                    }
+                    rightClick {
+                        cacheOperation.goOn()
+                        Toast.makeText(this@MainActivity, "点击右边了", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        }
+    }
+
     val dialog by lazy {
         DatePickDialog(this)
     }
@@ -82,33 +134,9 @@ class MainActivity : AppCompatActivity() {
 
     var i = 1;
 
+
     fun start(view: View) {
 
-//        tipDialog(supportFragmentManager){
-//
-//        }
-
-
-        tipDialog {
-            titleText = "我是标题"
-            titleColorRes = R.color.colorPrimary
-            descText="我是内容啊"
-            descColorStr = "#3282EF"
-            descSize = 20f
-            leftText = "取消"
-            leftColorStr = "#3282EF"
-            rightText = "确定啊"
-            rightColorRes = R.color.colorAccent
-            gravity = Gravity.CENTER
-            widthScale = 0.74f
-            cancelOutSide = false
-            leftClick {
-
-            }
-            rightClick {
-                Toast.makeText(this@MainActivity, "点击右边了", Toast.LENGTH_SHORT).show()
-            }
-        }
 
 //        val dialog = TipDialog()
 //        dialog.show(supportFragmentManager, "tag")
