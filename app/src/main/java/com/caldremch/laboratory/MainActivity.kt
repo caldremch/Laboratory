@@ -14,6 +14,7 @@ import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.TestDialog
+import com.caldremch.dialog.owner.ownerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.adapter.MenuListAdapter
 import com.caldremch.laboratory.bean.MenuData
@@ -94,12 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setMenuData() {
         val menuList = arrayListOf<MenuData>()
-        menuList.add(MenuData().apply {
-            title = "Owner Dialog"
-            runnable = Runnable {
-                Toast.makeText(this@MainActivity, "owner dialog", Toast.LENGTH_SHORT).show()
-            }
-        })
+        ConfigMenuUtils.setSetMenuData(this, menuList)
         (rvMenu.adapter as BaseQuickAdapter<MenuData, *>).setList(menuList)
 
     }
