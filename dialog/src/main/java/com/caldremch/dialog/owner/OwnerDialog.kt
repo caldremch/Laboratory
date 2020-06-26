@@ -4,15 +4,15 @@ import android.content.Context
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.dialog.R
 import com.caldremch.dialog.owner.adapter.OwnerFootView
-import java.util.*
+import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
 
 /**
  *
@@ -48,6 +48,10 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
 
     val adapter by lazy { OwnerAdapter() }
     val contactList = arrayListOf<Contact>()
+    var maxItemCount = 3
+    val footerView by lazy { OwnerFootView(mContext) }
+
+    private var currentItemCount = 0;
 
     init {
         gravity = Gravity.BOTTOM
@@ -62,13 +66,21 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
     override fun initView(rootView: View) {
 
         val rv = rootView.findViewById<RecyclerView>(R.id.rv)
-        val footerView = OwnerFootView(mContext)
         val completeTv = rootView.findViewById<View>(R.id.tv_owner_complete)
 
-        val defaultItemAnim = DefaultItemAnimator()
+        /*val defaultItemAnim = DefaultItemAnimator()
         defaultItemAnim.addDuration = 300
         defaultItemAnim.removeDuration = 200
         rv.itemAnimator = defaultItemAnim
+         */
+
+        rv.itemAnimator = ScaleInTopAnimator().apply {
+            setInterpolator(OvershootInterpolator())
+            removeDuration = 200
+            addDuration = 200
+        }
+
+//        adapter.adapterAnimation = SlideInLeftAnimation()
 
         completeTv.setOnClickListener {
             //获取 recyclerView 所有 EditText 的内容
@@ -77,24 +89,46 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
         }
 
         footerView.setOnClickListener {
+            currentItemCount++
+            if (currentItemCount == maxItemCount) {
+                adapter.removeAllFooterView()
+            }
             adapter.addData(Contact())
         }
 
-        adapter.removeAllFooterView()
+        adapter.listener = object : OwnerAdapter.Listener {
+            override fun remove(index: Int) {
+                adapter.removeAt(index)
+                currentItemCount--
+                if (currentItemCount < maxItemCount && adapter.footerLayoutCount == 0) {
+                    adapter.addFooterView(footerView)
+                }
+            }
+        }
+
         rv.addItemDecoration(OwnerItemDecorator())
         rv.layoutManager = LinearLayoutManager(mContext)
-        adapter.addFooterView(footerView)
+        handleWithSize(adapter.data.size)
         rv.adapter = adapter
     }
 
-    fun addData(contact: Contact) {
-//        contactList.add(contact)
-        adapter.addData(contact)
+    fun handleWithSize(count: Int) {
+        //防止多次添加
+        adapter.removeAllFooterView()
+        if (count < maxItemCount) {
+            adapter.addFooterView(footerView)
+        }
     }
 
-    fun setList(list: ArrayList<Contact>) {
+    fun setList(list: List<Contact>) {
+        var temp = list
+        if (list.size > maxItemCount) {
+            temp = list.subList(0, maxItemCount)
+        }
+        handleWithSize(temp.size)
         //deepCopy, 防止数据改变影响原数据
-        val copyList = list.map { it.copy() }
+        val copyList = temp.map { it.copy() }
+        currentItemCount = copyList.size
         contactList.clear()
         contactList.addAll(copyList)
         adapter.setList(contactList)

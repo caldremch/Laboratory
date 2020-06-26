@@ -68,6 +68,7 @@ object ConfigMenuUtils {
             title = "Owner Dialog"
             runnable = Runnable {
                 sOwnerDialog = OwnerDialog(context)
+                sOwnerDialog?.maxItemCount = 6
                 sOwnerDialog?.setList(list)
                 sOwnerDialog?.show()
             }

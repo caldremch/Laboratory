@@ -22,6 +22,11 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 class OwnerAdapter :
     BaseQuickAdapter<Contact, OwnerAdapter.OwnerViewHolder>(R.layout.item_owner, mutableListOf()) {
 
+    interface Listener {
+        fun remove(index: Int)
+    }
+
+    var listener: Listener? = null
 
     override fun convert(holder: OwnerViewHolder, item: Contact) {
 
@@ -31,6 +36,13 @@ class OwnerAdapter :
             holder.iv.setImageResource(R.drawable.ic_typein_customer)
         } else {
             holder.iv.setImageResource(R.drawable.ic_edit_remove)
+        }
+
+        holder.iv.setOnClickListener {
+            if (holder.layoutPosition == 0) {
+                return@setOnClickListener
+            }
+            listener?.remove(holder.layoutPosition)
         }
 
         holder.nameEt.isEnabled = item.isEnable
