@@ -26,6 +26,7 @@ class OwnerAdapter :
         fun remove(index: Int)
     }
 
+    var isMaskPhone: Boolean = false
     var listener: Listener? = null
 
     override fun convert(holder: OwnerViewHolder, item: Contact) {
@@ -49,7 +50,8 @@ class OwnerAdapter :
         holder.phoneEt.isEnabled = item.isEnable
 
         holder.nameEt.setText(item.name)
-        holder.phoneEt.setText(item.phone)
+
+        holder.phoneEt.setText(if (isMaskPhone) item.showTitle else item.phone)
 
     }
 

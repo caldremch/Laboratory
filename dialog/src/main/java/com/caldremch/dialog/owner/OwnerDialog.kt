@@ -1,7 +1,7 @@
 package com.caldremch.dialog.owner
 
 import android.content.Context
-import android.util.Log
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.dialog.R
 import com.caldremch.dialog.owner.adapter.OwnerFootView
+import com.caldremch.dialog.utils.PhoneCheckUtils
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
 
 /**
@@ -46,9 +47,16 @@ inline fun ownerDialog(
 
 class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog(context, tagStr) {
 
+
+    interface ConfirmListener {
+        fun onConfirm(contacts: List<Contact>)
+    }
+
+    var listener: ConfirmListener? = null
     val adapter by lazy { OwnerAdapter() }
     val contactList = arrayListOf<Contact>()
     var maxItemCount = 3
+    val isMaskPhone = false
     val footerView by lazy { OwnerFootView(mContext) }
 
     private var currentItemCount = 0;
@@ -82,9 +90,16 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
 //        adapter.adapterAnimation = SlideInLeftAnimation()
 
         completeTv.setOnClickListener {
+
             //获取 recyclerView 所有 EditText 的内容
-            val a = adapter.data.toTypedArray().contentToString()
-            Log.d("OwnerDialog", "initView: $a")
+            adapter.data.map {
+                //todo check phone format first
+                if (isMaskPhone && TextUtils.isEmpty(it.showTitle) && !TextUtils.isEmpty(it.phone)) {
+                    it.showTitle = PhoneCheckUtils.getMaskPhone(it.phone!!)
+                }
+            }
+            listener?.onConfirm(adapter.data)
+            dismiss()
         }
 
         footerView.setOnClickListener {
@@ -108,6 +123,7 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
         rv.addItemDecoration(OwnerItemDecorator())
         rv.layoutManager = LinearLayoutManager(mContext)
         handleWithSize(adapter.data.size)
+        adapter.isMaskPhone = isMaskPhone
         rv.adapter = adapter
     }
 

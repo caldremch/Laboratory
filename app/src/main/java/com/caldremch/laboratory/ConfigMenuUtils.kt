@@ -8,7 +8,6 @@ import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
-import java.util.*
 
 /**
  *
@@ -49,7 +48,7 @@ object ConfigMenuUtils {
         })
 
         //电话列表 , 初始化数据
-        val list = arrayListOf<Contact>()
+        var list = arrayListOf<Contact>()
         list.add(Contact().apply {
             name = "Caldremch1"
             phone = "17376999999"
@@ -70,6 +69,11 @@ object ConfigMenuUtils {
                 sOwnerDialog = OwnerDialog(context)
                 sOwnerDialog?.maxItemCount = 6
                 sOwnerDialog?.setList(list)
+                sOwnerDialog?.listener = object : OwnerDialog.ConfirmListener {
+                    override fun onConfirm(contacts: List<Contact>) {
+                        list = contacts as ArrayList<Contact>
+                    }
+                }
                 sOwnerDialog?.show()
             }
         })
