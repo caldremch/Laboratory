@@ -39,7 +39,7 @@ class OwnerAdapter :
         }
 
         holder.iv.setOnClickListener {
-            if (holder.layoutPosition == 0) {
+            if (holder.layoutPosition == 0 || !item.isEnable) {
                 return@setOnClickListener
             }
             listener?.remove(holder.layoutPosition)

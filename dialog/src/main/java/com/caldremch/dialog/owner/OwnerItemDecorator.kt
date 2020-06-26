@@ -18,6 +18,6 @@ class OwnerItemDecorator : RecyclerView.ItemDecoration() {
         state: RecyclerView.State
     ) {
         if (parent.adapter != null && parent.getChildAdapterPosition(view) != parent.adapter!!.itemCount - 1)
-            outRect.bottom = view.context.resources.getDimension(R.dimen.dp_10).toInt()
+            outRect.bottom = view.context.resources.getDimension(R.dimen.dp_5).toInt()
     }
 }

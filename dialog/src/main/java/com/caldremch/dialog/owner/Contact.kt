@@ -9,4 +9,11 @@ data class Contact(var name: String? = null, var phone: String? = null) : OwnerB
     override fun toString(): String {
         return "Contact(name=$name, phone=$phone)"
     }
+
+    fun copy(): Contact {
+        val newContact = Contact(name, phone)
+        newContact.showTitle = showTitle
+        newContact.isEnable = isEnable
+        return newContact
+    }
 }

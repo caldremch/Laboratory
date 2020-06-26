@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.caldremch.dialog.owner.Contact
 import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.tipDialog
+import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
 import java.util.*
 
@@ -51,18 +52,17 @@ object ConfigMenuUtils {
         val list = arrayListOf<Contact>()
         list.add(Contact().apply {
             name = "Caldremch1"
-            phone = "18888888888"
+            phone = "17376999999"
+            showTitle = PhoneCheckUtils.getMaskPhone("17376999999")
             isEnable = false
         })
         list.add(Contact().apply {
-            name = "Caldremch2"
-            phone = "17777777777"
+            name = "我是睡"
+            phone = "13676999999"
+            showTitle = PhoneCheckUtils.getMaskPhone("13676999999")
+            isEnable = false
         })
 
-        for (x in 0..24) {
-            list.add(Contact().apply {
-            })
-        }
 
         menuList.add(MenuData().apply {
             title = "Owner Dialog"

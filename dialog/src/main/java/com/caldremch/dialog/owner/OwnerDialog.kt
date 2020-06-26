@@ -56,7 +56,6 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
     init {
         gravity = Gravity.BOTTOM
         widthScale = 1f
-        cancelOutSide = false
     }
 
     override fun getLayoutId(): Int {
@@ -127,7 +126,9 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
         }
         handleWithSize(temp.size)
         //deepCopy, 防止数据改变影响原数据
-        val copyList = temp.map { it.copy() }
+        val copyList = temp.map {
+            it.copy()
+        }
         currentItemCount = copyList.size
         contactList.clear()
         contactList.addAll(copyList)
