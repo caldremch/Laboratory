@@ -3,10 +3,11 @@ package com.caldremch.laboratory
 import android.content.Context
 import android.view.Gravity
 import android.widget.Toast
-import com.caldremch.dialog.owner.ownerDialog
+import com.caldremch.dialog.owner.Contact
+import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.bean.MenuData
-import java.util.ArrayList
+import java.util.*
 
 /**
  *
@@ -14,6 +15,9 @@ import java.util.ArrayList
  *
  **/
 object ConfigMenuUtils {
+
+    var sOwnerDialog: OwnerDialog? = null
+
     fun setSetMenuData(context: Context, menuList: ArrayList<MenuData>) {
         menuList.add(MenuData().apply {
             title = "Tips Dialog"
@@ -43,12 +47,29 @@ object ConfigMenuUtils {
             }
         })
 
+        //电话列表 , 初始化数据
+        val list = arrayListOf<Contact>()
+        list.add(Contact().apply {
+            name = "Caldremch1"
+            phone = "18888888888"
+            isEnable = false
+        })
+        list.add(Contact().apply {
+            name = "Caldremch2"
+            phone = "17777777777"
+        })
+
+        for (x in 0..24) {
+            list.add(Contact().apply {
+            })
+        }
+
         menuList.add(MenuData().apply {
             title = "Owner Dialog"
             runnable = Runnable {
-                ownerDialog(context) {
-
-                }
+                sOwnerDialog = OwnerDialog(context)
+                sOwnerDialog?.setList(list)
+                sOwnerDialog?.show()
             }
         })
     }
