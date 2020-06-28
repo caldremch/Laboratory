@@ -36,4 +36,5 @@ dependencies {
     implementation project(':PickerView')
     implementation project(':dialog')
     implementation project(':widget')
+    implementation project(':utils')
 }

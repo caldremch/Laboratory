@@ -3,7 +3,6 @@ package com.caldremch.laboratory
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,16 +13,14 @@ import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.TestDialog
-import com.caldremch.dialog.owner.ownerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.adapter.MenuListAdapter
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.pickerview.callback.OnItemSelectedListener
+import com.caldremch.utils.KBObserver
 import com.caldremch.wheel.StringAdapter
-import com.caldremch.widget.SingleSelectAdapter
 import com.caldremch.widget.single.*
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,11 +33,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        KBObserver.init(this)
         val context = this
         initMenuList()
         initSingleView()
-
-
 
         wv.post {
 
