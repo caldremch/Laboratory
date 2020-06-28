@@ -54,6 +54,8 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
     var maxItemCount = 3
     val isMaskPhone = false
 
+    private var contactAddTv: View? = null
+
     //    val footerView by lazy { OwnerFootView(mContext) }
     private lateinit var footerView: View
 
@@ -73,6 +75,7 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
 
         val rv = rootView.findViewById<RecyclerView>(R.id.rv)
         val completeTv = rootView.findViewById<View>(R.id.tv_owner_complete)
+        contactAddTv = rootView.findViewById<View>(R.id.tv_contact_add)
         footerView = rootView.findViewById<View>(R.id.footerView)
 
         /*val defaultItemAnim = DefaultItemAnimator()
@@ -104,9 +107,7 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
 
         footerView.setOnClickListener {
             currentItemCount++
-            if (currentItemCount == maxItemCount) {
-                footerView.visibility = View.GONE
-            }
+            handleWithSize(currentItemCount)
             adapter.addData(Contact())
         }
 
@@ -114,9 +115,7 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
             override fun remove(index: Int) {
                 adapter.removeAt(index)
                 currentItemCount--
-                if (currentItemCount < maxItemCount && adapter.footerLayoutCount == 0) {
-                    footerView.visibility = View.VISIBLE
-                }
+                handleWithSize(currentItemCount)
             }
         }
 
@@ -129,8 +128,16 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
 
     fun handleWithSize(count: Int) {
         //防止多次添加
-        if (count < maxItemCount && this::footerView.isInitialized) {
-            footerView.visibility = View.VISIBLE
+        if (count < maxItemCount) {
+            if (this::footerView.isInitialized) {
+                footerView.visibility = View.VISIBLE
+            }
+            contactAddTv?.visibility = View.VISIBLE
+        } else {
+            if (this::footerView.isInitialized) {
+                footerView.visibility = View.GONE
+            }
+            contactAddTv?.visibility = View.GONE
         }
     }
 

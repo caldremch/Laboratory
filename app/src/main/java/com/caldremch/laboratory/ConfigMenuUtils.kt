@@ -67,7 +67,7 @@ object ConfigMenuUtils {
             title = "Owner Dialog"
             runnable = Runnable {
                 sOwnerDialog = OwnerDialog(context)
-                sOwnerDialog?.maxItemCount = 6
+                sOwnerDialog?.maxItemCount = 2
                 sOwnerDialog?.setList(list)
                 sOwnerDialog?.listener = object : OwnerDialog.ConfirmListener {
                     override fun onConfirm(contacts: List<Contact>) {
