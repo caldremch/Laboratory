@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.dialog.R
-import com.caldremch.dialog.owner.adapter.OwnerFootView
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
 
@@ -57,7 +56,9 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
     val contactList = arrayListOf<Contact>()
     var maxItemCount = 3
     val isMaskPhone = false
-    val footerView by lazy { OwnerFootView(mContext) }
+
+    //    val footerView by lazy { OwnerFootView(mContext) }
+    private lateinit var footerView: View
 
     private var currentItemCount = 0;
 
@@ -74,6 +75,7 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
 
         val rv = rootView.findViewById<RecyclerView>(R.id.rv)
         val completeTv = rootView.findViewById<View>(R.id.tv_owner_complete)
+        footerView = rootView.findViewById<View>(R.id.footerView)
 
         /*val defaultItemAnim = DefaultItemAnimator()
         defaultItemAnim.addDuration = 300
@@ -105,7 +107,7 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
         footerView.setOnClickListener {
             currentItemCount++
             if (currentItemCount == maxItemCount) {
-                adapter.removeAllFooterView()
+                footerView.visibility = View.GONE
             }
             adapter.addData(Contact())
         }
@@ -115,7 +117,7 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
                 adapter.removeAt(index)
                 currentItemCount--
                 if (currentItemCount < maxItemCount && adapter.footerLayoutCount == 0) {
-                    adapter.addFooterView(footerView)
+                    footerView.visibility = View.VISIBLE
                 }
             }
         }
@@ -129,9 +131,8 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
 
     fun handleWithSize(count: Int) {
         //防止多次添加
-        adapter.removeAllFooterView()
-        if (count < maxItemCount) {
-            adapter.addFooterView(footerView)
+        if (count < maxItemCount && this::footerView.isInitialized) {
+            footerView.visibility = View.VISIBLE
         }
     }
 
