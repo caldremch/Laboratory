@@ -1,6 +1,5 @@
 package com.caldremch.dialog.owner
 
-import android.content.Context
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
+import com.caldremch.dialog.DialogAnim
 import com.caldremch.dialog.R
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
@@ -25,26 +25,23 @@ import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
 inline fun AppCompatActivity.ownerDialog(dsl: OwnerDialog.() -> Unit): OwnerDialog {
     val dialog = OwnerDialog(this)
     dialog.apply(dsl)
-    dialog.show(this.supportFragmentManager, "OwnerDialog")
+    dialog.show()
     return dialog
 }
 
 //Context dsl调用
 inline fun ownerDialog(
     container: Any,
-    tag: String = "OwnerDialog",
     dsl: DialogFragment.() -> Unit
 ): OwnerDialog {
-
-    val dialogData = BaseDialog.checkContainer(container)
-    var dialog: OwnerDialog = OwnerDialog(dialogData.context)
+    val dialog = OwnerDialog(container)
     dialog.apply(dsl)
-    dialog.show(dialogData.fragmentManager, tag)
+    dialog.show()
     return dialog
 }
 
 
-class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog(context, tagStr) {
+class OwnerDialog(parent: Any) : BaseDialog(parent) {
 
 
     interface ConfirmListener {
@@ -65,6 +62,7 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
     init {
         gravity = Gravity.BOTTOM
         widthScale = 1f
+        anim = DialogAnim.BOTTOM_IN_BOTTOM_OUT
     }
 
     override fun getLayoutId(): Int {
@@ -96,8 +94,8 @@ class OwnerDialog(context: Context, tagStr: String = "OwnerDialog") : BaseDialog
             //获取 recyclerView 所有 EditText 的内容
             adapter.data.map {
                 //todo check phone format first
-                if (isMaskPhone && TextUtils.isEmpty(it.showTitle) && !TextUtils.isEmpty(it.phone)) {
-                    it.showTitle = PhoneCheckUtils.getMaskPhone(it.phone!!)
+                if (isMaskPhone && TextUtils.isEmpty(it.maskPhone) && !TextUtils.isEmpty(it.phone)) {
+                    it.maskPhone = PhoneCheckUtils.getMaskPhone(it.phone!!)
                 }
             }
             listener?.onConfirm(adapter.data)

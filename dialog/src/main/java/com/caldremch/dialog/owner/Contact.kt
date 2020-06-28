@@ -12,7 +12,7 @@ data class Contact(var name: String? = null, var phone: String? = null) : OwnerB
 
     fun copy(): Contact {
         val newContact = Contact(name, phone)
-        newContact.showTitle = showTitle
+        newContact.maskPhone = maskPhone
         newContact.isEnable = isEnable
         return newContact
     }

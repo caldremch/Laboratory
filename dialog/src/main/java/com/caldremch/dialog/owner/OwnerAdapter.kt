@@ -51,7 +51,7 @@ class OwnerAdapter :
 
         holder.nameEt.setText(item.name)
 
-        holder.phoneEt.setText(if (isMaskPhone) item.showTitle else item.phone)
+        holder.phoneEt.setText(if (isMaskPhone) item.maskPhone else item.phone)
 
     }
 

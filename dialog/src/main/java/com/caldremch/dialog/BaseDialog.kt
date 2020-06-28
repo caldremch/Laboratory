@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,17 +19,17 @@ import androidx.fragment.app.FragmentManager
  *
  * Dialog弹窗基类, 简单功能
  *
- * 动画: 后期加 todo 7/1
- *
  **/
-abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragment() {
+abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDialogFragment() {
 
     private lateinit var rootView: View
     var gravity: Int = Gravity.CENTER //dialog位置
     var widthScale: Float = 0.75f //宽占(屏幕宽度)比
     var cancelOutSide: Boolean = true //点击弹窗以外区域是否关闭
+    var isAllowingStateLoss = true //commit 是否允许状态丢失
     protected var mContext: Context
-    public var dialogData: DialogData
+    private var dialogData: DialogData
+    var anim = DialogAnim.NONE
 
     init {
         dialogData = checkContainer(parent)
@@ -44,14 +43,12 @@ abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragm
     ): View? {
         rootView = inflater.inflate(getLayoutId(), container, false)
         initStyle()
-        Log.d("TAG", "onCreateView: ")
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(rootView)
-        Log.d("TAG", "onViewCreated: ")
     }
 
     /**
@@ -64,6 +61,15 @@ abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragm
      */
     open fun initView(rootView: View) {
 
+    }
+
+    //设置弹窗样式
+    override fun getTheme(): Int {
+        var themeId = super.getTheme()
+        when (anim) {
+            DialogAnim.BOTTOM_IN_BOTTOM_OUT -> themeId = R.style.dialog_bottom_style
+        }
+        return themeId
     }
 
     //样式初始化
@@ -79,13 +85,36 @@ abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragm
             window.attributes = it
         }
 
+
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
         //isAdd 不准确, 同时添加多个事务, 并且不立即执行,
         try {
+            //解决快速点时, 会有isAdded 崩溃
             manager.beginTransaction().remove(this).commit()
-            super.show(manager, tag)
+
+            //是否AllowingStateLoss
+            if (isAllowingStateLoss) {
+                //反射修改
+                //mDismissed = false;
+                // mShownByMe = true;
+                try {
+                    val mDismissedField = DialogFragment::class.java.getDeclaredField("mDismissed")
+                    val mShownByMeField = DialogFragment::class.java.getDeclaredField("mShownByMe")
+                    mDismissedField.isAccessible = true
+                    mShownByMeField.isAccessible = true
+                    mDismissedField.set(this, false)
+                    mShownByMeField.set(this, true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                val ft = manager.beginTransaction()
+                ft.add(this, tag)
+                ft.commitAllowingStateLoss()
+            } else {
+                super.show(manager, tag)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -94,7 +123,6 @@ abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragm
 
     fun show() {
         super.show(dialogData.fragmentManager, tagStr)
-
     }
 
     class DialogData(var context: Context, var fragmentManager: FragmentManager)
@@ -119,6 +147,14 @@ abstract class BaseDialog(var parent: Any, var tagStr: String) : LifeDialogFragm
                 dialog = fragment
             }
             return dialog
+        }
+    }
+
+    override fun dismiss() {
+        if (isAllowingStateLoss) {
+            super.dismissAllowingStateLoss()
+        } else {
+            super.dismiss()
         }
     }
 }

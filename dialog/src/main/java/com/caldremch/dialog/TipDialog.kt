@@ -45,9 +45,9 @@ inline fun tipDialog(context: Context, dsl: TipDialog.() -> Unit): TipDialog {
     val dialog = TipDialog(context)
     dialog.apply(dsl)
     if (context is AppCompatActivity) {
-        dialog.show(context.supportFragmentManager, "tipDialog")
+        dialog.show(context.supportFragmentManager, null)
     } else if (context is Fragment) {
-        dialog.show((context as Fragment).childFragmentManager, "tipDialog")
+        dialog.show((context as Fragment).childFragmentManager, null)
     } else {
         throw RuntimeException("啥也不是")
     }

@@ -52,13 +52,13 @@ object ConfigMenuUtils {
         list.add(Contact().apply {
             name = "Caldremch1"
             phone = "17376999999"
-            showTitle = PhoneCheckUtils.getMaskPhone("17376999999")
+            maskPhone = PhoneCheckUtils.getMaskPhone("17376999999")
             isEnable = false
         })
         list.add(Contact().apply {
             name = "我是睡"
             phone = "13676999999"
-            showTitle = PhoneCheckUtils.getMaskPhone("13676999999")
+            maskPhone = PhoneCheckUtils.getMaskPhone("13676999999")
             isEnable = false
         })
 
