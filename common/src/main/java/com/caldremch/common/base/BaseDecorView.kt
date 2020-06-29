@@ -96,7 +96,7 @@ class BaseDecorView @JvmOverloads constructor(
                 if (context is Activity) {
                     (context as Activity).setContentView(this)
                 }
-                statusView.setViewStatus(StatusView.VIEW_STATE_LOADING)
+                statusView.setViewStatus(StatusView.VIEW_STATE_ERROR)
             } else {
                 if (context is Activity) {
                     (context as Activity).setContentView(childRootView)
