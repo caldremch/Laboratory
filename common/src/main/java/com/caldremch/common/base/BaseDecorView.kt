@@ -76,14 +76,32 @@ class BaseDecorView @JvmOverloads constructor(
                 if (context is Activity) {
                     (context as Activity).setContentView(this)
                 }
-//                statusView.setViewStatus(StatusView.VIEW_STATE_CONTENT)
             }
 
         } else {
-            //将 StatusView 添加到 title 的底下, statusView 金包含错误状态, 加载状态
-            val statusView = StatusView(context, contentViewId)
-
-
+            //仅支持 constraintLayout形式的布局
+            if (childRootView is ConstraintLayout) {
+                //将 StatusView 添加到 title 的底下, statusView 金包含错误状态, 加载状态
+                addView(childRootView)
+                val statusView = StatusView(context)
+                val stateViewLayoutParams = LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    0
+                )
+                stateViewLayoutParams.topToBottom = titleView.id
+                stateViewLayoutParams.startToStart = LayoutParams.PARENT_ID
+                stateViewLayoutParams.endToEnd = LayoutParams.PARENT_ID
+                stateViewLayoutParams.bottomToBottom = LayoutParams.PARENT_ID
+                addView(statusView, stateViewLayoutParams)
+                if (context is Activity) {
+                    (context as Activity).setContentView(this)
+                }
+                statusView.setViewStatus(StatusView.VIEW_STATE_LOADING)
+            } else {
+                if (context is Activity) {
+                    (context as Activity).setContentView(childRootView)
+                }
+            }
         }
     }
 }

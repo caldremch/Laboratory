@@ -1,6 +1,7 @@
 package com.caldremch.laboratory
 
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.widget.Toast
 import com.caldremch.dialog.owner.Contact
@@ -75,6 +76,14 @@ object ConfigMenuUtils {
                     }
                 }
                 sOwnerDialog?.show()
+            }
+        })
+
+
+        menuList.add(MenuData().apply {
+            title = "Base Page Status"
+            runnable = Runnable {
+                context.startActivity(Intent(context, Main2Activity::class.java))
             }
         })
     }

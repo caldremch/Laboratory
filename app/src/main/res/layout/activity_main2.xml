@@ -6,9 +6,8 @@
     android:orientation="vertical"
     tools:context=".Main2Activity">
 
-
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/android_common_title_view_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />
