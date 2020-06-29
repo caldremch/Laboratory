@@ -1,6 +1,7 @@
 package com.caldremch.common.widget.status
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -150,6 +151,7 @@ class StatusView : FrameLayout, IStatusView, LifecycleObserver {
 
     override fun initErrorView(): View {
         mErrorView = LayoutInflater.from(context).inflate(R.layout.common_loading_error, null)
+        mErrorView?.setBackgroundColor(Color.WHITE)
         val textView = mErrorView!!.findViewById<TextView>(R.id.tv_reload)
         textView?.setOnClickListener { v: View? ->
             if (overrideStatusView != null) {
@@ -167,6 +169,7 @@ class StatusView : FrameLayout, IStatusView, LifecycleObserver {
             LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT
         )
+        frameLayout.setBackgroundColor(Color.WHITE)
         val params = LayoutParams(
             dp2px(context, 30f),
             dp2px(context, 30f)

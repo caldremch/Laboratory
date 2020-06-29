@@ -83,7 +83,7 @@ object ConfigMenuUtils {
         menuList.add(MenuData().apply {
             title = "Base Page Status"
             runnable = Runnable {
-                context.startActivity(Intent(context, Main2Activity::class.java))
+                context.startActivity(Intent(context, PageStatusViewActivity::class.java))
             }
         })
     }
