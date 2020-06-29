@@ -1,17 +1,15 @@
 package com.caldremch.laboratory
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.caldremch.common.base.AbsActivity
 
-class Main2Activity : AppCompatActivity() {
+class Main2Activity : AbsActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main2
     }
 
-    override fun onStart() {
-        super.onStart()
-        Thread.sleep(100000)
+    override fun getTitleViewId(): Int {
+        return R.layout.test_title
     }
+
 }

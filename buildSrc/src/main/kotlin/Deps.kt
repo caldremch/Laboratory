@@ -32,7 +32,10 @@ object Deps {
     //third part
     const val glide = "com.github.bumptech.glide:glide:4.10.0"
     const val recyclerview_animators = "jp.wasabeef:recyclerview-animators:3.0.0"
+    const val immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0"
     const val BaseRecyclerViewAdapterHelper =
         "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
+    const val lottie = "com.airbnb.android:lottie:3.4.1"
+    const val eventbus = "org.greenrobot:eventbus:3.2.0"
 }
 
