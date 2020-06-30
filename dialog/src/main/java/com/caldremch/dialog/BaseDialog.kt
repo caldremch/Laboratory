@@ -49,6 +49,7 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(rootView)
+
     }
 
     /**
@@ -60,6 +61,13 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
      *  重写初始化view
      */
     open fun initView(rootView: View) {
+
+    }
+
+    /**
+     *  重写初始化数据
+     */
+    open fun initData() {
 
     }
 

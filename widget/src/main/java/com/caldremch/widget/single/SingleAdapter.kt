@@ -1,6 +1,8 @@
 package com.caldremch.widget.single
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.widget.R
@@ -20,15 +22,11 @@ class UnitTypeHolder(itemView: View) : SingleSelectHolder(itemView) {
 }
 
 class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int = -1) :
-    SingleSelectAdapter<StringItem, UnitTypeHolder>(data, rv, selectedPos, R.layout.single_item) {
+    SingleSelectAdapter<StringItem, UnitTypeHolder>(data, rv, selectedPos) {
 
     override fun bindViewHolder(holder: UnitTypeHolder, position: Int, data: StringItem) {
         holder.tv.text = data.string
         holder.tv.isSelected = data.isSelect
-    }
-
-    override fun createViewHolder(view: View): UnitTypeHolder {
-        return UnitTypeHolder(view)
     }
 
     override fun onUnSelectHolder(holder: UnitTypeHolder) {
@@ -41,6 +39,12 @@ class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int =
 
     override fun selectInterrupt(): Boolean {
         return false
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitTypeHolder {
+        return UnitTypeHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.single_item, parent, false)
+        )
     }
 
 }

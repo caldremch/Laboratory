@@ -1,8 +1,6 @@
 package com.caldremch.widget.single
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -30,8 +28,7 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     var data: List<T>, //数据源
     var rv: RecyclerView, //列表
     var selectedPos: Int = -1, //选中位置
-    var layoutId: Int, //item布局,
-    var isSupportUnSelect: Boolean = true
+    var isSupportUnSelect: Boolean = false
 ) : RecyclerView.Adapter<D>() {
 
     companion object {
@@ -56,13 +53,6 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     //拦截监听
     var interruptISelectListener: ISelectListener.OnInterrupt? = null
 
-
-    //Holder创建
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): D {
-        return createViewHolder(
-            LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
-        )
-    }
 
     override fun getItemCount(): Int {
         return data.size
@@ -154,10 +144,6 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
      */
     abstract fun bindViewHolder(holder: D, position: Int, data: T)
 
-    /**
-     * viewHolder创建
-     */
-    abstract fun createViewHolder(view: View): D
 
     /**
      * 选中前的拦截
