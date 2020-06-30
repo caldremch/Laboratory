@@ -1,3 +1,4 @@
+include ':CaldremchX'
 include ':utils'
 include ':common'
 include ':widget'
