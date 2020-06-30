@@ -1,3 +1,5 @@
+include ':utils'
+include ':common'
 include ':widget'
 include ':dialog'
 rootProject.name='Laboratory'

@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import java.lang.RuntimeException
 
 /**
  *
@@ -27,7 +26,7 @@ import java.lang.RuntimeException
 
 //Activity  dsl调用
 inline fun AppCompatActivity.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
-    val dialog = TipDialog()
+    val dialog = TipDialog(this)
     dialog.apply(dsl)
     dialog.show(this.supportFragmentManager, "tipDialog")
     return dialog
@@ -35,7 +34,7 @@ inline fun AppCompatActivity.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
 
 //fragment dsl调用
 inline fun Fragment.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
-    val dialog = TipDialog()
+    val dialog = TipDialog(this.context!!)
     dialog.apply(dsl)
     dialog.show(this.childFragmentManager, "tipDialog")
     return dialog
@@ -43,19 +42,19 @@ inline fun Fragment.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
 
 //Context dsl调用
 inline fun tipDialog(context: Context, dsl: TipDialog.() -> Unit): TipDialog {
-    val dialog = TipDialog()
+    val dialog = TipDialog(context)
     dialog.apply(dsl)
     if (context is AppCompatActivity) {
-        dialog.show(context.supportFragmentManager, "tipDialog")
+        dialog.show(context.supportFragmentManager, null)
     } else if (context is Fragment) {
-        dialog.show((context as Fragment).childFragmentManager, "tipDialog")
+        dialog.show((context as Fragment).childFragmentManager, null)
     } else {
         throw RuntimeException("啥也不是")
     }
     return dialog
 }
 
-open class TipDialog : BaseDialog() {
+open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
 
     //标题文本
     var titleText: String? = null

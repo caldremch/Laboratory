@@ -7,15 +7,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.TestDialog
 import com.caldremch.dialog.tipDialog
+import com.caldremch.laboratory.adapter.MenuListAdapter
+import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.pickerview.callback.OnItemSelectedListener
+import com.caldremch.utils.KBObserver
 import com.caldremch.wheel.StringAdapter
 import com.caldremch.widget.single.*
+import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,10 +33,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        KBObserver.init(this)
         val context = this
-
-
+        initMenuList()
         initSingleView()
+
         wv.post {
 
             val stringList = mutableListOf<String>(
@@ -71,6 +77,23 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun initMenuList() {
+        val adapter = MenuListAdapter()
+        rvMenu.layoutManager = LinearLayoutManager(this)
+        rvMenu.adapter = adapter
+        adapter.setOnItemClickListener { adapter, view, position ->
+            (adapter.data[position] as MenuData).runnable?.run()
+        }
+        setMenuData()
+    }
+
+    private fun setMenuData() {
+        val menuList = arrayListOf<MenuData>()
+        ConfigMenuUtils.setSetMenuData(this, menuList)
+        (rvMenu.adapter as BaseQuickAdapter<MenuData, *>).setList(menuList)
+
     }
 
     private lateinit var singleAdapter: SingleAdapter
@@ -135,48 +158,9 @@ class MainActivity : AppCompatActivity() {
 
 
     fun start(view: View) {
-
-
-//        val dialog = TipDialog()
-//        dialog.show(supportFragmentManager, "tag")
-
-//        tipDialog {
-//
-//        }
-
-//        val flag = "60,80,0,90"
-//        val flagDesc = "60(达标),80(优秀),0,90"
-//        sv.setScoreAndDesc(90f, flag, flagDesc)
-//        sv.post {
-//            Log.d("tag","width=${sv.width},height=${sv.height}")
-//
-//        }
-//        sv.setTitle("9.8", "昨日得分")
-//        sv.startAnim(80f)
-
-//
-//       val dialog = DatePickDialog(this)
-//        if (!dialog.isShowing) {
-//            dialog.listener = object : OnDateSelectedListener{
-//                override fun onItemSelected(year: Int, month: Int, day: Int) {
-//
-//
-//                }
-//
-//                override fun onDateSelected(startDate: Date, endDate: Date) {
-//                    Log.d("tag", "开始时间: ${simpleDateFormat.format(startDate)}")
-//                    Log.d("tag","结束时间: ${simpleDateFormat.format(endDate)}")
-//                }
-//            }
-//            dialog.show()
-//            dialog.limit
-//            dialog.setDate(DatePickDialog.YESTERDAY)
-//        }
-
     }
 
     fun tost(view: View) {
-
     }
 
     fun setDatess(view: View) {
