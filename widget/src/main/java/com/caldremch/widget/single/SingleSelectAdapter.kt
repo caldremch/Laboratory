@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @describe: 单选(可拦截)rv套装
  *
  **/
-
+//todo 点击事件定位到具体的View
 //单选bean父类
 open class SelectItem(var isSelect: Boolean = false)
 
@@ -29,9 +29,14 @@ open class SingleSelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     var data: List<T>, //数据源
     var rv: RecyclerView, //列表
-    var selectedPos: Int = 0, //选中位置
-    var layoutId: Int //item布局
+    var selectedPos: Int = -1, //选中位置
+    var layoutId: Int, //item布局,
+    var isSupportUnSelect: Boolean = true
 ) : RecyclerView.Adapter<D>() {
+
+    companion object {
+        const val NONE = -1; //表示未选中任何一个
+    }
 
     //操作缓存
     var cacheOperation: CacheOperation<T, D>? = null
@@ -52,9 +57,6 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     var interruptISelectListener: ISelectListener.OnInterrupt? = null
 
 
-    //操作缓存类
-
-
     //Holder创建
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): D {
         return createViewHolder(
@@ -73,8 +75,7 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
 
         holder.itemView.setOnClickListener {
 
-            //todo 可添加取消选中功能
-            if (selectedPos == position) {
+            if (selectedPos == position && !isSupportUnSelect) {
                 return@setOnClickListener
             }
 
@@ -103,11 +104,35 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
      */
 
     fun handleSelect(lastSelectedHolder: D?, currentHolder: D, currentPosition: Int) {
+
+        //优先处理点击同一个
+        if (isSupportUnSelect) {
+            if (lastSelectedHolder == currentHolder && selectedPos != NONE) {
+                //取消选中
+                data[selectedPos].isSelect = false
+                onUnSelectHolder(currentHolder)
+                selectedPos = NONE
+                return
+            } else if (lastSelectedHolder == null && selectedPos == NONE) {
+                //没有任何一个被选中
+                selectedPos = currentPosition
+                data[selectedPos].isSelect = true
+                onSelectHolder(currentHolder)
+                return
+            }
+        }
+
+        if (selectedPos == NONE) {
+            return
+        }
+
         if (lastSelectedHolder != null) {
             onUnSelectHolder(lastSelectedHolder)
         } else {
             notifyItemChanged(selectedPos)
         }
+
+        //当前为取消选中
         data[selectedPos].isSelect = false
         selectedPos = currentPosition
         data[selectedPos].isSelect = true

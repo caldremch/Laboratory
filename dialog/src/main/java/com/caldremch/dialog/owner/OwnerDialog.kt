@@ -1,6 +1,8 @@
 package com.caldremch.dialog.owner
 
+import android.content.DialogInterface
 import android.text.TextUtils
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -157,4 +159,9 @@ class OwnerDialog(parent: Any) : BaseDialog(parent) {
         adapter.setList(contactList)
     }
 
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        Log.d("tag", "onDismiss")
+    }
 }

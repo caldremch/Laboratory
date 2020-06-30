@@ -19,7 +19,7 @@ class UnitTypeHolder(itemView: View) : SingleSelectHolder(itemView) {
     val tv: TextView = getView(R.id.tv)
 }
 
-class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int = 0) :
+class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int = -1) :
     SingleSelectAdapter<StringItem, UnitTypeHolder>(data, rv, selectedPos, R.layout.single_item) {
 
     override fun bindViewHolder(holder: UnitTypeHolder, position: Int, data: StringItem) {
@@ -40,7 +40,7 @@ class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int =
     }
 
     override fun selectInterrupt(): Boolean {
-        return true
+        return false
     }
 
 }

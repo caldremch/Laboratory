@@ -16,12 +16,24 @@ class CacheOperation<T : SelectItem, D : SingleSelectHolder>(
     private val rv: RecyclerView,
     private val handle: SingleSelectAdapter<T, D>,
     private val selectedPos: Int,
-    private val holder: D,
-    private val currentPosition: Int
+    private val holder: D, //当前选中holder
+    private val currentPosition: Int //当前选中position
 ) {
 
     fun goOn() {
-        val lastSelectedHolder = rv.findViewHolderForLayoutPosition(selectedPos) as D
+
+        val lastSelectedHolder: D?
+        lastSelectedHolder = if (selectedPos == SingleSelectAdapter.NONE) {
+            null
+        } else {
+            val resultHolder = rv.findViewHolderForLayoutPosition(selectedPos)
+            if (resultHolder == null) {
+                null
+            } else {
+                resultHolder as D
+            }
+        }
+
         handle.handleSelect(
             lastSelectedHolder,
             holder,
