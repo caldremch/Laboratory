@@ -3,6 +3,7 @@ package com.caldremch.laboratory
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import com.caldremch.dialog.owner.Contact
@@ -12,6 +13,7 @@ import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.laboratory.widget.HouseStruct
 import com.caldremch.laboratory.widget.HouseStructDialog
+import com.caldremch.laboratory.widget.SimpleListener
 
 /**
  *
@@ -88,15 +90,33 @@ object ConfigMenuUtils {
             }
         })
 
-
+        var houseStruct: HouseStruct? = null
         menuList.add(MenuData().apply {
             title = "House struct dialog"
             runnable = Runnable {
-                val houseStruct = HouseStruct(section = 22, hall = 2, toilet = 2)
                 val dialog = HouseStructDialog(context)
+                dialog.strict = true
                 val bundle = Bundle()
                 bundle.putSerializable("data", houseStruct)
                 dialog.arguments = bundle
+                dialog.listener = object : SimpleListener<HouseStruct> {
+                    override fun onData(data: HouseStruct) {
+                        houseStruct = data
+                        val sb = StringBuilder()
+                        data.apply {
+                            section?.let {
+                                sb.append(it).append("室")
+                            }
+                            hall?.let {
+                                sb.append(it).append("厅")
+                            }
+                            toilet?.let {
+                                sb.append(it).append("卫")
+                            }
+                        }
+                        Log.d("tag", sb.toString())
+                    }
+                }
                 dialog.show()
             }
         })

@@ -55,6 +55,16 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     //拦截监听
     var interruptISelectListener: ISelectListener.OnInterrupt? = null
 
+    fun hasSelected(): Boolean {
+        return selectedPos != NONE
+    }
+
+    fun getSelectData(): T? {
+        if (selectedPos != NONE && selectedPos < data.size) {
+            return data[selectedPos]
+        }
+        return null
+    }
 
     override fun getItemCount(): Int {
         return data.size
@@ -181,7 +191,6 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     open fun selectInterrupt(): Boolean {
         return false
     }
-
 
 }
 

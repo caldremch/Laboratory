@@ -2,6 +2,7 @@ package com.caldremch.laboratory.widget
 
 import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
@@ -21,7 +22,7 @@ import com.caldremch.laboratory.R
  *
  **/
 
-class HouseStructDialog(parent: Any, val strict: Boolean = false) : BaseDialog(parent) {
+class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(parent) {
 
 
     private lateinit var rv_room: RecyclerView
@@ -36,6 +37,8 @@ class HouseStructDialog(parent: Any, val strict: Boolean = false) : BaseDialog(p
     private val maxRoomItem = 5
     private val maxHallItem = 4
     private val maxToiletItem = 4
+
+    var listener: SimpleListener<HouseStruct>? = null
 
     init {
         gravity = Gravity.BOTTOM
@@ -62,10 +65,19 @@ class HouseStructDialog(parent: Any, val strict: Boolean = false) : BaseDialog(p
         }
 
         rootView.findViewById<View>(R.id.tv_complete).setOnClickListener {
-
-            if (strict) {
-                
+            if (strict && (!roomAdapter.hasSelected() || !hallAdapter.hasSelected() || !toiletAdapter.hasSelected())) {
+                Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            listener?.onData(
+                HouseStruct(
+                    roomAdapter.getSelectData()?.value,
+                    hallAdapter.getSelectData()?.value,
+                    toiletAdapter.getSelectData()?.value
+                )
+            )
+            dismiss()
 
         }
     }
