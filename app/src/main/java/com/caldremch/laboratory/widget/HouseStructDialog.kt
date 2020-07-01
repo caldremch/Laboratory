@@ -21,7 +21,7 @@ import com.caldremch.laboratory.R
  *
  **/
 
-class HouseStructDialog(parent: Any) : BaseDialog(parent) {
+class HouseStructDialog(parent: Any, val strict: Boolean = false) : BaseDialog(parent) {
 
 
     private lateinit var rv_room: RecyclerView
@@ -62,6 +62,10 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
         }
 
         rootView.findViewById<View>(R.id.tv_complete).setOnClickListener {
+
+            if (strict) {
+                
+            }
 
         }
     }
