@@ -1,52 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
+    android:paddingBottom="20dp"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="卧室数量"
-        android:textColor="#999999" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_room"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp" />
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="14dp"
+        android:text="清空"
+        android:textColor="#666666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="户型"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_clear" />
+
+    <TextView
+        android:id="@+id/tv_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="完成"
+        android:textColor="#666666"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_clear" />
+
+    <TextView
+        android:id="@+id/tv_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="卧室数量"
+        android:textColor="#999999"
+        app:layout_constraintStart_toStartOf="@+id/tv_clear"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clear" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_room"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_room" />
+
+    <TextView
+        android:id="@+id/tv_hall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="客厅餐厅数量"
-        android:textColor="#999999" />
+        android:textColor="#999999"
+        app:layout_constraintStart_toStartOf="@+id/tv_room"
+        app:layout_constraintTop_toBottomOf="@+id/rv_room" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_hall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hall" />
 
     <TextView
+        android:id="@+id/tv_toilet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="卫生间数量"
-        android:textColor="#999999" />
+        android:textColor="#999999"
+        app:layout_constraintStart_toStartOf="@+id/tv_room"
+        app:layout_constraintTop_toBottomOf="@+id/rv_hall" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_toilet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="12dp" />
-</LinearLayout>
+        app:layout_constraintStart_toStartOf="@+id/tv_room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_toilet" />
+</androidx.constraintlayout.widget.ConstraintLayout>

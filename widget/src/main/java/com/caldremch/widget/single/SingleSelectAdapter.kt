@@ -29,7 +29,7 @@ open class SingleSelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     var data: List<T>, //数据源
     var rv: RecyclerView, //列表
-    var selectedPos: Int = -1, //选中位置
+    var selectedPos: Int = NONE, //选中位置
     var isSupportUnSelect: Boolean = false
 ) : RecyclerView.Adapter<D>() {
 
@@ -134,6 +134,23 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     }
 
     /**
+     * 清除选中, 取消当前选中
+     *
+     */
+    fun clearSelected() {
+        if (selectedPos != NONE) {
+            data[selectedPos].isSelect = false
+            val targetHolder = rv.findViewHolderForAdapterPosition(selectedPos)
+            if (targetHolder == null) {
+                notifyItemChanged(selectedPos)
+            } else {
+                onUnSelectHolder(targetHolder as D, selectedPos, data[selectedPos])
+            }
+            selectedPos = NONE
+        }
+    }
+
+    /**
      * 取消选中操作
      * holder: 取消选中的holder
      * position: 取消选中选中的位置
@@ -164,6 +181,7 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
     open fun selectInterrupt(): Boolean {
         return false
     }
+
 
 }
 

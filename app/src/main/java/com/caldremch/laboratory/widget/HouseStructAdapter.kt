@@ -3,7 +3,6 @@ package com.caldremch.laboratory.widget
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,8 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
     val tv = itemView.findViewById<TextView>(R.id.tv)
     val ll_edit = itemView.findViewById<View>(R.id.ll_edit)
 
+    //用于控制, 点击选中Edittext时, 并不会选中, 所以点击的时候, 操作是requestFocus
+    //requestFocus时, 不需要模拟点击
     var isEditSelect = false
 
     init {
@@ -45,7 +46,7 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
         et?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (layoutPosition != -1) {
-                    if (TextUtils.isEmpty(s)) {
+                    if (TextUtils.isEmpty(s?.toString())) {
                         adapter.mDatas[layoutPosition].value = null
                     } else {
                         adapter.mDatas[layoutPosition].value = s?.toString()?.toInt()
@@ -67,28 +68,47 @@ class HouseStructAdapter(
     val mDatas: List<HouseStructValue>,
     rv: RecyclerView,
     val type: Int = 0,
-    selectedPos: Int = -1
+    selectedPos: Int = NONE
 ) : SingleSelectAdapter<HouseStructValue, HouseStructHolder>(mDatas, rv, selectedPos, true) {
 
 
     override fun bindViewHolder(holder: HouseStructHolder, position: Int, data: HouseStructValue) {
-        when (type) {
 
+        when (type) {
             HouseStructValue.ROOM -> {
                 if (getItemViewType(position) == 0) {
                     holder.tv.text = "${data.value}室"
+                } else {
+                    data.value?.let {
+                        holder.et.setText("$it")
+                    }
                 }
             }
             HouseStructValue.HALL -> {
                 if (getItemViewType(position) == 0) {
                     holder.tv.text = "${data.value}厅"
+                } else {
+                    data.value?.let {
+                        holder.et.setText("$it")
+                    }
                 }
             }
             HouseStructValue.TOILET -> {
                 if (getItemViewType(position) == 0) {
                     holder.tv.text = "${data.value}卫"
+                } else {
+                    data.value?.let {
+                        holder.et.setText("$it")
+                    }
                 }
             }
+        }
+
+        if (getItemViewType(position) == 0) {
+            holder.tv.isSelected = data.isSelect
+        } else {
+            holder.isEditSelect = data.isSelect
+            holder.ll_edit.isSelected = data.isSelect
         }
 
     }
@@ -116,9 +136,7 @@ class HouseStructAdapter(
             holder.isEditSelect = true
             holder.ll_edit.isSelected = true
             holder.et.requestFocus()
-
         }
-        Log.d("tag", "选中了?")
     }
 
     override fun onUnSelectHolder(

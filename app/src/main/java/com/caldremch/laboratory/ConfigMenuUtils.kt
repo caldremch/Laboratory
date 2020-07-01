@@ -92,7 +92,7 @@ object ConfigMenuUtils {
         menuList.add(MenuData().apply {
             title = "House struct dialog"
             runnable = Runnable {
-                val houseStruct = HouseStruct(section = 3, hall = 2, toilet = 2)
+                val houseStruct = HouseStruct(section = 22, hall = 2, toilet = 2)
                 val dialog = HouseStructDialog(context)
                 val bundle = Bundle()
                 bundle.putSerializable("data", houseStruct)
