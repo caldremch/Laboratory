@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.laboratory.R
-import com.caldremch.widget.single.SingleSelectAdapter
 
 /**
  *
@@ -29,7 +28,6 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
     private lateinit var rv_hall: RecyclerView
     private lateinit var rv_toilet: RecyclerView
     private var houseStruct: HouseStruct? = null
-
     private lateinit var roomAdapter: HouseStructAdapter
     private lateinit var hallAdapter: HouseStructAdapter
     private lateinit var toiletAdapter: HouseStructAdapter
@@ -38,14 +36,6 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
     private val maxRoomItem = 5
     private val maxHallItem = 4
     private val maxToiletItem = 4
-
-    private val typeMaxCount: HashMap<Int, Int> by lazy {
-        hashMapOf(
-            HouseStructValue.ROOM to maxRoomItem,
-            HouseStructValue.HALL to maxHallItem,
-            HouseStructValue.TOILET to maxToiletItem
-        )
-    }
 
     init {
         gravity = Gravity.BOTTOM
@@ -70,6 +60,10 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
             hallAdapter.clearSelected()
             toiletAdapter.clearSelected()
         }
+
+        rootView.findViewById<View>(R.id.tv_complete).setOnClickListener {
+
+        }
     }
 
     override fun initData() {
@@ -83,9 +77,9 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
     }
 
     private fun initAdapter() {
-        initAdapter(HouseStructValue.ROOM)
-        initAdapter(HouseStructValue.HALL)
-        initAdapter(HouseStructValue.TOILET)
+        initAdapter(HouseStructValue.ROOM, maxRoomItem)
+        initAdapter(HouseStructValue.HALL, maxHallItem)
+        initAdapter(HouseStructValue.TOILET, maxToiletItem)
         initDefaultPosition()
         rv_room.adapter = roomAdapter
         rv_hall.adapter = hallAdapter
@@ -137,10 +131,7 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
     }
 
     //创建Adapter 及 选中位置指定
-    private fun initAdapter(type: Int) {
-        val maxItemCount = typeMaxCount[type]!!
-        //选中位置
-        var selectedPos = SingleSelectAdapter.NONE
+    private fun initAdapter(type: Int, maxItemCount: Int) {
         val roomData = mutableListOf<HouseStructValue>()
         //创建数据源
         for (i in 0 until maxItemCount) {
@@ -150,52 +141,6 @@ class HouseStructDialog(parent: Any) : BaseDialog(parent) {
             } else {
                 houseStructValue = HouseStructValue(if (type == HouseStructValue.ROOM) i + 1 else i)
             }
-
-//            //设置默认
-//            when (type) {
-//                HouseStructValue.ROOM -> {
-//                    if (selectedPos == SingleSelectAdapter.NONE) {
-//                        houseStruct?.section?.let {
-//                            if (it >= maxRoomItem) {
-//                                selectedPos = maxItemCount - 1
-//                                houseStructValue.value = it
-//                                houseStructValue.isSelect = true
-//                            } else if (it == i + 1) {
-//                                selectedPos = i
-//                                houseStructValue.isSelect = true
-//                            }
-//                        }
-//                    }
-//                }
-//                HouseStructValue.HALL -> {
-//                    if (selectedPos == SingleSelectAdapter.NONE) {
-//                        houseStruct?.hall?.let {
-//                            if (it > maxHallItem - 1) {
-//                                houseStructValue.value = it
-//                                selectedPos = maxItemCount - 1
-//                                houseStructValue.isSelect = true
-//                            } else if (it == i) {
-//                                selectedPos = i
-//                                houseStructValue.isSelect = true
-//                            }
-//                        }
-//                    }
-//                }
-//                HouseStructValue.TOILET -> {
-//                    if (selectedPos == SingleSelectAdapter.NONE) {
-//                        houseStruct?.toilet?.let {
-//                            if (it > maxToiletItem - 1) {
-//                                houseStructValue.value = it
-//                                selectedPos = maxItemCount - 1
-//                                houseStructValue.isSelect = true
-//                            } else if (it == i) {
-//                                selectedPos = i
-//                                houseStructValue.isSelect = true
-//                            }
-//                        }
-//                    }
-//                }
-//            }
             roomData.add(houseStructValue)
         }
 
