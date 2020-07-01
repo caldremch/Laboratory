@@ -3,5 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
+    android:gravity="center"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/selector_grey2red_round_rb"
     android:id="@+id/tv"
     android:paddingBottom="10dp"></TextView>

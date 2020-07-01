@@ -2,6 +2,7 @@ package com.caldremch.laboratory
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.Gravity
 import android.widget.Toast
 import com.caldremch.dialog.owner.Contact
@@ -9,6 +10,8 @@ import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
+import com.caldremch.laboratory.widget.HouseStruct
+import com.caldremch.laboratory.widget.HouseStructDialog
 
 /**
  *
@@ -54,13 +57,11 @@ object ConfigMenuUtils {
             name = "Caldremch1"
             phone = "17376999999"
             maskPhone = PhoneCheckUtils.getMaskPhone("17376999999")
-            isEnable = false
         })
         list.add(Contact().apply {
             name = "我是睡"
             phone = "13676999999"
             maskPhone = PhoneCheckUtils.getMaskPhone("13676999999")
-            isEnable = false
         })
 
 
@@ -68,7 +69,7 @@ object ConfigMenuUtils {
             title = "Owner Dialog"
             runnable = Runnable {
                 sOwnerDialog = OwnerDialog(context)
-                sOwnerDialog?.maxItemCount = 2
+                sOwnerDialog?.maxItemCount = 3
                 sOwnerDialog?.setList(list)
                 sOwnerDialog?.listener = object : OwnerDialog.ConfirmListener {
                     override fun onConfirm(contacts: List<Contact>) {
@@ -84,6 +85,19 @@ object ConfigMenuUtils {
             title = "Base Page Status"
             runnable = Runnable {
                 context.startActivity(Intent(context, PageStatusViewActivity::class.java))
+            }
+        })
+
+
+        menuList.add(MenuData().apply {
+            title = "House struct dialog"
+            runnable = Runnable {
+                val houseStruct = HouseStruct(section = 3, hall = 2, toilet = 2)
+                val dialog = HouseStructDialog(context)
+                val bundle = Bundle()
+                bundle.putSerializable("data", houseStruct)
+                dialog.arguments = bundle
+                dialog.show()
             }
         })
     }

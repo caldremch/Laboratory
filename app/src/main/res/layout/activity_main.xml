@@ -87,6 +87,7 @@
 
     <EditText
         android:layout_width="0dp"
+        android:hint="ssdlkaj"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button2"

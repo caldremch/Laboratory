@@ -1,7 +1,5 @@
 package com.caldremch.dialog.owner
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -49,14 +47,24 @@ class OwnerAdapter :
         holder.nameEt.isEnabled = item.isEnable
         holder.phoneEt.isEnabled = item.isEnable
 
-        holder.nameEt.setText(item.name)
+//        holder.nameEt.setText(item.name)
+//        holder.phoneEt.setText(if (isMaskPhone) item.maskPhone else item.phone)
+//        holder.nameEt.setText(item.name)
+//        holder.phoneEt.setText(item.phone)
 
-        holder.phoneEt.setText(if (isMaskPhone) item.maskPhone else item.phone)
+//        holder.listener = object : OwnerEditListener{
+//            override fun onTextChange(string: String?) {
+//                holder.nameEt.setText(string)
+//            }
+//        }
 
     }
 
 
+
     inner class OwnerViewHolder(view: View) : BaseViewHolder(view) {
+
+        var listener: OwnerEditListener? = null
 
         var nameEt = getView<EditText>(R.id.et_name)
         var phoneEt = getView<EditText>(R.id.et_phone)
@@ -64,9 +72,10 @@ class OwnerAdapter :
 
         init {
             /***********************onCreateViewHolder中添加监听, 更新对应位置**************************/
-            nameEt.addTextChangedListener(object : TextWatcher {
+            /*nameEt.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     data[layoutPosition].name = s?.toString()
+                    listener?.onTextChange(s?.toString())
                 }
 
                 override fun beforeTextChanged(
@@ -96,6 +105,8 @@ class OwnerAdapter :
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
+
+             */
 
         }
     }

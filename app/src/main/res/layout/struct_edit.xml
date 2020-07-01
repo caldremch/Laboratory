@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_edit"
     android:layout_width="match_parent"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:id="@+id/et"
-    android:layout_height="wrap_content">
+    android:layout_marginEnd="16dp"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:background="@drawable/selector_grey2red_round_rb"
+    android:orientation="horizontal">
 
-</EditText>
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:inputType="number"
+        android:gravity="center_vertical"
+        android:paddingTop="13dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="13dp"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_placeholder_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textSize="14sp"
+        android:layout_marginEnd="8dp"
+        android:visibility="visible"
+        android:text="室" />
+</LinearLayout>

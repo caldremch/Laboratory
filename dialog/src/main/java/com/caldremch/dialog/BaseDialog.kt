@@ -24,7 +24,7 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
 
     private lateinit var rootView: View
     var gravity: Int = Gravity.CENTER //dialog位置
-    var widthScale: Float = 0.75f //宽占(屏幕宽度)比
+    var widthScale: Float = 1f //宽占(屏幕宽度)比
     var cancelOutSide: Boolean = true //点击弹窗以外区域是否关闭
     var isAllowingStateLoss = true //commit 是否允许状态丢失
     protected var mContext: Context
@@ -49,7 +49,7 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(rootView)
-
+        initData()
     }
 
     /**

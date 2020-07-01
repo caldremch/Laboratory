@@ -12,6 +12,12 @@ import com.caldremch.widget.single.SelectItem
  *
  **/
 
-class HouseStructValue(var value: Int, var isEditText: Boolean = false) : SelectItem() {
+class HouseStructValue(var value: Int? = null, var isEditText: Boolean = false) : SelectItem() {
+
+    companion object {
+        const val ROOM = 1
+        const val HALL = 2
+        const val TOILET = 3
+    }
 
 }

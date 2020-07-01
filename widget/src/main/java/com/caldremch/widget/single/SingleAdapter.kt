@@ -22,19 +22,11 @@ class UnitTypeHolder(itemView: View) : SingleSelectHolder(itemView) {
 }
 
 class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int = -1) :
-    SingleSelectAdapter<StringItem, UnitTypeHolder>(data, rv, selectedPos) {
+    SingleSelectAdapter<StringItem, UnitTypeHolder>(data, rv, selectedPos, true) {
 
     override fun bindViewHolder(holder: UnitTypeHolder, position: Int, data: StringItem) {
         holder.tv.text = data.string
         holder.tv.isSelected = data.isSelect
-    }
-
-    override fun onUnSelectHolder(holder: UnitTypeHolder) {
-        holder.tv.isSelected = false
-    }
-
-    override fun onSelectHolder(holder: UnitTypeHolder) {
-        holder.tv.isSelected = true
     }
 
     override fun selectInterrupt(): Boolean {
@@ -45,6 +37,14 @@ class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int =
         return UnitTypeHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.single_item, parent, false)
         )
+    }
+
+    override fun onSelectHolder(holder: UnitTypeHolder, position: Int, item: StringItem) {
+        holder.tv.isSelected = true
+    }
+
+    override fun onUnSelectHolder(holder: UnitTypeHolder, position: Int, item: StringItem) {
+        holder.tv.isSelected = false
     }
 
 }

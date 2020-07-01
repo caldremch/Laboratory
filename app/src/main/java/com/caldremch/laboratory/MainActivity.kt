@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.caldremch.date.DatePickDialog
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var singleAdapter: SingleAdapter
     private fun initSingleView() {
 
-        ssrv.layoutManager = LinearLayoutManager(this).apply {
+        ssrv.layoutManager = GridLayoutManager(this, 4).apply {
             orientation = HORIZONTAL
         }
         val stringList =
@@ -106,15 +107,15 @@ class MainActivity : AppCompatActivity() {
                 StringItem("出租"),
                 StringItem("出售"),
                 StringItem("租售"),
-                StringItem("租售2"),
-                StringItem("租售3"),
-                StringItem("租售4"),
-                StringItem("租售5"),
-                StringItem("租售6"),
-                StringItem("租售7"),
-                StringItem("租售8"),
-                StringItem("租售9"),
-                StringItem("租售10")
+                StringItem("租售2")
+//                StringItem("租售3"),
+//                StringItem("租售4"),
+//                StringItem("租售5"),
+//                StringItem("租售6"),
+//                StringItem("租售7"),
+//                StringItem("租售8"),
+//                StringItem("租售9"),
+//                StringItem("租售10")
             )
 //        stringList[0].isSelect = true
         singleAdapter = SingleAdapter(stringList, ssrv)

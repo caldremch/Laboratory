@@ -18,6 +18,8 @@ open class SelectItem(var isSelect: Boolean = false)
 
 //单选ViewHolder
 open class SingleSelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    //不适用于多布局的使用, 多布局请使用itemView.findViewById
     fun <T : View> getView(id: Int): T {
         return itemView.findViewById(id)
     }
@@ -100,14 +102,16 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
             if (lastSelectedHolder == currentHolder && selectedPos != NONE) {
                 //取消选中
                 data[selectedPos].isSelect = false
-                onUnSelectHolder(currentHolder)
+                onUnSelectHolder(currentHolder, selectedPos, data[selectedPos])
                 selectedPos = NONE
                 return
-            } else if (lastSelectedHolder == null && selectedPos == NONE) {
+            }
+
+            if (lastSelectedHolder == null && selectedPos == NONE) {
                 //没有任何一个被选中
                 selectedPos = currentPosition
                 data[selectedPos].isSelect = true
-                onSelectHolder(currentHolder)
+                onSelectHolder(currentHolder, selectedPos, data[selectedPos])
                 return
             }
         }
@@ -117,7 +121,7 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
         }
 
         if (lastSelectedHolder != null) {
-            onUnSelectHolder(lastSelectedHolder)
+            onUnSelectHolder(lastSelectedHolder, selectedPos, data[selectedPos])
         } else {
             notifyItemChanged(selectedPos)
         }
@@ -126,18 +130,24 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
         data[selectedPos].isSelect = false
         selectedPos = currentPosition
         data[selectedPos].isSelect = true
-        onSelectHolder(currentHolder)
+        onSelectHolder(currentHolder, selectedPos, data[selectedPos])
     }
 
     /**
      * 取消选中操作
+     * holder: 取消选中的holder
+     * position: 取消选中选中的位置
+     * item: 选中的数据
      */
-    abstract fun onUnSelectHolder(holder: D)
+    abstract fun onUnSelectHolder(holder: D, position: Int, item: T)
 
     /**
      * 选中操作
+     * holder: 选中的holder
+     * position: 选中的位置
+     * item: 选中的数据
      */
-    abstract fun onSelectHolder(holder: D)
+    abstract fun onSelectHolder(holder: D, position: Int, item: T)
 
     /**
      * 视图绑定
