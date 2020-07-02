@@ -17,13 +17,12 @@ import com.caldremch.laboratory.R
  * @describe: 户型弹窗
  *
  * 室 max: 5
- * 厅 max: 3
- * 卫 max: 3
+ * 厅 max: 4
+ * 卫 max: 4
  *
  **/
 
 class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(parent) {
-
 
     private lateinit var rv_room: RecyclerView
     private lateinit var rv_hall: RecyclerView
@@ -112,7 +111,7 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
             } else {
                 roomAdapter.mData.forEachIndexed { index, houseStructValue ->
                     if (houseStructValue.value == it) {
-                        roomAdapter.mDatas[index].isSelect = true
+                        roomAdapter.mData[index].isSelect = true
                         roomAdapter.selectedPos = index
                         return@forEachIndexed
                     }
@@ -133,7 +132,7 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
             } else {
                 adapter.mData.forEachIndexed { index, houseStructValue ->
                     if (houseStructValue.value == it) {
-                        adapter.mDatas[index].isSelect = true
+                        adapter.mData[index].isSelect = true
                         adapter.selectedPos = index
                         return@forEachIndexed
                     }
@@ -151,25 +150,18 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
         val roomData = mutableListOf<HouseStructValue>()
         //创建数据源
         for (i in 0 until maxItemCount) {
-            val houseStructValue: HouseStructValue
-            if (i == maxItemCount - 1) {
-                houseStructValue = HouseStructValue(null, true)
+            val houseStructValue: HouseStructValue = if (i == maxItemCount - 1) {
+                HouseStructValue(null, true)
             } else {
-                houseStructValue = HouseStructValue(if (type == HouseStructValue.ROOM) i + 1 else i)
+                HouseStructValue(if (type == HouseStructValue.ROOM) i + 1 else i)
             }
             roomData.add(houseStructValue)
         }
 
         when (type) {
-            HouseStructValue.ROOM -> {
-                roomAdapter = HouseStructAdapter(roomData, rv_room, type)
-            }
-            HouseStructValue.HALL -> {
-                hallAdapter = HouseStructAdapter(roomData, rv_hall, type)
-            }
-            HouseStructValue.TOILET -> {
-                toiletAdapter = HouseStructAdapter(roomData, rv_toilet, type)
-            }
+            HouseStructValue.ROOM -> roomAdapter = HouseStructAdapter(roomData, rv_room, type)
+            HouseStructValue.HALL -> hallAdapter = HouseStructAdapter(roomData, rv_hall, type)
+            HouseStructValue.TOILET -> toiletAdapter = HouseStructAdapter(roomData, rv_toilet, type)
         }
     }
 
