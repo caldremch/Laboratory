@@ -17,8 +17,8 @@ import com.caldremch.widget.R
  *
  **/
 
-class UnitTypeHolder(itemView: View) : SingleSelectHolder(itemView) {
-    val tv: TextView = getView(R.id.tv)
+class UnitTypeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val tv: TextView = itemView.findViewById(R.id.tv)
 }
 
 class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int = -1) :
@@ -30,7 +30,7 @@ class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int =
     }
 
     override fun selectInterrupt(): Boolean {
-        return false
+        return true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitTypeHolder {

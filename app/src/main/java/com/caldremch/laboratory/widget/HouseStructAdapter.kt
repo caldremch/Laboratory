@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.laboratory.R
 import com.caldremch.widget.single.SingleSelectAdapter
-import com.caldremch.widget.single.SingleSelectHolder
 
 /**
  *
@@ -24,7 +23,8 @@ import com.caldremch.widget.single.SingleSelectHolder
  **/
 
 class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
-    SingleSelectHolder(itemView) {
+    RecyclerView.ViewHolder(itemView) {
+
     val et = itemView.findViewById<EditText>(R.id.et)
     val tv = itemView.findViewById<TextView>(R.id.tv)
     val ll_edit = itemView.findViewById<View>(R.id.ll_edit)
@@ -34,6 +34,8 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
     var isEditSelect = false
 
     init {
+
+        //焦点获取监听
         et?.setOnFocusChangeListener { v, hasFocus ->
             if (ll_edit != null) {
                 if (hasFocus && !isEditSelect) {
@@ -43,6 +45,7 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
             }
         }
 
+        //文本变化
         et?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (layoutPosition != -1) {

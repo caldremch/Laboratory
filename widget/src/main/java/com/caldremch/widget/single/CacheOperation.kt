@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  **/
 
-class CacheOperation<T : SelectItem, D : SingleSelectHolder>(
+class CacheOperation<T : SelectItem, D : RecyclerView.ViewHolder>(
     private val rv: RecyclerView,
     private val handle: SingleSelectAdapter<T, D>,
     private val selectedPos: Int,

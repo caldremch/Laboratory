@@ -2,24 +2,24 @@ package com.caldremch.laboratory
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.TestDialog
+import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.adapter.MenuListAdapter
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.pickerview.callback.OnItemSelectedListener
 import com.caldremch.utils.KBObserver
 import com.caldremch.wheel.StringAdapter
-import com.caldremch.widget.single.SingleAdapter
-import com.caldremch.widget.single.SingleItemDecoration
-import com.caldremch.widget.single.StringItem
+import com.caldremch.widget.single.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
@@ -99,15 +99,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var singleAdapter: SingleAdapter
     private fun initSingleView() {
 
-        ssrv.layoutManager = GridLayoutManager(this, 4).apply {
-            orientation = HORIZONTAL
-        }
+        ssrv.layoutManager = GridLayoutManager(this, 3)
         val stringList =
             arrayListOf<StringItem>(
                 StringItem("出租"),
                 StringItem("出售"),
-                StringItem("租售"),
-                StringItem("租售2")
+                StringItem("租售")
+//                StringItem("租售2"),
 //                StringItem("租售3"),
 //                StringItem("租售4"),
 //                StringItem("租售5"),
@@ -117,44 +115,46 @@ class MainActivity : AppCompatActivity() {
 //                StringItem("租售9"),
 //                StringItem("租售10")
             )
-//        stringList[0].isSelect = true
+        stringList[0].isSelect = true
         singleAdapter = SingleAdapter(stringList, ssrv)
+        singleAdapter.selectedPos = 0
         ssrv.addItemDecoration(SingleItemDecoration())
         ssrv.adapter = singleAdapter
 
-//        singleAdapter.interruptISelectListener = object : ISelectListener.OnInterrupt {
-//
-//            override fun onInterrupt(
-//                selectedPos: Int,
-//                holder: RecyclerView.ViewHolder,
-//                currentPosition: Int,
-//                cacheOperation: CacheOperation<*, *>) {
-//                tipDialog {
-//                    titleText = "我是标题"
-//                    titleColorRes = R.color.colorPrimary
-//                    descText = "我是内容啊"
-//                    descColorStr = "#3282EF"
-//                    descBold = true
-//                    descSize = 20f
-//                    leftText = "取消"
-//                    leftBold = true
-//                    leftColorStr = "#3282EF"
-//                    rightText = "确定啊"
-//                    rightColorRes = R.color.colorAccent
-//                    gravity = Gravity.CENTER
-//                    widthScale = 0.74f
-//                    cancelOutSide = false
-//                    leftClick {
-//
-//                    }
-//                    rightClick {
-//                        cacheOperation.goOn()
-//                        Toast.makeText(this@MainActivity, "点击右边了", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//
-//        }
+        singleAdapter.interruptISelectListener = object : ISelectListener.OnInterrupt {
+
+            override fun onInterrupt(
+                selectedPos: Int,
+                holder: RecyclerView.ViewHolder,
+                currentPosition: Int,
+                cacheOperation: CacheOperation<*, *>
+            ) {
+                tipDialog {
+                    titleText = "我是标题"
+                    titleColorRes = R.color.colorPrimary
+                    descText = "我是内容啊"
+                    descColorStr = "#3282EF"
+                    descBold = true
+                    descSize = 20f
+                    leftText = "取消"
+                    leftBold = true
+                    leftColorStr = "#3282EF"
+                    rightText = "确定啊"
+                    rightColorRes = R.color.colorAccent
+                    gravity = Gravity.CENTER
+                    widthScale = 0.74f
+                    cancelOutSide = false
+                    leftClick {
+
+                    }
+                    rightClick {
+                        cacheOperation.goOn()
+                        Toast.makeText(this@MainActivity, "点击右边了", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        }
     }
 
     val dialog by lazy {

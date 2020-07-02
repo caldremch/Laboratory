@@ -1,6 +1,5 @@
 package com.caldremch.widget.single
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -16,17 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 //单选bean父类
 open class SelectItem(var isSelect: Boolean = false)
 
-//单选ViewHolder
-open class SingleSelectHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    //不适用于多布局的使用, 多布局请使用itemView.findViewById
-    fun <T : View> getView(id: Int): T {
-        return itemView.findViewById(id)
-    }
-}
-
 //单选adapter
-open abstract class SingleSelectAdapter<T : SelectItem, D : SingleSelectHolder>(
+open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHolder>(
     var data: List<T>, //数据源
     var rv: RecyclerView, //列表
     var selectedPos: Int = NONE, //选中位置
