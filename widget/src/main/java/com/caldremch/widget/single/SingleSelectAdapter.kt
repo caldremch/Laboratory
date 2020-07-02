@@ -1,5 +1,8 @@
 package com.caldremch.widget.single
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -149,6 +152,10 @@ abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHolder>(
             selectedPos = NONE
         }
     }
+
+    protected fun inflateView(parent: ViewGroup, layoutRes: Int): View =
+        LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
+
 
     /**
      * 取消选中操作
