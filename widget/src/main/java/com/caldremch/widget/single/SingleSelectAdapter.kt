@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 open class SelectItem(var isSelect: Boolean = false)
 
 //单选adapter
-open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHolder>(
-    var data: List<T>, //数据源
+abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHolder>(
+    var mData: List<T>, //数据源
     var rv: RecyclerView, //列表
     var selectedPos: Int = NONE, //选中位置
     var isSupportUnSelect: Boolean = false
@@ -50,20 +50,20 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHol
     }
 
     fun getSelectData(): T? {
-        if (selectedPos != NONE && selectedPos < data.size) {
-            return data[selectedPos]
+        if (selectedPos != NONE && selectedPos < mData.size) {
+            return mData[selectedPos]
         }
         return null
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return mData.size
     }
 
     //holder处理
     override fun onBindViewHolder(holder: D, position: Int) {
 
-        bindViewHolder(holder, position, data[position])
+        bindViewHolder(holder, position, mData[position])
 
         holder.itemView.setOnClickListener {
 
@@ -101,8 +101,8 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHol
         if (isSupportUnSelect) {
             if (lastSelectedHolder == currentHolder && selectedPos != NONE) {
                 //取消选中
-                data[selectedPos].isSelect = false
-                onUnSelectHolder(currentHolder, selectedPos, data[selectedPos])
+                mData[selectedPos].isSelect = false
+                onUnSelectHolder(currentHolder, selectedPos, mData[selectedPos])
                 selectedPos = NONE
                 return
             }
@@ -110,8 +110,8 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHol
             if (lastSelectedHolder == null && selectedPos == NONE) {
                 //没有任何一个被选中
                 selectedPos = currentPosition
-                data[selectedPos].isSelect = true
-                onSelectHolder(currentHolder, selectedPos, data[selectedPos])
+                mData[selectedPos].isSelect = true
+                onSelectHolder(currentHolder, selectedPos, mData[selectedPos])
                 return
             }
         }
@@ -121,16 +121,16 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHol
         }
 
         if (lastSelectedHolder != null) {
-            onUnSelectHolder(lastSelectedHolder, selectedPos, data[selectedPos])
+            onUnSelectHolder(lastSelectedHolder, selectedPos, mData[selectedPos])
         } else {
             notifyItemChanged(selectedPos)
         }
 
         //当前为取消选中
-        data[selectedPos].isSelect = false
+        mData[selectedPos].isSelect = false
         selectedPos = currentPosition
-        data[selectedPos].isSelect = true
-        onSelectHolder(currentHolder, selectedPos, data[selectedPos])
+        mData[selectedPos].isSelect = true
+        onSelectHolder(currentHolder, selectedPos, mData[selectedPos])
     }
 
     /**
@@ -139,12 +139,12 @@ open abstract class SingleSelectAdapter<T : SelectItem, D : RecyclerView.ViewHol
      */
     fun clearSelected() {
         if (selectedPos != NONE) {
-            data[selectedPos].isSelect = false
+            mData[selectedPos].isSelect = false
             val targetHolder = rv.findViewHolderForAdapterPosition(selectedPos)
             if (targetHolder == null) {
                 notifyItemChanged(selectedPos)
             } else {
-                onUnSelectHolder(targetHolder as D, selectedPos, data[selectedPos])
+                onUnSelectHolder(targetHolder as D, selectedPos, mData[selectedPos])
             }
             selectedPos = NONE
         }

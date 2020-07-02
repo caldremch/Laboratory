@@ -106,11 +106,11 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
 
         houseStruct?.section?.let {
             if (it >= maxRoomItem) {
-                roomAdapter.data[maxRoomItem - 1].value = it
-                roomAdapter.data[maxRoomItem - 1].isSelect = true
+                roomAdapter.mData[maxRoomItem - 1].value = it
+                roomAdapter.mData[maxRoomItem - 1].isSelect = true
                 roomAdapter.selectedPos = maxRoomItem - 1
             } else {
-                roomAdapter.data.forEachIndexed { index, houseStructValue ->
+                roomAdapter.mData.forEachIndexed { index, houseStructValue ->
                     if (houseStructValue.value == it) {
                         roomAdapter.mDatas[index].isSelect = true
                         roomAdapter.selectedPos = index
@@ -127,11 +127,11 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
     private fun sameSet(currentValue: Int?, maxItemCount: Int, adapter: HouseStructAdapter) {
         currentValue?.let {
             if (it > maxItemCount) {
-                adapter.data[maxItemCount - 1].value = it
-                adapter.data[maxItemCount - 1].isSelect = true
+                adapter.mData[maxItemCount - 1].value = it
+                adapter.mData[maxItemCount - 1].isSelect = true
                 adapter.selectedPos = maxItemCount - 1
             } else {
-                adapter.data.forEachIndexed { index, houseStructValue ->
+                adapter.mData.forEachIndexed { index, houseStructValue ->
                     if (houseStructValue.value == it) {
                         adapter.mDatas[index].isSelect = true
                         adapter.selectedPos = index

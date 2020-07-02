@@ -51,9 +51,9 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
             override fun afterTextChanged(s: Editable?) {
                 if (layoutPosition != -1) {
                     if (TextUtils.isEmpty(s?.toString())) {
-                        adapter.mDatas[layoutPosition].value = null
+                        adapter.mData[layoutPosition].value = null
                     } else {
-                        adapter.mDatas[layoutPosition].value = s?.toString()?.toInt()
+                        adapter.mData[layoutPosition].value = s?.toString()?.toInt()
                     }
                 }
             }
@@ -69,11 +69,11 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
 }
 
 class HouseStructAdapter(
-    val mDatas: List<HouseStructValue>,
+    val data: List<HouseStructValue>,
     rv: RecyclerView,
-    val type: Int = 0,
+    private val type: Int = 0,
     selectedPos: Int = NONE
-) : SingleSelectAdapter<HouseStructValue, HouseStructHolder>(mDatas, rv, selectedPos, true) {
+) : SingleSelectAdapter<HouseStructValue, HouseStructHolder>(data, rv, selectedPos, true) {
 
 
     override fun bindViewHolder(holder: HouseStructHolder, position: Int, data: HouseStructValue) {
@@ -133,7 +133,7 @@ class HouseStructAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mDatas[position].isEditText) 1 else 0
+        return if (mData[position].isEditText) 1 else 0
     }
 
     override fun onSelectHolder(holder: HouseStructHolder, position: Int, item: HouseStructValue) {
