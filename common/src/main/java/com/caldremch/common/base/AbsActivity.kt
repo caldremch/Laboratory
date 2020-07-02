@@ -1,6 +1,5 @@
 package com.caldremch.common.base
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.ViewGroup
 import com.caldremch.common.helper.EventManager
@@ -20,14 +19,12 @@ import com.caldremch.common.widget.status.IStatusView
  **/
 open class AbsActivity : LifeCycleLogActivity(), BaseInit, IStatusView {
 
-    protected lateinit var mContext: Activity
     protected var statusBarManager: StatusBarManager? = null
     private lateinit var contentView: ViewGroup
     private lateinit var contentViewDelegate: DecorViewDelegate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContext = this
         if (isUseEvent()) {
             EventManager.register(this)
         }
