@@ -17,13 +17,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:clickable="false"
             android:paddingLeft="16dp"
+            android:clickable="true"
+            android:textColor="@color/selector_primary_text"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
-            android:text="通讯录导入"
-            android:textColor="#F95E69" />
+            android:text="通讯录导入" />
 
         <TextView
             android:id="@+id/tv_owner_info"

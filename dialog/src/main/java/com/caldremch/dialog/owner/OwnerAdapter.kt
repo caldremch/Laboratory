@@ -1,5 +1,7 @@
 package com.caldremch.dialog.owner
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -19,6 +21,13 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class OwnerAdapter :
     BaseQuickAdapter<Contact, OwnerAdapter.OwnerViewHolder>(R.layout.item_owner, mutableListOf()) {
+
+    interface InputListener {
+        fun onInput()
+    }
+
+    var currentFocusIndex: Int = -1
+    var inputListener: InputListener? = null
 
     interface Listener {
         fun remove(index: Int)
@@ -46,20 +55,9 @@ class OwnerAdapter :
 
         holder.nameEt.isEnabled = item.isEnable
         holder.phoneEt.isEnabled = item.isEnable
-
-//        holder.nameEt.setText(item.name)
-//        holder.phoneEt.setText(if (isMaskPhone) item.maskPhone else item.phone)
-//        holder.nameEt.setText(item.name)
-//        holder.phoneEt.setText(item.phone)
-
-//        holder.listener = object : OwnerEditListener{
-//            override fun onTextChange(string: String?) {
-//                holder.nameEt.setText(string)
-//            }
-//        }
-
+        holder.nameEt.setText(item.name)
+        holder.phoneEt.setText(item.phone)
     }
-
 
 
     inner class OwnerViewHolder(view: View) : BaseViewHolder(view) {
@@ -71,11 +69,23 @@ class OwnerAdapter :
         val iv = getView<ImageView>(R.id.iv)
 
         init {
+
+            nameEt.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    currentFocusIndex = layoutPosition
+                }
+            }
+            phoneEt.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    currentFocusIndex = layoutPosition
+                }
+            }
             /***********************onCreateViewHolder中添加监听, 更新对应位置**************************/
-            /*nameEt.addTextChangedListener(object : TextWatcher {
+            nameEt.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     data[layoutPosition].name = s?.toString()
-                    listener?.onTextChange(s?.toString())
+                    inputListener?.onInput()
+
                 }
 
                 override fun beforeTextChanged(
@@ -92,6 +102,7 @@ class OwnerAdapter :
             phoneEt.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     data[layoutPosition].phone = s?.toString()
+                    inputListener?.onInput()
                 }
 
                 override fun beforeTextChanged(
@@ -105,8 +116,6 @@ class OwnerAdapter :
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 }
             })
-
-             */
 
         }
     }

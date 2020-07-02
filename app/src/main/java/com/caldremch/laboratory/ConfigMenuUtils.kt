@@ -70,9 +70,14 @@ object ConfigMenuUtils {
         menuList.add(MenuData().apply {
             title = "Owner Dialog"
             runnable = Runnable {
-                sOwnerDialog = OwnerDialog(context)
-                sOwnerDialog?.maxItemCount = 3
-                sOwnerDialog?.setList(list)
+                sOwnerDialog = OwnerDialog(context).apply {
+                    isCanAddContact = true
+                    isCanUpdateContact = false
+                }
+                val bundle = Bundle()
+                bundle.putSerializable("data", list)
+                sOwnerDialog?.arguments = bundle
+                sOwnerDialog?.maxItemCount = 6
                 sOwnerDialog?.listener = object : OwnerDialog.ConfirmListener {
                     override fun onConfirm(contacts: List<Contact>) {
                         list = contacts as ArrayList<Contact>
