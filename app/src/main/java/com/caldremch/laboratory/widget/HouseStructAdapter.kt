@@ -28,6 +28,7 @@ class HouseStructHolder(itemView: View, adapter: HouseStructAdapter) :
     val et = itemView.findViewById<EditText>(R.id.et)
     val tv = itemView.findViewById<TextView>(R.id.tv)
     val ll_edit = itemView.findViewById<View>(R.id.ll_edit)
+    val tv_type_desc = itemView.findViewById<TextView>(R.id.tv_type_desc)
 
     //用于控制, 点击选中Edittext时, 并不会选中, 所以点击的时候, 操作是requestFocus
     //requestFocus时, 不需要模拟点击
@@ -85,6 +86,7 @@ class HouseStructAdapter(
                     data.value?.let {
                         holder.et.setText("$it")
                     }
+                    holder.tv_type_desc.text = "室"
                 }
             }
             HouseStructValue.HALL -> {
@@ -94,6 +96,7 @@ class HouseStructAdapter(
                     data.value?.let {
                         holder.et.setText("$it")
                     }
+                    holder.tv_type_desc.text = "厅"
                 }
             }
             HouseStructValue.TOILET -> {
@@ -103,6 +106,7 @@ class HouseStructAdapter(
                     data.value?.let {
                         holder.et.setText("$it")
                     }
+                    holder.tv_type_desc.text = "卫"
                 }
             }
         }
