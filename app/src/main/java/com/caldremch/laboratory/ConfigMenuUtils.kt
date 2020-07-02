@@ -95,7 +95,7 @@ object ConfigMenuUtils {
             title = "House struct dialog"
             runnable = Runnable {
                 val dialog = HouseStructDialog(context)
-                dialog.strict = false
+                dialog.strict = true
                 val bundle = Bundle()
                 bundle.putSerializable("data", houseStruct)
                 dialog.arguments = bundle

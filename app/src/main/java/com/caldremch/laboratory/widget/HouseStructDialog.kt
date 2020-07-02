@@ -64,10 +64,35 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
         }
 
         rootView.findViewById<View>(R.id.tv_complete).setOnClickListener {
-            if (strict && (!roomAdapter.hasSelected() || !hallAdapter.hasSelected() || !toiletAdapter.hasSelected())) {
-                Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (strict) {
+
+                if (!roomAdapter.hasSelected() || !hallAdapter.hasSelected() || !toiletAdapter.hasSelected()) {
+                    Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val roomValue = roomAdapter.getSelectData()!!
+                val hallValue = hallAdapter.getSelectData()!!
+                val toiletValue = toiletAdapter.getSelectData()!!
+
+                if (roomValue.isEditText && roomValue.value == null) {
+                    Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (hallValue.isEditText && hallValue.value == null) {
+                    Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (toiletValue.isEditText && toiletValue.value == null) {
+                    Toast.makeText(mContext, "please complete input", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
             }
+
+
 
             listener?.onData(
                 HouseStruct(
@@ -104,7 +129,7 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
     private fun initDefaultPosition() {
 
         houseStruct?.section?.let {
-            if (it >= maxRoomItem) {
+            if (it >= maxRoomItem || it == 0) {
                 roomAdapter.mData[maxRoomItem - 1].value = it
                 roomAdapter.mData[maxRoomItem - 1].isSelect = true
                 roomAdapter.selectedPos = maxRoomItem - 1
@@ -125,7 +150,7 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
 
     private fun sameSet(currentValue: Int?, maxItemCount: Int, adapter: HouseStructAdapter) {
         currentValue?.let {
-            if (it > maxItemCount) {
+            if (it > 2) {
                 adapter.mData[maxItemCount - 1].value = it
                 adapter.mData[maxItemCount - 1].isSelect = true
                 adapter.selectedPos = maxItemCount - 1

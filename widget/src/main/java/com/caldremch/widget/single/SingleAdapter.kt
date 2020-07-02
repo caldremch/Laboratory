@@ -1,6 +1,5 @@
 package com.caldremch.widget.single
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -34,10 +33,9 @@ class SingleAdapter(data: List<StringItem>, rv: RecyclerView, selectedPos: Int =
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnitTypeHolder {
-        return UnitTypeHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.single_item, parent, false)
-        )
+        return UnitTypeHolder(inflateView(parent, R.layout.single_item))
     }
+
 
     override fun onSelectHolder(holder: UnitTypeHolder, position: Int, item: StringItem) {
         holder.tv.isSelected = true

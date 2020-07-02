@@ -156,6 +156,7 @@ class HouseStructAdapter(
         } else {
             holder.ll_edit.isSelected = false
             holder.isEditSelect = false
+            holder.et.setText(null)
             holder.et.clearFocus()
         }
 
