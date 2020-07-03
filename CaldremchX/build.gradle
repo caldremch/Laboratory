@@ -28,8 +28,11 @@ android {
     }
 }
 
+def versions_retrofit = "2.7.1"
+def versions_okhttp3 = "4.3.1"
+
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation Deps.appcompat
     implementation Deps.ktx
@@ -38,6 +41,21 @@ dependencies {
     implementation Deps.BaseRecyclerViewAdapterHelper
     implementation Deps.cardview
     implementation Deps.glide
+
+
+    //网络请求依赖
+    api "com.squareup.retrofit2:retrofit:$versions_retrofit"
+    api "com.squareup.retrofit2:converter-gson:$versions_retrofit"
+    api "com.squareup.retrofit2:adapter-rxjava2:$versions_retrofit"
+
+    api "com.squareup.okhttp3:okhttp:$versions_okhttp3"
+    api "com.squareup.okhttp3:logging-interceptor:$versions_okhttp3"
+
+    api "io.reactivex.rxjava2:rxjava:2.2.12"
+    api "io.reactivex.rxjava2:rxandroid:2.1.1"
+    api 'com.trello.rxlifecycle3:rxlifecycle-components:3.1.0'
+    api 'com.trello.rxlifecycle3:rxlifecycle-kotlin:3.1.0'
+    //网络请求依赖
 
     implementation project(':dialog')
     implementation project(':widget')
