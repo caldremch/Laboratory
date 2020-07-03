@@ -143,6 +143,9 @@ class HouseStructAdapter(
             holder.isEditSelect = true
             holder.ll_edit.isSelected = true
             holder.et.requestFocus()
+//            val inputManager =
+//                rv.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED)
         }
     }
 

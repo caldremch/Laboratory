@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
+import com.caldremch.dialog.DialogAnim
 import com.caldremch.laboratory.R
 
 /**
@@ -41,6 +42,8 @@ class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(p
 
     init {
         gravity = Gravity.BOTTOM
+        anim = DialogAnim.BOTTOM_IN_BOTTOM_OUT
+        widthScale = 1f
     }
 
     override fun getLayoutId(): Int {
