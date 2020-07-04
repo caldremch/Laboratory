@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.caldremch.dialog.owner.Contact
 import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
-import com.caldremch.laboratory.fragment.TestFragment
+import com.caldremch.laboratory.fragment.NetWatchDogFragment
+import com.caldremch.laboratory.util.FragmentUtil
 import com.caldremch.laboratory.widget.HouseStruct
 import com.caldremch.laboratory.widget.HouseStructDialog
 import com.caldremch.laboratory.widget.SimpleListener
@@ -38,11 +38,12 @@ object ConfigMenuUtils {
         menuList.add(MenuData().apply {
             title = "NetWatchDog toggle"
             runnable = Runnable {
-                val activity = context as AppCompatActivity
-                val manager = activity.supportFragmentManager
-                val tran = manager.beginTransaction()
-                tran.add(TestFragment(), "aaaa")
-                tran.commit()
+//                val activity = context as AppCompatActivity
+//                val manager = activity.supportFragmentManager
+//                val tran = manager.beginTransaction()
+//                tran.add(TestFragment(), "aaaa")
+//                tran.commit()
+                FragmentUtil.add(context, NetWatchDogFragment())
             }
         })
     }

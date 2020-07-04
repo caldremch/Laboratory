@@ -1,9 +1,9 @@
 package com.caldremch.laboratory.base
 
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.caldremch.common.base.BaseFragment
 import com.caldremch.common.widget.TitleBar
+import com.caldremch.laboratory.util.FragmentUtil
 
 /**
  *
@@ -23,10 +23,7 @@ open class LaboratoryFragment : BaseFragment<Any>() {
         view.setTitle(getTitle())
         view.listener = object : TitleBar.Listener {
             override fun leftClick() {
-                val manager =
-                    (context!! as AppCompatActivity).supportFragmentManager.beginTransaction()
-                manager.remove(this@LaboratoryFragment)
-                manager.commit()
+                FragmentUtil.remove(context!!, this@LaboratoryFragment)
             }
         }
         return view
