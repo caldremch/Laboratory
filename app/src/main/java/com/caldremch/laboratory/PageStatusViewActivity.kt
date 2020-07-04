@@ -25,7 +25,9 @@ class PageStatusViewActivity : AppCompatActivity() {
         Log.d("TAG", "addFr: start add")
         val manager = supportFragmentManager.beginTransaction()
 //        manager.add(R.id.fl, TestFragment())
-        val f = NetWatchDogFragment()
+        val f = NetWatchDogFragment().apply {
+            title = "网络监听"
+        }
         manager.add(android.R.id.content, f)
         manager.commit()
     }

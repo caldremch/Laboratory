@@ -29,7 +29,7 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
     private var mIsPrepare = false
     private var mIsFirst = true
     private lateinit var mContentView: View
-    private lateinit var decorViewProxy: DecorViewProxy
+    protected lateinit var decorViewProxy: DecorViewProxy
 
     override val mContext: Context
         get() = context!!

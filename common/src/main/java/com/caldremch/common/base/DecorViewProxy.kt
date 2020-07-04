@@ -31,7 +31,7 @@ class DecorViewProxy {
     private var container: ViewGroup? = null //fragment 使用
     private var statusView: StatusView? = null
     private var inflater: LayoutInflater? = null
-    private var titleView: View? = null
+    var titleView: View? = null
 
 
     class Builder {

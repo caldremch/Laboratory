@@ -1,10 +1,7 @@
 package com.caldremch.laboratory.fragment
 
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.caldremch.common.base.BaseFragment
-import com.caldremch.common.widget.TitleBar
 import com.caldremch.laboratory.R
+import com.caldremch.laboratory.base.LaboratoryFragment
 import com.caldremch.utils.NetWatchDog
 import kotlinx.android.synthetic.main.fragment_watch_dog.*
 
@@ -19,25 +16,16 @@ import kotlinx.android.synthetic.main.fragment_watch_dog.*
  * @describe
  *
  **/
-class NetWatchDogFragment() : BaseFragment<Any>() {
+class NetWatchDogFragment() : LaboratoryFragment() {
+
+    override fun getTitle(): String {
+        return "wifi相关"
+    }
 
     val netWatchDog by lazy { NetWatchDog(context!!) }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_watch_dog
-    }
-
-    override fun getTitleView(): View {
-        val view = TitleBar(context!!)
-        view.listener = object : TitleBar.Listener {
-            override fun leftClick() {
-                val manager =
-                    (context!! as AppCompatActivity).supportFragmentManager.beginTransaction()
-                manager.remove(this@NetWatchDogFragment)
-                manager.commit()
-            }
-        }
-        return view
     }
 
     override fun initData() {
