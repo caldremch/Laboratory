@@ -35,4 +35,5 @@ dependencies {
     implementation Deps.recyclerview
     implementation Deps.immersionbar
     implementation Deps.eventbus
+    implementation 	'androidx.lifecycle:lifecycle-common-java8:2.2.0'
 }

@@ -194,9 +194,9 @@ class StatusView : FrameLayout, IStatusView, LifecycleObserver {
         }
     }
 
-    override fun getErrorView(): View {
-        return mErrorView!!
-    }
+    override val errorView: View?
+        get() = mErrorView!!
+
 
     override fun setViewStatus(@ViewState status: Int) {
         when (status) {

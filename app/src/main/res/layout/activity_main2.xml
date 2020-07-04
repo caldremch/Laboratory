@@ -11,6 +11,7 @@
         android:id="@+id/android_common_title_view_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="addFr"
         android:text="Button1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,4 +28,13 @@
         android:layout_height="wrap_content"
         android:text="Button3"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

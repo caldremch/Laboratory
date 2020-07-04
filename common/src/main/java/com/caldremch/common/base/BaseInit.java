@@ -36,5 +36,4 @@ public interface BaseInit {
     default void initEvent() {
     }
 
-
 }

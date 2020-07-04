@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.caldremch.date.DatePickDialog
 import com.caldremch.date.OnDateSelectedListener
 import com.caldremch.date.StringPickDialog
-import com.caldremch.dialog.TestDialog
 import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.adapter.MenuListAdapter
 import com.caldremch.laboratory.bean.MenuData
@@ -37,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         val context = this
         initMenuList()
         initSingleView()
+
+
 
         wv.post {
 
@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity() {
 
         dpv.listener = object : OnDateSelectedListener {
             override fun onItemSelected(year: Int, month: Int, day: Int) {
-//                tvDate.text = year
             }
 
         }
@@ -105,15 +104,6 @@ class MainActivity : AppCompatActivity() {
                 StringItem("出租"),
                 StringItem("出售"),
                 StringItem("租售")
-//                StringItem("租售2"),
-//                StringItem("租售3"),
-//                StringItem("租售4"),
-//                StringItem("租售5"),
-//                StringItem("租售6"),
-//                StringItem("租售7"),
-//                StringItem("租售8"),
-//                StringItem("租售9"),
-//                StringItem("租售10")
             )
         stringList[0].isSelect = true
         singleAdapter = SingleAdapter(stringList, ssrv)
@@ -157,24 +147,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    val dialog by lazy {
-        DatePickDialog(this)
-    }
-    val testDialg by lazy {
-        TestDialog(this)
-    }
 
     val stringPickDialog by lazy {
         StringPickDialog(this)
-    }
-
-    var i = 1;
-
-
-    fun start(view: View) {
-    }
-
-    fun tost(view: View) {
     }
 
     fun setDatess(view: View) {
