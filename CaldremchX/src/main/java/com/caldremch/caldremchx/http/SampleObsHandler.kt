@@ -18,6 +18,7 @@ import com.caldremch.utils.ToastUtils
 class SampleObsHandler : IObserverHandler {
 
     override fun showDialog() {
+
     }
 
     override fun closeDialog() {

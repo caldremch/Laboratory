@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import java.lang.reflect.Type
 
@@ -31,42 +32,28 @@ class SampleConvert2 : IConvert {
         responseBody.use {
             val jsonRespStr: String = responseBody.string()
             val jsonObject = mParser.parse(jsonRespStr).asJsonObject
-            val dataJson = jsonObject["message"]
-            val respType = jsonObject["type"]
+            val code = jsonObject["code"].asInt
+            val message = jsonObject["message"]
+            val msg = jsonObject["msg"]
 
-            if (respType != null) {
-
-                val status = respType.asString
-
-
-
-                if ("ok" != status) {
-
-                    //错误处理
-                    //抛出后, 在 Observer 中处理
-                    var errorMsg: String? = ""
-                    var errorCode: Int = -1
-                    if (jsonObject["message"] != null) {
-                        val errorMessage = jsonObject["message"] as JsonObject
-                        errorCode = errorMessage["code"].asInt
-                        errorMsg = errorMessage["errmsg"].asString
-                    }
-                    throw ApiHttpException(errorCode, errorMsg)
-                }
-
-                if ((dataJson == null || dataJson is JsonNull) && "ok" == status) {
-                    throw NullDataSuccessException()
-                }
-            }
-
-            if (dataJson == null || dataJson is JsonNull) throw NullDataSuccessException()
-
-            val dataStr = dataJson.toString()
-
-            return if (type == String::class.java) {
-                dataStr as T
+            if (code == 200) {
+                //正常
+                val map: Map<String, Any?> = mGson.fromJson(
+                    jsonRespStr, object : TypeToken<HashMap<String, Any?>>() {}.type
+                )
+                return map as T
             } else {
-                mGson.fromJson(dataStr, type)
+
+                var finalMsg: Any? = message
+                if (message == null || message is JsonNull) {
+                    finalMsg = msg
+                }
+                //错误
+                if (finalMsg == null || finalMsg is JsonNull) {
+                    throw ApiHttpException(code, "发生了错误")
+                } else {
+                    throw ApiHttpException(code, finalMsg.toString())
+                }
             }
         }
     }

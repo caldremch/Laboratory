@@ -27,6 +27,7 @@ dependencies {
     implementation Deps.constraintlayout
     implementation Deps.ktx
     implementation Deps.appcompat
+    implementation Deps.lifecycle
 
     implementation Deps.recyclerview_animators
     implementation Deps.BaseRecyclerViewAdapterHelper

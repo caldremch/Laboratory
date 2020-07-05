@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="et_bg">
+        <item name="android:background">@drawable/rect_white</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
 </resources>

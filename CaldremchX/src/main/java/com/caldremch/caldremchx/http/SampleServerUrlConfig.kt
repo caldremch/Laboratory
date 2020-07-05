@@ -20,10 +20,12 @@ class SampleServerUrlConfig : IServerUrlConfig {
     }
 
     override fun currentUrl(): String {
-        return "http://192.168.2.203:3000"
+//        return "http://192.168.2.203:3000"
+        return "http://192.168.101.5:3000"
     }
 
     override fun defaultUrl(): String {
-        return "http://192.168.2.203:3000"
+//        return "http://192.168.2.203:3000"
+        return "http://192.168.101.5:3000"
     }
 }
