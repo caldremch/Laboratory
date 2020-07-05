@@ -40,5 +40,7 @@ object Deps {
     const val refresh = "com.scwang.smart:refresh-layout-kernel:2.0.1"
     const val refresh_header_falsify = "com.scwang.smart:refresh-header-falsify:2.0.1"
     const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
+
+
 }
 

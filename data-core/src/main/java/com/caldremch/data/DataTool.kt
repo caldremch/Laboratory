@@ -1,7 +1,9 @@
 package com.caldremch.data
 
 import android.app.Application
+import android.content.Context
 import com.tencent.mmkv.MMKV
+import java.lang.RuntimeException
 
 
 /**
@@ -15,25 +17,88 @@ import com.tencent.mmkv.MMKV
  * @describe
  *
  **/
-object DataTool {
+class DataTool private constructor(var context: Context) : IData {
 
-    fun init(application: Application) {
-        val rootDir: String = MMKV.initialize(application)
+    companion object {
+
+        private var sContext: Context? = null
+
+        val instance: DataTool by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            sContext ?: throw RuntimeException("please init")
+            DataTool(sContext!!)
+        }
+
+        fun init(context: Context) {
+            sContext = context
+        }
+    }
+
+    init {
+        val rootDir: String = MMKV.initialize(context)
     }
 
     private fun getInstance(): MMKV {
         return MMKV.defaultMMKV()
     }
-//
-//    fun putString(key: String, value: String?): IData{
-//       return getInstance().encode(key, value)
-//    }
-//    fun putStringSet(key: String, values: Set<String>): IData
-//    fun putInt(key: String, value: Int): IData
-//    fun putLong(key: String, value: Long): IData
-//    fun putFloat(key: String, value: Float): IData
-//    fun putBoolean(key: String, value: Boolean): IData
-//    fun remove(key: String?): IData
-//    fun clear(): IData
+
+    override fun get(key: String, defaultValue: String): String? {
+        return getInstance().getString(key, defaultValue)
+    }
+
+    override fun get(key: String, defaultValue: Int): Int {
+        return getInstance().getInt(key, defaultValue)
+    }
+
+    override fun get(key: String, defaultValue: Long): Long {
+        return getInstance().getLong(key, defaultValue)
+    }
+
+    override fun get(key: String, defaultValue: Float): Float {
+        return getInstance().getFloat(key, defaultValue)
+    }
+
+    override fun get(key: String, defaultValue: Boolean): Boolean {
+        return getInstance().getBoolean(key, defaultValue)
+    }
+
+    override fun put(key: String, value: String?): IData {
+        getInstance().putString(key, value)
+        return this
+    }
+
+    override fun put(key: String, values: Set<String>): IData {
+        getInstance().putStringSet(key, values)
+        return this
+    }
+
+    override fun put(key: String, value: Int): IData {
+        getInstance().putInt(key, value)
+        return this
+    }
+
+    override fun put(key: String, value: Long): IData {
+        getInstance().putLong(key, value)
+        return this
+    }
+
+    override fun put(key: String, value: Float): IData {
+        getInstance().putFloat(key, value)
+        return this
+    }
+
+    override fun put(key: String, value: Boolean): IData {
+        getInstance().putBoolean(key, value)
+        return this
+    }
+
+    override fun remove(key: String?): IData {
+        getInstance().remove(key)
+        return this
+    }
+
+    override fun clear(): IData {
+        getInstance().clearAll()
+        return this
+    }
 
 }

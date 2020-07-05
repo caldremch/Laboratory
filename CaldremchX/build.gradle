@@ -41,6 +41,7 @@ dependencies {
     implementation Deps.BaseRecyclerViewAdapterHelper
     implementation Deps.cardview
     implementation Deps.glide
+    implementation Deps.lottie
 
 
     //网络请求依赖
@@ -61,5 +62,6 @@ dependencies {
     implementation project(':widget')
     implementation project(':utils')
     implementation project(':common')
+    implementation project(':data-core')
 
 }

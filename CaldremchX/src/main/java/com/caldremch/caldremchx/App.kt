@@ -2,6 +2,7 @@ package com.caldremch.caldremchx
 
 import android.app.Application
 import com.caldremch.SimpleRequest
+import com.caldremch.data.DataTool
 import com.caldremch.simplehttp.customhttp.SampleConvert2
 import com.caldremch.simplehttp.customhttp.SampleObsHandler
 import com.caldremch.simplehttp.customhttp.SampleServerUrlConfig
@@ -22,6 +23,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        DataTool.init(this)
         ToastUtils.init(this)
         SimpleRequest.register(SampleConvert2(), SampleObsHandler(), SampleServerUrlConfig())
     }

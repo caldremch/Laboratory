@@ -13,3 +13,6 @@ common
 在封装一样东西的时候, 数据的传递要先打通, 源头加工处理
 
 目的: 打造快速项目搭建
+
+lottie动画文件下载:
+https://lottiefiles.com/
