@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.widget.Toast
+import com.caldremch.dialog.action_sheet.Action
+import com.caldremch.dialog.action_sheet.ActionData
+import com.caldremch.dialog.action_sheet.ActionSheetDialog
+import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
 import com.caldremch.dialog.owner.Contact
 import com.caldremch.dialog.owner.OwnerDialog
-import com.caldremch.dialog.tipDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
@@ -27,11 +29,45 @@ object ConfigMenuUtils {
     var sOwnerDialog: OwnerDialog? = null
 
     fun setSetMenuData(context: Context, menuList: ArrayList<MenuData>) {
+        actionSheetDialog(menuList, context)
         addWatchDog(menuList, context)
         addTipDialog(menuList, context)
         addOwnerDialog(menuList, context)
         addPage(menuList, context)
         addHouseStructDialog(menuList, context)
+    }
+
+    private fun actionSheetDialog(menuList: java.util.ArrayList<MenuData>, context: Context) {
+
+        val data = arrayListOf<ActionData>()
+        val data_bottom = arrayListOf<ActionData>()
+        for (x in 0..10) {
+            val actionData = ActionData(
+                title = "标题$x",
+                imageRes = R.drawable.ic_launcher_background,
+                imageUrl = null,
+                msgCount = null,
+                action = Action {
+                    Toast.makeText(context, "标题$x", Toast.LENGTH_SHORT).show()
+                },
+                type = null
+            )
+            data.add(actionData)
+            data_bottom.add(actionData)
+
+        }
+
+        menuList.add(MenuData().apply {
+            title = "actionSheetDialog"
+            runnable = Runnable {
+                val dialog = ActionSheetDialog(context)
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(BaseActionSheetDialog.DATA_TOP, data)
+                bundle.putParcelableArrayList(BaseActionSheetDialog.DATA_BOTTOM, data_bottom)
+                dialog.arguments = bundle
+                dialog.show()
+            }
+        })
     }
 
     private fun addWatchDog(menuList: java.util.ArrayList<MenuData>, context: Context) {
@@ -140,30 +176,36 @@ object ConfigMenuUtils {
         context: Context
     ) {
         menuList.add(MenuData().apply {
+
+
             title = "Tips Dialog"
             runnable = Runnable {
-                tipDialog(context) {
-                    titleText = "我是标题"
-                    titleColorRes = R.color.colorPrimary
-                    descText = "我是内容啊"
-                    descColorStr = "#3282EF"
-                    descBold = true
-                    descSize = 20f
-                    leftText = "取消"
-                    leftBold = true
-                    leftColorStr = "#3282EF"
-                    rightText = "确定啊"
-                    rightColorRes = R.color.colorAccent
-                    gravity = Gravity.CENTER
-                    widthScale = 0.74f
-                    cancelOutSide = false
-                    leftClick {
-                        Toast.makeText(context, "点击左边了", Toast.LENGTH_SHORT).show()
-                    }
-                    rightClick {
-                        Toast.makeText(context, "点击右边了", Toast.LENGTH_SHORT).show()
-                    }
-                }
+
+                //java调用方式
+                JavaLaboratory.showTipDialog(context)
+
+//                tipDialog(context) {
+//                    titleText = "我是标题"
+//                    titleColorRes = R.color.colorPrimary
+//                    descText = "我是内容啊"
+//                    descColorStr = "#3282EF"
+//                    descBold = true
+//                    descSize = 20f
+//                    leftText = "取消"
+//                    leftBold = true
+//                    leftColorStr = "#3282EF"
+//                    rightText = "确定啊"
+//                    rightColorRes = R.color.colorAccent
+//                    gravity = Gravity.CENTER
+//                    widthScale = 0.74f
+//                    cancelOutSide = false
+//                    leftClick {
+//                        Toast.makeText(context, "点击左边了", Toast.LENGTH_SHORT).show()
+//                    }
+//                    rightClick {
+//                        Toast.makeText(context, "点击右边了", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
             }
         })
     }
