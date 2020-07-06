@@ -54,10 +54,11 @@ inline fun tipDialog(context: Context, dsl: TipDialog.() -> Unit): TipDialog {
     return dialog
 }
 
-open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
+open class TipDialog(parent: Any) : BaseDialog(parent) {
 
     //标题文本
     var titleText: String? = null
+    var titleTextRes: Int? = null
     var titleSize: Float? = null
     var titleColorStr: String? = null
     var titleColorRes: Int? = null  //R.color.xxx类型
@@ -65,6 +66,7 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
 
     //中间内容文本
     var descText: String? = null
+    var descTextRes: Int? = null
     var descSize: Float? = null
     var descColorStr: String? = null
     var descColorRes: Int? = null
@@ -72,6 +74,7 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
 
     //左边文本
     var leftText: String? = null
+    var leftTextRes: Int? = null
     var leftColorStr: String? = null
     var leftColorRes: Int? = null
     var leftSize: Float? = null
@@ -79,14 +82,19 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
 
     //右边文本
     var rightText: String? = null
+    var rightTextRes: Int? = null
     var rightColorStr: String? = null
     var rightColorRes: Int? = null
     var rightSize: Float? = null
-    var rightBold = false
+    var rightBold = true
 
-    //点击事件
-    var leftBtnListener: (() -> Unit)? = null
-    var rightBtnListener: (() -> Unit)? = null
+    //点击事件 kotlin
+    private var leftBtnListener: (() -> Unit)? = null
+    private var rightBtnListener: (() -> Unit)? = null
+
+    //点击事件, java
+    var onLeftBtnListener: View.OnClickListener? = null
+    var onRightBtnListener: View.OnClickListener? = null
 
     private lateinit var tvTitle: TextView
     private lateinit var tvDesc: TextView
@@ -118,28 +126,11 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
         vHorizontalDivider = rootView.findViewById(R.id.v_horization)
         vVerticalDivider = rootView.findViewById(R.id.v_vertical)
 
-        tvStyle(
-            tv = tvNegative,
-            textStr = leftText,
-            size = leftSize,
-            colorStr = leftColorStr,
-            colorRes = leftColorRes,
-            isBold = leftBold
-        )
-
-        tvStyle(
-            tv = tvPositive,
-            textStr = rightText,
-            size = rightSize,
-            colorStr = rightColorStr,
-            colorRes = rightColorRes,
-            isBold = rightBold
-        )
-
 
         tvStyle(
             tv = tvTitle,
             textStr = titleText,
+            textRes = titleTextRes,
             size = titleSize,
             colorStr = titleColorStr,
             colorRes = titleColorRes,
@@ -149,14 +140,43 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
         tvStyle(
             tv = tvDesc,
             textStr = descText,
+            textRes = descTextRes,
             size = descSize,
             colorStr = descColorStr,
             colorRes = descColorRes,
+            isBold = descBold
+        )
+
+
+        tvStyle(
+            tv = tvNegative,
+            textStr = leftText,
+            textRes = leftTextRes,
+            size = leftSize,
+            colorStr = leftColorStr,
+            colorRes = leftColorRes,
+            isBold = leftBold
+        )
+
+        tvStyle(
+            tv = tvPositive,
+            textStr = rightText,
+            textRes = rightTextRes,
+            size = rightSize,
+            colorStr = rightColorStr,
+            colorRes = rightColorRes,
             isBold = rightBold
         )
 
+
         tvNegative.setOnClickListener {
             dismiss()
+
+            if (onLeftBtnListener != null) {
+                onLeftBtnListener!!.onClick(it)
+                return@setOnClickListener
+            }
+
             leftBtnListener?.let { clickInstance ->
                 clickInstance()
             }
@@ -164,25 +184,47 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
 
         tvPositive.setOnClickListener {
             dismiss()
+
+            if (onRightBtnListener != null) {
+                onRightBtnListener!!.onClick(it)
+                return@setOnClickListener
+            }
+
             rightBtnListener?.let { clickInstance ->
                 clickInstance()
             }
         }
 
-        if (TextUtils.isEmpty(leftText)) {
+        if (TextUtils.isEmpty(leftText) && leftTextRes == null) {
             guideline.setGuidelinePercent(0f)
         }
 
-        if (TextUtils.isEmpty(rightText)) {
+        if (TextUtils.isEmpty(rightText) && rightTextRes == null) {
             guideline.setGuidelinePercent(1f)
         }
 
     }
 
     //设置tv样式
-    fun tvStyle(tv: TextView, textStr: String?, size: Float?, colorStr: String?, colorRes: Int?, isBold:Boolean) {
+    fun tvStyle(
+        tv: TextView,
+        textStr: String?,
+        textRes: Int?,
+        size: Float?,
+        colorStr: String?,
+        colorRes: Int?,
+        isBold: Boolean
+    ) {
 
-        textStr?.let {
+        var str: String? = null
+        if (textRes != null) {
+            str = context?.resources?.getString(textRes)
+        }
+        if (TextUtils.isEmpty(str)) {
+            str = textStr
+        }
+
+        str?.let {
             tv.text = it
             tv.visibility = View.VISIBLE
             if (colorRes != null) {
@@ -192,13 +234,248 @@ open class TipDialog(context: Context) : BaseDialog(context, "tipsDilaog") {
             }
             size?.let { tv.textSize = it }
 
-            if (isBold){
+            if (isBold) {
                 tv.typeface = Typeface.DEFAULT_BOLD
-            }else{
+            } else {
                 tv.typeface = Typeface.DEFAULT
             }
         }
 
     }
 
+    class Builder(val parent: Any) {
+        private var titleText: String? = null
+        private var titleTextRes: Int? = null
+        private var titleSize: Float? = null
+        private var titleColorStr: String? = null
+        private var titleColorRes: Int? = null
+        private var titleBold: Boolean = true
+        private var descText: String? = null
+        private var descTextRes: Int? = null
+        private var descSize: Float? = null
+        private var descColorStr: String? = null
+        private var descColorRes: Int? = null
+        private var descBold = false
+        private var leftText: String? = null
+        private var leftTextRes: Int? = null
+        private var leftColorStr: String? = null
+        private var leftColorRes: Int? = null
+        private var leftSize: Float? = null
+        private var leftBold = false
+        private var rightText: String? = null
+        private var rightTextRes: Int? = null
+        private var rightColorStr: String? = null
+        private var rightColorRes: Int? = null
+        private var rightSize: Float? = null
+        private var rightBold: Boolean = true
+        private var onLeftBtnListener: View.OnClickListener? = null
+        private var onRightBtnListener: View.OnClickListener? = null
+
+        fun setTitleText(var1: String?): Builder {
+            titleText = var1
+            return this
+        }
+
+        fun setTitleTextRes(var1: Int?): Builder {
+            titleTextRes = var1
+            return this
+        }
+
+        fun setTitleSize(var1: Float?): Builder {
+            titleSize = var1
+            return this
+        }
+
+        fun setTitleColorStr(var1: String?): Builder {
+            titleColorStr = var1
+            return this
+        }
+
+        fun setTitleColorRes(var1: Int?): Builder {
+            titleColorRes = var1
+            return this
+        }
+
+        fun setTitleBold(var1: Boolean): Builder {
+            titleBold = var1
+            return this
+        }
+
+        fun setDescText(var1: String?): Builder {
+            descText = var1
+            return this
+        }
+
+        fun setDescTextRes(var1: Int?): Builder {
+            descTextRes = var1
+            return this
+        }
+
+        fun setDescSize(var1: Float?): Builder {
+            descSize = var1
+            return this
+        }
+
+        fun setDescColorStr(var1: String?): Builder {
+            descColorStr = var1
+            return this
+        }
+
+        fun setDescColorRes(var1: Int?): Builder {
+            descColorRes = var1
+            return this
+        }
+
+        fun setDescBold(var1: Boolean): Builder {
+            descBold = var1
+            return this
+        }
+
+        fun setLeftText(var1: String?): Builder {
+            leftText = var1
+            return this
+        }
+
+        fun setLeftTextRes(var1: Int?): Builder {
+            leftTextRes = var1
+            return this
+        }
+
+        fun setLeftColorStr(var1: String?): Builder {
+            leftColorStr = var1
+            return this
+        }
+
+        fun setLeftColorRes(var1: Int?): Builder {
+            leftColorRes = var1
+            return this
+        }
+
+        fun setLeftSize(var1: Float?): Builder {
+            leftSize = var1
+            return this
+        }
+
+        fun setLeftBold(var1: Boolean): Builder {
+            leftBold = var1
+            return this
+        }
+
+        fun setRightText(var1: String?): Builder {
+            rightText = var1
+            return this
+        }
+
+        fun setRightTextRes(var1: Int?): Builder {
+            rightTextRes = var1
+            return this
+        }
+
+        fun setRightColorStr(var1: String?): Builder {
+            rightColorStr = var1
+            return this
+        }
+
+        fun setRightColorRes(var1: Int?): Builder {
+            rightColorRes = var1
+            return this
+        }
+
+        fun setRightSize(var1: Float?): Builder {
+            rightSize = var1
+            return this
+        }
+
+        fun setRightBold(var1: Boolean): Builder {
+            rightBold = var1
+            return this
+        }
+
+        fun setOnLeftBtnListener(var1: View.OnClickListener?): Builder {
+            onLeftBtnListener = var1
+            return this
+        }
+
+        fun setOnRightBtnListener(var1: View.OnClickListener?): Builder {
+            onRightBtnListener = var1
+            return this
+        }
+
+        fun defaultButton(): Builder {
+            leftText = "取消"
+            rightText = "确定"
+            return this
+        }
+
+        fun defaultSingleRight(): Builder {
+            rightText = "确定"
+            return this
+        }
+
+        fun defaultSingleLeft(): Builder {
+            rightText = "取消"
+            return this
+        }
+
+        fun singleRight(text: String?): Builder {
+            rightText = text
+            return this
+        }
+
+        fun singleLeft(text: String?): Builder {
+            leftText = text
+            return this
+        }
+
+        fun singleRight(textRes: Int?): Builder {
+            rightTextRes = textRes
+            return this
+        }
+
+        fun singleLeft(textRes: Int?): Builder {
+            leftTextRes = textRes
+            return this
+        }
+
+        fun build(): TipDialog {
+            val tipDialog = TipDialog(parent)
+            //标题
+            tipDialog.titleBold = titleBold
+            tipDialog.titleColorRes = titleColorRes
+            tipDialog.titleColorStr = titleColorStr
+            tipDialog.titleSize = titleSize
+            tipDialog.titleText = titleText
+            tipDialog.titleTextRes = titleTextRes
+
+            //文本内容
+            tipDialog.descBold = descBold
+            tipDialog.descSize = descSize
+            tipDialog.descText = descText
+            tipDialog.descTextRes = descTextRes
+            tipDialog.descColorRes = descColorRes
+            tipDialog.descColorStr = descColorStr
+
+            //左边按钮
+            tipDialog.leftBold = leftBold
+            tipDialog.leftSize = leftSize
+            tipDialog.leftText = leftText
+            tipDialog.leftTextRes = leftTextRes
+            tipDialog.leftColorRes = leftColorRes
+            tipDialog.leftColorStr = leftColorStr
+
+            //右边按钮
+            tipDialog.rightText = rightText
+            tipDialog.rightTextRes = rightTextRes
+            tipDialog.rightColorStr = rightColorStr
+            tipDialog.rightColorRes = rightColorRes
+            tipDialog.rightSize = rightSize
+            tipDialog.rightBold = rightBold
+
+            //监听事件
+            tipDialog.onLeftBtnListener = onLeftBtnListener
+            tipDialog.onRightBtnListener = onRightBtnListener
+
+            return tipDialog
+        }
+    }
 }

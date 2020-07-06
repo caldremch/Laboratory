@@ -50,6 +50,11 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
         super.onViewCreated(view, savedInstanceState)
         initView(rootView)
         initData()
+        initEvent()
+    }
+
+    open fun initEvent() {
+
     }
 
     /**
