@@ -7,11 +7,13 @@ import android.util.Log
 import android.widget.Toast
 import com.caldremch.dialog.action_sheet.Action
 import com.caldremch.dialog.action_sheet.ActionData
-import com.caldremch.dialog.action_sheet.ActionSheetDialog
+import com.caldremch.dialog.action_sheet.BaseActionData
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
 import com.caldremch.dialog.owner.Contact
 import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
+import com.caldremch.laboratory.action.ActionSheetDialog
+import com.caldremch.laboratory.action.WeChatActionData
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
 import com.caldremch.laboratory.util.FragmentUtil
@@ -39,8 +41,8 @@ object ConfigMenuUtils {
 
     private fun actionSheetDialog(menuList: java.util.ArrayList<MenuData>, context: Context) {
 
-        val data = arrayListOf<ActionData>()
-        val data_bottom = arrayListOf<ActionData>()
+        val data = arrayListOf<BaseActionData<TargetData>>()
+        val data_bottom = arrayListOf<BaseActionData<TargetData>>()
         for (x in 0..10) {
             val actionData = ActionData(
                 title = "标题$x",
@@ -52,15 +54,20 @@ object ConfigMenuUtils {
                 },
                 type = null
             )
-            data.add(actionData)
-            data_bottom.add(actionData)
+
+
+//            data.add(actionData)
+//            data_bottom.add(actionData)
 
         }
+
+        data.add(WeChatActionData())
 
         menuList.add(MenuData().apply {
             title = "actionSheetDialog"
             runnable = Runnable {
-                val dialog = ActionSheetDialog(context)
+                val dialog =
+                    ActionSheetDialog(context)
                 val bundle = Bundle()
                 bundle.putParcelableArrayList(BaseActionSheetDialog.DATA_TOP, data)
                 bundle.putParcelableArrayList(BaseActionSheetDialog.DATA_BOTTOM, data_bottom)

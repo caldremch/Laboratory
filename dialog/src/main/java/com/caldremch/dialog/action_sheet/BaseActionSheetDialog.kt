@@ -29,17 +29,19 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
  *
  **/
 
-abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
+abstract class BaseActionSheetDialog<T>(parent: Any) : BaseDialog(parent) {
 
-    protected var adapterTop: ActionSheetAdapter? = null
-    protected var adapterBottom: ActionSheetAdapter? = null
+    protected var adapterTop: ActionSheetAdapter<T>? = null
+    protected var adapterBottom: ActionSheetAdapter<T>? = null
     protected var titleView: View? = null
     private lateinit var rvTop: RecyclerView
     private lateinit var rvBottom: RecyclerView
     private lateinit var topGroup: Group
     private lateinit var tvCancel: TextView
 
-    var dragListener: ActionSheetDragListener? = null
+    abstract fun getData(): T?
+
+    var dragListener: ActionSheetDragListener<T>? = null
 
     companion object {
         const val DATA_TOP = "DATA_TOP"
@@ -77,8 +79,8 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
     }
 
     override fun initData() {
-        var dataTop: MutableList<ActionData>? = null
-        var dataBottom: MutableList<ActionData>? = null
+        var dataTop: MutableList<BaseActionData<T>>? = null
+        var dataBottom: MutableList<BaseActionData<T>>? = null
         arguments?.apply {
             dataTop = getParcelableArrayList(DATA_TOP)
             dataBottom = getParcelableArrayList(DATA_BOTTOM)
@@ -109,15 +111,22 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
         }
 
         adapterTop?.setOnItemClickListener { adapter, view, position ->
-            (adapter.data[position] as ActionData).action?.run()
+//            (adapter.data[position] as BaseActionData).getData().action?.run()
+            adapterTop?.data?.get(position)?.onClick(mContext, getData())
+
         }
 
         adapterBottom?.setOnItemClickListener { adapter, view, position ->
-            (adapter.data[position] as ActionData).action?.run()
+//            (adapter.data[position] as BaseActionData<T>).getData().action?.run()
+            adapterBottom?.data?.get(position)?.onClick(mContext, getData())
         }
     }
 
-    private fun initSmart(rv: RecyclerView, data: MutableList<ActionData>, isBottom: Boolean) {
+    private fun initSmart(
+        rv: RecyclerView,
+        data: MutableList<BaseActionData<T>>,
+        isBottom: Boolean
+    ) {
 
         val tempAdapter = ActionSheetAdapter(data)
         //拖拽功能

@@ -16,15 +16,15 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *
  **/
 
-class ActionSheetAdapter(list: MutableList<ActionData>?) :
-    BaseQuickAdapter<ActionData, BaseViewHolder>(R.layout.item_action_sheet, list),
+class ActionSheetAdapter<T>(list: MutableList<BaseActionData<T>>?) :
+    BaseQuickAdapter<BaseActionData<T>, BaseViewHolder>(R.layout.item_action_sheet, list),
     DraggableModule {
-    override fun convert(holder: BaseViewHolder, item: ActionData) {
+    override fun convert(holder: BaseViewHolder, item: BaseActionData<T>) {
         val imageView = holder.getView<ImageView>(R.id.iv)
-        if (item.imageRes != null) {
-            imageView.setImageResource(item.imageRes!!)
+        if (item.getData().imageRes != null) {
+            imageView.setImageResource(item.getData().imageRes!!)
         }
-        holder.setText(R.id.tv, item.title)
+        holder.setText(R.id.tv, item.getData().title)
     }
 
 }

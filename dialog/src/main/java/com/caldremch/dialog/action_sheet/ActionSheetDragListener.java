@@ -8,6 +8,6 @@ import java.util.List;
  * @describe:
  **/
 
-public interface ActionSheetDragListener {
-    void onDragEnd(int startPos, int endPos, List<ActionData> data);
+public interface ActionSheetDragListener<T> {
+    void onDragEnd(int startPos, int endPos, List<BaseActionData<T>> data);
 }
