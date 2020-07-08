@@ -6,7 +6,6 @@ import android.widget.Toast
 import com.caldremch.dialog.R
 import com.caldremch.dialog.action_sheet.ActionData
 import com.caldremch.dialog.action_sheet.BaseActionData
-import com.caldremch.laboratory.TargetData
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -20,7 +19,7 @@ import kotlinx.android.parcel.Parcelize
  **/
 
 @Parcelize
-class WeChatActionData : BaseActionData<TargetData>, Parcelable {
+class WeChatActionData : BaseActionData, Parcelable {
 
     val actionData = ActionData()
 
@@ -33,8 +32,9 @@ class WeChatActionData : BaseActionData<TargetData>, Parcelable {
         return actionData
     }
 
-    override fun onClick(context: Context, data: TargetData?) {
+    override fun onClick(context: Context, data: Any?) {
         Toast.makeText(context, "微信分享", Toast.LENGTH_SHORT).show()
+
     }
 
 }

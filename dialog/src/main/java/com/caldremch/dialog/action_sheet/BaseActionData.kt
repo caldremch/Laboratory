@@ -20,7 +20,7 @@ import android.os.Parcelable
  *
  **/
 
-interface BaseActionData<T> : Action, Parcelable {
+interface BaseActionData : Action, Parcelable {
 
     fun getData(): ActionData
 
@@ -28,5 +28,5 @@ interface BaseActionData<T> : Action, Parcelable {
 
     }
 
-    fun onClick(context: Context, data: T?)
+    fun onClick(context: Context, data: Any?)
 }

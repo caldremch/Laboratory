@@ -3,7 +3,6 @@ package com.caldremch.laboratory.action
 import com.caldremch.dialog.R
 import com.caldremch.dialog.action_sheet.ActionSheetDragListener
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
-import com.caldremch.laboratory.TargetData
 
 /**
  *
@@ -15,7 +14,7 @@ import com.caldremch.laboratory.TargetData
  *
  **/
 
-class ActionSheetDialog(parent: Any) : BaseActionSheetDialog<TargetData>(parent) {
+class ActionSheetDialog(parent: Any) : BaseActionSheetDialog(parent) {
 
     override fun getTitleViewId(): Int {
         return R.layout.action_sheet_title
@@ -25,7 +24,7 @@ class ActionSheetDialog(parent: Any) : BaseActionSheetDialog<TargetData>(parent)
         dragListener = ActionSheetDragListener { startPos, endPos, data -> }
     }
 
-    override fun getData(): TargetData? {
+    override fun getData(): Any? {
         return null;
     }
 

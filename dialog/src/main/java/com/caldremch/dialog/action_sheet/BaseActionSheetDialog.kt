@@ -29,19 +29,19 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
  *
  **/
 
-abstract class BaseActionSheetDialog<T>(parent: Any) : BaseDialog(parent) {
+abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
 
-    protected var adapterTop: ActionSheetAdapter<T>? = null
-    protected var adapterBottom: ActionSheetAdapter<T>? = null
+    protected var adapterTop: ActionSheetAdapter? = null
+    protected var adapterBottom: ActionSheetAdapter? = null
     protected var titleView: View? = null
     private lateinit var rvTop: RecyclerView
     private lateinit var rvBottom: RecyclerView
     private lateinit var topGroup: Group
     private lateinit var tvCancel: TextView
 
-    abstract fun getData(): T?
+    abstract fun getData(): Any?
 
-    var dragListener: ActionSheetDragListener<T>? = null
+    var dragListener: ActionSheetDragListener? = null
 
     companion object {
         const val DATA_TOP = "DATA_TOP"
@@ -79,8 +79,9 @@ abstract class BaseActionSheetDialog<T>(parent: Any) : BaseDialog(parent) {
     }
 
     override fun initData() {
-        var dataTop: MutableList<BaseActionData<T>>? = null
-        var dataBottom: MutableList<BaseActionData<T>>? = null
+
+        var dataTop: MutableList<BaseActionData>? = null
+        var dataBottom: MutableList<BaseActionData>? = null
         arguments?.apply {
             dataTop = getParcelableArrayList(DATA_TOP)
             dataBottom = getParcelableArrayList(DATA_BOTTOM)
@@ -117,14 +118,14 @@ abstract class BaseActionSheetDialog<T>(parent: Any) : BaseDialog(parent) {
         }
 
         adapterBottom?.setOnItemClickListener { adapter, view, position ->
-//            (adapter.data[position] as BaseActionData<T>).getData().action?.run()
+//            (adapter.data[position] as BaseActionData).getData().action?.run()
             adapterBottom?.data?.get(position)?.onClick(mContext, getData())
         }
     }
 
     private fun initSmart(
         rv: RecyclerView,
-        data: MutableList<BaseActionData<T>>,
+        data: MutableList<BaseActionData>,
         isBottom: Boolean
     ) {
 

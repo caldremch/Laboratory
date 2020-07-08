@@ -41,8 +41,8 @@ object ConfigMenuUtils {
 
     private fun actionSheetDialog(menuList: java.util.ArrayList<MenuData>, context: Context) {
 
-        val data = arrayListOf<BaseActionData<TargetData>>()
-        val data_bottom = arrayListOf<BaseActionData<TargetData>>()
+        val data = arrayListOf<BaseActionData>()
+        val data_bottom = arrayListOf<BaseActionData>()
         for (x in 0..10) {
             val actionData = ActionData(
                 title = "标题$x",

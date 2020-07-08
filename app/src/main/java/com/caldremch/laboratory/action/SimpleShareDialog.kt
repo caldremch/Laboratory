@@ -13,7 +13,7 @@ import com.caldremch.laboratory.TargetData
  *
  **/
 
-class SimpleShareDialog(parent: Any) : BaseActionSheetDialog<TargetData>(parent) {
+class SimpleShareDialog(parent: Any) : BaseActionSheetDialog(parent) {
     override fun getData(): TargetData? {
         return null
     }
