@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.dialog.DialogAnim
 import com.caldremch.dialog.R
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemDragListener
 
 /**
@@ -112,15 +113,23 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
         }
 
         adapterTop?.setOnItemClickListener { adapter, view, position ->
-//            (adapter.data[position] as BaseActionData).getData().action?.run()
-            adapterTop?.data?.get(position)?.onClick(mContext, getData())
-
+            handleClick(adapter, position)
         }
 
         adapterBottom?.setOnItemClickListener { adapter, view, position ->
-//            (adapter.data[position] as BaseActionData).getData().action?.run()
-            adapterBottom?.data?.get(position)?.onClick(mContext, getData())
+            handleClick(adapter, position)
         }
+    }
+
+
+    private fun handleClick(adapter: BaseQuickAdapter<*, *>, position: Int) {
+        val data = adapter.data[position] as BaseActionData
+        if (data.getData().action != null) {
+            data.getData().action!!.run()
+        } else {
+            data.onClick(mContext, getData())
+        }
+        dismiss()
     }
 
     private fun initSmart(
