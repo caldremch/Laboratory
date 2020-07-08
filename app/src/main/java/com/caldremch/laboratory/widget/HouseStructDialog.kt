@@ -15,11 +15,7 @@ import com.caldremch.laboratory.R
  *
  * @date: 2020/6/30
  *
- * @describe: 户型弹窗
- *
- * 室 max: 5
- * 厅 max: 4
- * 卫 max: 4
+ * @describe:
  *
  **/
 

@@ -1,9 +1,13 @@
 package com.caldremch.widget
 
 import android.content.Context
+import android.graphics.Color
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import kotlinx.android.synthetic.main.common_item_view.view.*
 
 /**
@@ -38,13 +42,78 @@ class CommonItemView @JvmOverloads constructor(
             tv_title.text = value
         }
 
+    var civ_right_title: String? = null
+        set(value) {
+            field = value
+            if (!TextUtils.isEmpty(field)) {
+                if (checkSafe(R.id.civ_tv_right_title).not()) {
+                    findViewById<TextView>(R.id.civ_tv_right_title).text = field
+                    return
+                }
+                val rightTv = TextView(context)
+                rightTv.text = value
+                rightTv.id = R.id.civ_tv_right_title
+                addView(rightTv)
+                val set = ConstraintSet()
+                set.constrainHeight(rightTv.id, ConstraintSet.WRAP_CONTENT)
+                set.constrainWidth(rightTv.id, ConstraintSet.WRAP_CONTENT)
+                set.connect(
+                    rightTv.id,
+                    ConstraintSet.END,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.END
+                )
+                set.connect(
+                    rightTv.id,
+                    ConstraintSet.TOP,
+                    tv_title.id,
+                    ConstraintSet.TOP
+                )
+                set.connect(
+                    rightTv.id,
+                    ConstraintSet.BOTTOM,
+                    tv_title.id,
+                    ConstraintSet.BOTTOM
+                )
+                set.applyTo(this)
+            }
+
+        }
+
+    private fun checkSafe(id: Int): Boolean {
+        return findViewById<View>(id) == null
+    }
+
+    var show_bottom_line: Boolean = true
+        set(value) {
+            field = value
+            if (field) {
+                val set = ConstraintSet()
+                val lineView = View(context)
+                addView(lineView)
+                lineView.setBackgroundColor(Color.BLACK)
+                lineView.id = R.id.civ_v_bottom_line
+                set.constrainWidth(lineView.id, 0)
+                set.constrainHeight(lineView.id, 1)
+                set.connect(lineView.id, ConstraintSet.LEFT, tv_title.id, ConstraintSet.LEFT)
+                set.connect(
+                    lineView.id,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM
+                )
+                set.applyTo(this)
+            }
+        }
+
 
     init {
         View.inflate(context, R.layout.common_item_view, this)
         val a = context.obtainStyledAttributes(attrs, R.styleable.CommonItemView, defStyleAttr, 0)
         this.title = a.getString(R.styleable.CommonItemView_civ_title)
+        this.civ_right_title = a.getString(R.styleable.CommonItemView_civ_right_title)
+        this.show_bottom_line = a.getBoolean(R.styleable.CommonItemView_civ_show_bottom_line, true)
         a.recycle()
-
     }
 
 

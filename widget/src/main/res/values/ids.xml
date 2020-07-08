@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="civ_v_bottom_line" type="id" />
+    <item name="civ_tv_right_title" type="id" />
+    <item name="civ_tv_left_title" type="id" />
+
+</resources>

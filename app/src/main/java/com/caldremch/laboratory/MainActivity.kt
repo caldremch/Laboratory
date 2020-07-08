@@ -3,7 +3,6 @@ package com.caldremch.laboratory
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -101,9 +100,9 @@ class MainActivity : AppCompatActivity() {
         ssrv.layoutManager = GridLayoutManager(this, 3)
         val stringList =
             arrayListOf<StringItem>(
-                StringItem("出租"),
-                StringItem("出售"),
-                StringItem("租售")
+                StringItem("标题1"),
+                StringItem("标题2"),
+                StringItem("标题3")
             )
         stringList[0].isSelect = true
         singleAdapter = SingleAdapter(stringList, ssrv)
@@ -150,13 +149,6 @@ class MainActivity : AppCompatActivity() {
 
     val stringPickDialog by lazy {
         StringPickDialog(this)
-    }
-
-    fun setDatess(view: View) {
-        var stringPickDialog = StringPickDialog(this)
-        if (!stringPickDialog.isShowing) {
-            stringPickDialog.show()
-        }
     }
 
 

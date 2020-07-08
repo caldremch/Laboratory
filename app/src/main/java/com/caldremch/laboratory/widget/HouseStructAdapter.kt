@@ -81,32 +81,32 @@ class HouseStructAdapter(
         when (type) {
             HouseStructValue.ROOM -> {
                 if (getItemViewType(position) == 0) {
-                    holder.tv.text = "${data.value}室"
+                    holder.tv.text = "${data.value}占位1"
                 } else {
                     data.value?.let {
                         holder.et.setText("$it")
                     }
-                    holder.tv_type_desc.text = "室"
+                    holder.tv_type_desc.text = "占位2"
                 }
             }
             HouseStructValue.HALL -> {
                 if (getItemViewType(position) == 0) {
-                    holder.tv.text = "${data.value}厅"
+                    holder.tv.text = "${data.value}占位3"
                 } else {
                     data.value?.let {
                         holder.et.setText("$it")
                     }
-                    holder.tv_type_desc.text = "厅"
+                    holder.tv_type_desc.text = "占位4"
                 }
             }
             HouseStructValue.TOILET -> {
                 if (getItemViewType(position) == 0) {
-                    holder.tv.text = "${data.value}卫"
+                    holder.tv.text = "${data.value}占位1"
                 } else {
                     data.value?.let {
                         holder.et.setText("$it")
                     }
-                    holder.tv_type_desc.text = "卫"
+                    holder.tv_type_desc.text = "占位1"
                 }
             }
         }
