@@ -15,4 +15,7 @@ interface ICustomerConfig<T> {
     fun getLayoutManager(): RecyclerView.LayoutManager
     fun getItemDecoration(): RecyclerView.ItemDecoration
     fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder>
+    fun getItemLayoutId(): Int
+    fun handleData(pageData: List<T>?)
+    fun handleError()
 }
