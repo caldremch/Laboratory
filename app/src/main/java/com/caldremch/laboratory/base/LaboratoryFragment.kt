@@ -1,5 +1,7 @@
 package com.caldremch.laboratory.base
 
+import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import com.caldremch.common.base.BaseFragment
 import com.caldremch.common.widget.TitleBar
@@ -27,6 +29,12 @@ open class LaboratoryFragment : BaseFragment<Any>() {
             }
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.setBackgroundColor(Color.WHITE)
+        view.setOnClickListener {  }
     }
 
     protected open fun getTitle(): String {
