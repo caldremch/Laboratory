@@ -2,6 +2,7 @@ package com.caldremch.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
@@ -41,6 +42,12 @@ class CommonItemView @JvmOverloads constructor(
         set(value) {
             field = value
             tv_title.text = value
+            if (isExist(R.id.civ_iv_left)) {
+                val set = ConstraintSet()
+                set.clone(this)
+                set.connect(tv_title.id, ConstraintSet.START, R.id.civ_iv_left, ConstraintSet.END)
+                set.applyTo(this)
+            }
         }
 
     var civ_left_title: String? = null
@@ -117,7 +124,7 @@ class CommonItemView @JvmOverloads constructor(
                         ConstraintSet.END
                     )
                 }
-
+                set.setMargin(rightTv.id, 7, 20)
                 set.connect(
                     rightTv.id,
                     ConstraintSet.TOP,
@@ -159,6 +166,50 @@ class CommonItemView @JvmOverloads constructor(
 
             }
         }
+    var civ_left_image: Drawable? = null
+        set(value) {
+            field = value
+            if (field != null) {
+                val view = ImageView(context)
+                addView(view)
+                view.setImageDrawable(field)
+                view.id = R.id.civ_iv_left
+                val set = ConstraintSet()
+                set.constrainWidth(view.id, dp2px(24f))
+                set.constrainHeight(view.id, dp2px(24f))
+                set.connect(
+                    view.id,
+                    ConstraintSet.START,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.START
+                )
+
+                set.connect(
+                    view.id,
+                    ConstraintSet.TOP,
+                    tv_title.id,
+                    ConstraintSet.TOP
+                )
+                set.connect(
+                    view.id,
+                    ConstraintSet.BOTTOM,
+                    tv_title.id,
+                    ConstraintSet.BOTTOM
+                )
+
+                set.setMargin(view.id, 6, dp2px(20f))
+                set.applyTo(this)
+
+                if (isExist(R.id.tv_title)) {
+                    val set2 = ConstraintSet()
+                    set2.clone(this)
+                    set2.connect(R.id.tv_title, ConstraintSet.START, view.id, ConstraintSet.END)
+                    set2.setMargin(view.id, 6, dp2px(15f))
+                    set2.applyTo(this)
+                }
+            }
+        }
+
     var show_right_arrow: Boolean = true
         set(value) {
             field = value
@@ -197,7 +248,7 @@ class CommonItemView @JvmOverloads constructor(
                     val set2 = ConstraintSet()
                     set2.clone(this)
                     set2.connect(rightTv.id, ConstraintSet.END, view.id, ConstraintSet.START)
-                    set.setMargin(rightTv.id, 7, 20)
+                    set2.setMargin(rightTv.id, 7, 20)
                     set2.applyTo(this)
                 }
 
@@ -226,6 +277,7 @@ class CommonItemView @JvmOverloads constructor(
         this.civ_left_title = a.getString(R.styleable.CommonItemView_civ_left_title)
         this.show_bottom_line = a.getBoolean(R.styleable.CommonItemView_civ_show_bottom_line, true)
         this.show_right_arrow = a.getBoolean(R.styleable.CommonItemView_civ_show_right_arrow, true)
+        this.civ_left_image = a.getDrawable(R.styleable.CommonItemView_civ_left_image)
         a.recycle()
     }
 
@@ -251,5 +303,15 @@ class CommonItemView @JvmOverloads constructor(
 //            field = value
 //            tv_right.text = value
 //        }
+
+    fun dp2px(dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
+
+    fun dp2px(dpValue: Int): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
 
 }
