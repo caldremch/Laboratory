@@ -29,4 +29,10 @@ dependencies {
     implementation Deps.constraintlayout
     implementation Deps.recyclerview
     api Deps.banner
+
+    implementation Deps.BaseRecyclerViewAdapterHelper
+    implementation Deps.refresh
+    implementation Deps.refresh_header_classics
+    implementation Deps.refresh_footer_classics
+    implementation Deps.refresh_header_falsify
 }
