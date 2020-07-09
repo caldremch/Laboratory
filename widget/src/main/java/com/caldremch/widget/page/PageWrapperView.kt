@@ -27,7 +27,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * 5.设置设置ItemDecorater
  *
  **/
-abstract class PageWrapperView<T>(
+abstract open class PageWrapperView<T>(
     var mContext: Context,
     var pageDelegate: IPageDelegate<T>,
     var loadingEnable: Boolean = true
