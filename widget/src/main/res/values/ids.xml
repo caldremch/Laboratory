@@ -4,5 +4,6 @@
     <item name="civ_v_bottom_line" type="id" />
     <item name="civ_tv_right_title" type="id" />
     <item name="civ_tv_left_title" type="id" />
+    <item name="civ_iv_right" type="id" />
 
 </resources>

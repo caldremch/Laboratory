@@ -11,7 +11,9 @@
         <!--        </attr>-->
         <attr name="civ_title" format="string" />
         <attr name="civ_right_title" format="string" />
+        <attr name="civ_left_title" format="string" />
         <attr name="civ_show_bottom_line" format="boolean" />
+        <attr name="civ_show_right_arrow" format="boolean" />
         <!--        <attr name="left_title_bold" format="boolean" />-->
         <!--        <attr name="right_title" format="string" />-->
         <!--        <attr name="red_count" format="string" />-->

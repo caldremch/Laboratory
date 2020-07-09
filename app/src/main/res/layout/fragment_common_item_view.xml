@@ -22,4 +22,19 @@
         android:layout_height="wrap_content"
         app:civ_right_title="是我啊"
         app:civ_title="标题啊3" />
+
+    <com.caldremch.widget.CommonItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:civ_left_title="左子标题"
+        app:civ_right_title="右子标题"
+        app:civ_title="标题啊4" />
+
+    <com.caldremch.widget.CommonItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:civ_left_title="左子标题"
+        app:civ_show_right_arrow="false"
+        app:civ_right_title="右子标题"
+        app:civ_title="不显示Arrow" />
 </LinearLayout>

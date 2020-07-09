@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -42,12 +43,55 @@ class CommonItemView @JvmOverloads constructor(
             tv_title.text = value
         }
 
+    var civ_left_title: String? = null
+        set(value) {
+            field = value
+            if (!TextUtils.isEmpty(field)) {
+
+                val targetId = R.id.civ_tv_left_title
+
+                if (isExist(targetId)) {
+                    setExistTvText(targetId, field)
+                    return
+                }
+                val tv = TextView(context)
+                tv.text = value
+                tv.id = targetId
+                addView(tv)
+                val set = ConstraintSet()
+                set.constrainHeight(tv.id, ConstraintSet.WRAP_CONTENT)
+                set.constrainWidth(tv.id, ConstraintSet.WRAP_CONTENT)
+                set.connect(
+                    tv.id,
+                    ConstraintSet.START,
+                    tv_title.id,
+                    ConstraintSet.END
+                )
+                set.connect(
+                    tv.id,
+                    ConstraintSet.TOP,
+                    tv_title.id,
+                    ConstraintSet.TOP
+                )
+                set.connect(
+                    tv.id,
+                    ConstraintSet.BOTTOM,
+                    tv_title.id,
+                    ConstraintSet.BOTTOM
+                )
+                set.setMargin(tv.id, 6, 15)
+                set.applyTo(this)
+            }
+
+        }
+
+
     var civ_right_title: String? = null
         set(value) {
             field = value
             if (!TextUtils.isEmpty(field)) {
-                if (checkSafe(R.id.civ_tv_right_title).not()) {
-                    findViewById<TextView>(R.id.civ_tv_right_title).text = field
+                if (isExist(R.id.civ_tv_right_title)) {
+                    setExistTvText(R.id.civ_tv_right_title, field)
                     return
                 }
                 val rightTv = TextView(context)
@@ -57,12 +101,23 @@ class CommonItemView @JvmOverloads constructor(
                 val set = ConstraintSet()
                 set.constrainHeight(rightTv.id, ConstraintSet.WRAP_CONTENT)
                 set.constrainWidth(rightTv.id, ConstraintSet.WRAP_CONTENT)
-                set.connect(
-                    rightTv.id,
-                    ConstraintSet.END,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.END
-                )
+
+                if (isExist(R.id.civ_iv_right)) {
+                    set.connect(
+                        rightTv.id,
+                        ConstraintSet.END,
+                        R.id.civ_iv_right,
+                        ConstraintSet.START
+                    )
+                } else {
+                    set.connect(
+                        rightTv.id,
+                        ConstraintSet.END,
+                        ConstraintSet.PARENT_ID,
+                        ConstraintSet.END
+                    )
+                }
+
                 set.connect(
                     rightTv.id,
                     ConstraintSet.TOP,
@@ -80,9 +135,6 @@ class CommonItemView @JvmOverloads constructor(
 
         }
 
-    private fun checkSafe(id: Int): Boolean {
-        return findViewById<View>(id) == null
-    }
 
     var show_bottom_line: Boolean = true
         set(value) {
@@ -103,16 +155,77 @@ class CommonItemView @JvmOverloads constructor(
                     ConstraintSet.BOTTOM
                 )
                 set.applyTo(this)
+
+
+            }
+        }
+    var show_right_arrow: Boolean = true
+        set(value) {
+            field = value
+            if (field) {
+                val set = ConstraintSet()
+                val view = ImageView(context)
+                view.setImageResource(R.drawable.ic_arrow_right)
+                addView(view)
+                view.id = R.id.civ_iv_right
+                set.constrainWidth(view.id, ConstraintSet.WRAP_CONTENT)
+                set.constrainHeight(view.id, ConstraintSet.WRAP_CONTENT)
+                set.connect(
+                    view.id,
+                    ConstraintSet.END,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.END
+                )
+                set.connect(
+                    view.id,
+                    ConstraintSet.TOP,
+                    tv_title.id,
+                    ConstraintSet.TOP
+                )
+                set.connect(
+                    view.id,
+                    ConstraintSet.BOTTOM,
+                    tv_title.id,
+                    ConstraintSet.BOTTOM
+                )
+                set.setMargin(view.id, 7, 20)
+                set.applyTo(this)
+
+                //由于字段设置的先后顺序问题, 这里需要矫正一下右边标题的约束
+                if (isExist(R.id.civ_tv_right_title)) {
+                    val rightTv = findViewById<View>(R.id.civ_tv_right_title)
+                    val set2 = ConstraintSet()
+                    set2.clone(this)
+                    set2.connect(rightTv.id, ConstraintSet.END, view.id, ConstraintSet.START)
+                    set.setMargin(rightTv.id, 7, 20)
+                    set2.applyTo(this)
+                }
+
             }
         }
 
+    /**
+     * 根据id, 设置内容
+     */
+    private fun setExistTvText(id: Int, text: String?) {
+        findViewById<TextView>(id).text = text
+    }
+
+    /**
+     * 添加是否安全, 不存在的话, 则添加安全
+     */
+    private fun isExist(id: Int): Boolean {
+        return findViewById<View>(id) != null
+    }
 
     init {
         View.inflate(context, R.layout.common_item_view, this)
         val a = context.obtainStyledAttributes(attrs, R.styleable.CommonItemView, defStyleAttr, 0)
         this.title = a.getString(R.styleable.CommonItemView_civ_title)
         this.civ_right_title = a.getString(R.styleable.CommonItemView_civ_right_title)
+        this.civ_left_title = a.getString(R.styleable.CommonItemView_civ_left_title)
         this.show_bottom_line = a.getBoolean(R.styleable.CommonItemView_civ_show_bottom_line, true)
+        this.show_right_arrow = a.getBoolean(R.styleable.CommonItemView_civ_show_right_arrow, true)
         a.recycle()
     }
 
