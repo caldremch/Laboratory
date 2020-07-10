@@ -30,7 +30,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 abstract open class PageWrapper<T>(
     protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
-    var loadingEnable: Boolean = false
+    var loadingEnable: Boolean
 ) : ICustomerConfig<T>, IPageOperator<T>, LifecycleObserver {
 
     private lateinit var mRv: RecyclerView
@@ -119,8 +119,6 @@ abstract open class PageWrapper<T>(
 //                mAdapter.addFooterView(mFooterView);
 //            }
         }
-
-        getLoading()?.startLoading()
     }
 
     override fun handleError() {
@@ -185,8 +183,17 @@ abstract open class PageWrapper<T>(
         refreshHandle.getView().addView(mRootView)
         mRv = RecyclerView(context)
         mRootView.addView(mRv, createLayoutParams())
+    }
+
+    private fun showEmptyView() {
         getStatusView()?.apply {
             mRootView.addView(this, createLayoutParams())
+        }
+    }
+
+    private fun hideEmptyView() {
+        getStatusView()?.apply {
+            mRootView.removeView(this)
         }
     }
 

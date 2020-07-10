@@ -52,8 +52,10 @@ class DefaultLoadingView @JvmOverloads constructor(
 
 
     fun startAnim() {
-        stopAnim()
-        startViewAnim(0f, 1f, 1000)
+        postDelayed({
+            stopAnim()
+            startViewAnim(0f, 1f, 1000)
+        }, 5000)
     }
 
     fun stopAnim() {
