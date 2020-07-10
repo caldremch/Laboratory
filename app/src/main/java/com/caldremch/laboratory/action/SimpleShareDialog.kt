@@ -1,7 +1,7 @@
 package com.caldremch.laboratory.action
 
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
-import com.caldremch.laboratory.TargetData
+import com.caldremch.dialog.action_sheet.IData
 
 /**
  *
@@ -14,7 +14,8 @@ import com.caldremch.laboratory.TargetData
  **/
 
 class SimpleShareDialog(parent: Any) : BaseActionSheetDialog(parent) {
-    override fun getData(): TargetData? {
+
+    override fun getData(): IData? {
         return null
     }
 

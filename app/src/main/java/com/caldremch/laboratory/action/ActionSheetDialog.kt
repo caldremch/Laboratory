@@ -1,8 +1,9 @@
 package com.caldremch.laboratory.action
 
-import com.caldremch.dialog.R
 import com.caldremch.dialog.action_sheet.ActionSheetDragListener
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
+import com.caldremch.dialog.action_sheet.IActionHeader
+import com.caldremch.dialog.action_sheet.IData
 
 /**
  *
@@ -16,16 +17,19 @@ import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
 
 class ActionSheetDialog(parent: Any) : BaseActionSheetDialog(parent) {
 
-    override fun getTitleViewId(): Int {
-        return R.layout.action_sheet_title
+    val testBundleData = TestBundleData()
+
+    override fun getTitleView(): IActionHeader? {
+        return TestActionHeaderView(mContext)
     }
 
     init {
         dragListener = ActionSheetDragListener { startPos, endPos, data -> }
     }
 
-    override fun getData(): Any? {
-        return null;
+    override fun getData(): IData? {
+        return testBundleData;
     }
+
 
 }
