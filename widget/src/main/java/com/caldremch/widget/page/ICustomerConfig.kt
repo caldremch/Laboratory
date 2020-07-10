@@ -1,5 +1,6 @@
 package com.caldremch.widget.page
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -13,9 +14,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  **/
 interface ICustomerConfig<T> {
     fun getLayoutManager(): RecyclerView.LayoutManager
-    fun getItemDecoration(): RecyclerView.ItemDecoration
+    fun getItemDecoration(): RecyclerView.ItemDecoration?
     fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder>
     fun getItemLayoutId(): Int
-    fun handleData(pageData: List<T>?)
-    fun handleError()
+    fun getPageView(): View
 }

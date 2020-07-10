@@ -14,6 +14,7 @@ import com.caldremch.dialog.owner.OwnerDialog
 import com.caldremch.dialog.utils.PhoneCheckUtils
 import com.caldremch.laboratory.action.ActionSheetDialog
 import com.caldremch.laboratory.action.WeChatActionData
+import com.caldremch.laboratory.activity.PageListActivity
 import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.laboratory.fragment.BannerFragment
 import com.caldremch.laboratory.fragment.CommonItemViewFragment
@@ -33,6 +34,7 @@ object ConfigMenuUtils {
     var sOwnerDialog: OwnerDialog? = null
 
     fun setSetMenuData(context: Context, menuList: ArrayList<MenuData>) {
+        pageList(menuList, context)
         banner(menuList, context)
         commonItemView(menuList, context)
         actionSheetDialog(menuList, context)
@@ -41,6 +43,15 @@ object ConfigMenuUtils {
         addOwnerDialog(menuList, context)
         addPage(menuList, context)
         addHouseStructDialog(menuList, context)
+    }
+
+    private fun pageList(menuList: java.util.ArrayList<MenuData>, context: Context) {
+        menuList.add(MenuData().apply {
+            title = "分页demo"
+            runnable = Runnable {
+                context.startActivity(Intent(context, PageListActivity::class.java))
+            }
+        })
     }
 
     private fun banner(menuList: java.util.ArrayList<MenuData>, context: Context) {

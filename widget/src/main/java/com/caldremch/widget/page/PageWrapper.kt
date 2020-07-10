@@ -11,9 +11,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.caldremch.widget.page.base.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
  * @author Caldremch
@@ -27,18 +27,18 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * 5.设置设置ItemDecorater
  *
  **/
-abstract open class PageWrapperView<T>(
-    var mContext: Context,
+abstract open class PageWrapper<T>(
+    protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
-    var loadingEnable: Boolean = true
-) :
-    SmartRefreshLayout(mContext), ICustomerConfig<T>, LifecycleObserver {
+    var loadingEnable: Boolean = false
+) : ICustomerConfig<T>, IPageOperator<T>, LifecycleObserver {
 
     private lateinit var mRv: RecyclerView
     private lateinit var mRootView: ViewGroup
     private lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
     private var mCurrentPageIndex = 1
     private val mPageSize: Int = 20
+    private lateinit var refreshHandle: IRefresh
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onDestroy() {
@@ -49,8 +49,8 @@ abstract open class PageWrapperView<T>(
         initObs()
         initWrapperView()
         initLoad()
-        initRvConfig()
         initAdapterConfig()
+        initRvConfig()
         initEvent()
     }
 
@@ -69,19 +69,20 @@ abstract open class PageWrapperView<T>(
         }
 
         //上拉加载更多
-        setOnLoadMoreListener {
+        refreshHandle.setOnLoadMoreListenerEx(OnLoadMoreListenerEx {
             mCurrentPageIndex++
             pageDelegate.getData(mCurrentPageIndex)
-        }
+        })
+
 
         //下拉刷新
-        setOnRefreshListener { refresh() }
+        refreshHandle.setOnRefreshListener(OnRefreshListenerEx {
+            refresh()
+        })
     }
 
     override fun handleData(data: List<T>?) {
-        onFinishRefresh()
-
-
+        refreshHandle.onFinishRefreshAndLoadMore()
         if (data != null) {
             if (mCurrentPageIndex == 1) {
                 mAdapter.data.clear()
@@ -92,12 +93,12 @@ abstract open class PageWrapperView<T>(
             //每次加载 pageSize, 如果pageData.items 返回的数目等于 pageSize, 则可以继续上拉加载
             //判断是否可以上拉加载
             if (data.size == mPageSize) {
-                setEnableLoadMore(true)
+                refreshHandle.setEnableLoadMoreEx(true)
                 //                if (mAdapter.getFooterLayoutCount() > 0) {
 //                    mAdapter.removeAllFooterView();
 //                }
             } else {
-                setEnableLoadMore(false)
+                refreshHandle.setEnableLoadMoreEx(false)
                 //                if (mAdapter.getFooterLayoutCount() == 0 && !mListData.isEmpty()) {
 //                    mAdapter.addFooterView(mFooterView);
 //                }
@@ -113,7 +114,7 @@ abstract open class PageWrapperView<T>(
         }
 
         if (mCurrentPageIndex > 1 && data == null) {
-            setEnableLoadMore(false)
+            refreshHandle.setEnableLoadMoreEx(false)
 //            if (mAdapter.getFooterLayoutCount() == 0 && !mListData.isEmpty()) {
 //                mAdapter.addFooterView(mFooterView);
 //            }
@@ -128,10 +129,6 @@ abstract open class PageWrapperView<T>(
         }
     }
 
-    open fun onFinishRefresh() {
-        finishRefresh(0)
-        finishLoadMore(0)
-    }
 
     open fun refresh() {
         mCurrentPageIndex = 1
@@ -148,39 +145,49 @@ abstract open class PageWrapperView<T>(
 
     private fun initLoad() {
         if (loadingEnable) {
-            getLoading()?.startLoading()
-        } else {
             getLoading()?.apply {
-                mRootView.removeView(loadingView())
+                //todo loadingView 位置是否需要设置?
+                val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                    dp2px(30),
+                    dp2px(30)
+                )
+                params.gravity = Gravity.CENTER
+                mRootView.addView(loadingView(), params)
             }
+            getLoading()?.startLoading()
         }
+//        else {
+//            getLoading()?.apply {
+//                mRootView.removeView(loadingView())
+//            }
+//        }
     }
 
     private fun initAdapterConfig() {
         loadingEnable = false
-        mRv.adapter = getAdapter()
+        mAdapter = getAdapter()
     }
 
     private fun initRvConfig() {
         mRv.layoutManager = getLayoutManager()
+        getItemDecoration()?.apply {
+            mRv.addItemDecoration(this)
+        }
+        mRv.adapter = mAdapter
     }
 
     private fun initWrapperView() {
+
+        refreshHandle = WrapRefreshLayout(context)
         //为了空布局的时候, 也可以下拉刷新
         mRootView = FrameLayout(context)
         mRootView.layoutParams = createLayoutParams()
-        addView(mRootView)
-        getLoading()?.apply {
-            //todo loadingView 位置是否需要设置?
-            val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
-                dp2px(30),
-                dp2px(30)
-            )
-            params.gravity = Gravity.CENTER
-            mRootView.addView(loadingView())
-        }
+        refreshHandle.getView().addView(mRootView)
         mRv = RecyclerView(context)
-        mRv.layoutParams = createLayoutParams()
+        mRootView.addView(mRv, createLayoutParams())
+        getStatusView()?.apply {
+            mRootView.addView(this, createLayoutParams())
+        }
     }
 
     //使用默认方式设置adapter
@@ -208,13 +215,24 @@ abstract open class PageWrapperView<T>(
         return (dpValue * scale + 0.5f).toInt()
     }
 
+    override fun getItemDecoration(): RecyclerView.ItemDecoration? {
+        return null
+    }
+
+    override fun getItemLayoutId(): Int {
+        return pageDelegate.itemLayoutId
+    }
+
     //abs
     abstract fun getLoading(): IPageLoading?
 
     //default empty, error View
-    abstract fun getStatusView(): View
+    abstract fun getStatusView(): View?
 
     //default footer view
-    abstract fun getFooterView(): View
+//    abstract fun getFooterView(): View
 
+    override fun getPageView(): View {
+        return refreshHandle.getView()
+    }
 }

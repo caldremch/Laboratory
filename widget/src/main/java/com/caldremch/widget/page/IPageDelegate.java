@@ -21,9 +21,9 @@ public interface IPageDelegate<T> {
     /**
      * 获取 item 布局, 可以不传, 当不使用默认的 adapter 时
      */
-//    default int getItemLayout(){
-//        return 0;
-//    }
+    default int getItemLayoutId() {
+        return 0;
+    }
 
     /**
      * item 点击

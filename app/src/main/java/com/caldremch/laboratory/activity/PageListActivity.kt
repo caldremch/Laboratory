@@ -1,10 +1,12 @@
 package com.caldremch.laboratory.activity
 
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.page.TestData
 import com.caldremch.widget.page.IPageDelegate
-import com.caldremch.widget.page.PageWrapperView
+import com.caldremch.widget.page.PageManager
 import kotlinx.android.synthetic.main.activity_page_list.*
 
 /**
@@ -21,7 +23,14 @@ class PageListActivity : BaseActivity<Any>(),IPageDelegate<TestData> {
     }
 
     override fun initView() {
-        rootView.addView(PageWrapperView<TestData>(this, this))
+        val pageManager = PageManager.Builder<TestData>(this).build()
+        rootView.addView(
+            pageManager.getPageView(),
+            FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
     }
 
     override fun getData(pageIndex: Int) {

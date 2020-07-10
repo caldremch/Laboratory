@@ -35,8 +35,8 @@ dependencies {
     api Deps.banner
 
     implementation Deps.BaseRecyclerViewAdapterHelper
-    implementation Deps.refresh
-    implementation Deps.refresh_header_classics
-    implementation Deps.refresh_footer_classics
-    implementation Deps.refresh_header_falsify
+    api Deps.refresh
+    api Deps.refresh_header_classics
+    api Deps.refresh_footer_classics
+    api Deps.refresh_header_falsify
 }
