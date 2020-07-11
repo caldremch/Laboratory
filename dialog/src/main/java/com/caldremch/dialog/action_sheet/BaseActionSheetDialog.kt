@@ -39,8 +39,9 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
     private lateinit var rvBottom: RecyclerView
     private lateinit var topGroup: Group
     private lateinit var tvCancel: TextView
+    private var iActionHeader: IActionHeader? = null
 
-    abstract fun getData(): Any?
+    abstract fun getData(): IData?
 
     var dragListener: ActionSheetDragListener? = null
 
@@ -64,23 +65,24 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
         rvBottom = rootView.findViewById(R.id.rv_bottom)
         tvCancel = rootView.findViewById(R.id.tv_cancel)
         topGroup = rootView.findViewById(R.id.g)
-        if (getTitleViewId() != 0) {
-            titleView = View.inflate(rootView.context, getTitleViewId(), null)
-            titleView?.let {
+        iActionHeader = getTitleView()
+        iActionHeader?.apply {
+            titleView = getHeaderView()
+            titleView?.apply {
                 val titleLayoutParams = ConstraintLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 titleLayoutParams.bottomToTop = rvTop.id
-                it.layoutParams = titleLayoutParams
-                (rootView as ViewGroup).addView(it, titleLayoutParams)
+                layoutParams = titleLayoutParams
+                (rootView as ViewGroup).addView(this, titleLayoutParams)
             }
-
         }
+
     }
 
     override fun initData() {
-
+        iActionHeader?.initData(getData())
         var dataTop: MutableList<BaseActionData>? = null
         var dataBottom: MutableList<BaseActionData>? = null
         arguments?.apply {
@@ -191,8 +193,8 @@ abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
         return manager
     }
 
-    protected open fun getTitleViewId(): Int {
-        return 0
+    protected open fun getTitleView(): IActionHeader? {
+        return null
     }
 
     protected open fun initTitleView(titleView: View) {

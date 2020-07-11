@@ -40,7 +40,9 @@ object Deps {
     const val eventbus = "org.greenrobot:eventbus:3.2.0"
     const val refresh = "com.scwang.smart:refresh-layout-kernel:2.0.1"
     const val refresh_header_falsify = "com.scwang.smart:refresh-header-falsify:2.0.1"
+    const val refresh_footer_classics = "com.scwang.smart:refresh-footer-classics:2.0.1"
     const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
+    const val banner = "com.youth.banner:banner:2.0.12"
 
 
 }

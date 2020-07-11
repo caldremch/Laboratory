@@ -20,13 +20,7 @@ import android.os.Parcelable
  *
  **/
 
-interface BaseActionData : Action, Parcelable {
-
+interface BaseActionData : Parcelable {
     fun getData(): ActionData
-
-    override fun run() {
-
-    }
-
-    fun onClick(context: Context, data: Any?)
+    fun onClick(context: Context, data: IData?)
 }
