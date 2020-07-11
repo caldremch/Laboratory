@@ -17,5 +17,6 @@ import com.caldremch.widget.page.ICustomerConfig
 interface IPageOperator<T> : ICustomerConfig<T>{
     fun handleData(pageData: List<T>?)
     fun handleError()
+    fun refresh()
     fun getPageView(): View
 }

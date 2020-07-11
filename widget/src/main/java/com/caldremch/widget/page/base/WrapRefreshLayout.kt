@@ -2,6 +2,8 @@ package com.caldremch.widget.page.base
 
 import android.content.Context
 import android.view.ViewGroup
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -20,7 +22,13 @@ class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context), IRefre
     private var onRefreshListenerEx: OnRefreshListenerEx? = null
 
     init {
+        initView()
         initEvent()
+    }
+
+    private fun initView() {
+        setRefreshHeader(ClassicsHeader(context))
+        setRefreshFooter(ClassicsFooter(context))
     }
 
     private fun initEvent() {

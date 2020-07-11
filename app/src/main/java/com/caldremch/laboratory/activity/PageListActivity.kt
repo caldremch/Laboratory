@@ -1,14 +1,18 @@
 package com.caldremch.laboratory.activity
 
+import android.graphics.Rect
 import android.os.Handler
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.page.TestData
 import com.caldremch.widget.page.IPageDelegate
 import com.caldremch.widget.page.PageManager
 import com.caldremch.widget.page.base.IPageOperator
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.activity_page_list.*
 
 /**
@@ -27,6 +31,7 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
     }
 
     override fun initView() {
+
         pageManager = PageManager.Builder<TestData>(this)
             .setLoadEnable(false)
             .build()
@@ -39,23 +44,41 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
             )
         )
 
+
+
+    }
+
+    override fun getData(pageIndex: Int) {
         //模拟网路请求
         Handler().postDelayed(Runnable {
             val list = arrayListOf<TestData>()
             for (x in 0 until 10) {
                 val testData = TestData()
+                testData.title = "标题$x"
                 list.add(testData)
             }
             pageManager.handleData(list)
         }, 2000)
-
     }
 
-    override fun getData(pageIndex: Int) {
-
-    }
-
-    override fun getItemLayoutId(): Int {
+    override fun getItemLayoutId(): Int?{
         return R.layout.item_test
+    }
+
+    override fun setItemView(holder: BaseViewHolder, item: TestData) {
+        holder.setText(R.id.tv, item.title)
+    }
+
+    override fun getItemDecoration(): RecyclerView.ItemDecoration? {
+        return object :RecyclerView.ItemDecoration(){
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                outRect.bottom = 20
+            }
+        }
     }
 }

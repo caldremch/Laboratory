@@ -16,11 +16,16 @@ interface ICustomerConfig<T> {
     fun getLayoutManager(): RecyclerView.LayoutManager?{
         return null
     }
-    fun getItemDecoration(): RecyclerView.ItemDecoration?
+
+    fun getItemDecoration(): RecyclerView.ItemDecoration?{
+        return null
+    }
+
     fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder>?{
         return null
     }
-    fun getItemLayoutId(): Int{
-        return 0
+
+    fun getItemLayoutId(): Int? {
+        return null
     }
 }

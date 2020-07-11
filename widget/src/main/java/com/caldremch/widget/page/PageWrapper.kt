@@ -32,7 +32,7 @@ abstract open class PageWrapper<T>(
     protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
     var loadingEnable: Boolean
-) : LifecycleObserver {
+) : LifecycleObserver, IPageOperator<T> {
 
     private lateinit var mRv: RecyclerView
     private lateinit var mRootView: ViewGroup
@@ -65,7 +65,7 @@ abstract open class PageWrapper<T>(
         }
 
         //子View点击事件
-        mAdapter.setOnItemChildClickListener { adp: BaseQuickAdapter<*, *>?, view: View?, position: Int ->
+        mAdapter.setOnItemChildClickListener { adp: BaseQuickAdapter<*, *>, view: View?, position: Int ->
             pageDelegate.handleItemChildClick(mAdapter.data[position], view, adp, position)
         }
 
@@ -83,7 +83,9 @@ abstract open class PageWrapper<T>(
     }
 
     override fun handleData(data: List<T>?) {
+
         refreshHandle.onFinishRefreshAndLoadMore()
+
         if (data != null) {
             if (mCurrentPageIndex == 1) {
                 mAdapter.data.clear()
@@ -129,7 +131,7 @@ abstract open class PageWrapper<T>(
     }
 
 
-    open fun refresh() {
+    override fun refresh() {
         mCurrentPageIndex = 1
         pageDelegate.getData(mCurrentPageIndex)
     }
@@ -140,7 +142,6 @@ abstract open class PageWrapper<T>(
             owner.lifecycle.addObserver(this)
         }
     }
-
 
     private fun initLoad() {
         if (loadingEnable) {
@@ -164,7 +165,7 @@ abstract open class PageWrapper<T>(
 
     private fun initAdapterConfig() {
         loadingEnable = false
-        mAdapter = getDefaultAdapter()
+        mAdapter = pageDelegate.getAdapter() ?: getDefaultAdapter()
     }
 
     private fun initRvConfig() {
@@ -199,17 +200,17 @@ abstract open class PageWrapper<T>(
     }
 
     //使用默认方式设置adapter
-    fun getDefaultAdapter(): BaseQuickAdapter<T, BaseViewHolder> {
-        pageDelegate.getItemLayoutId() ?: throw RuntimeException("getItemLayoutId can't be null")
+    private fun getDefaultAdapter(): BaseQuickAdapter<T, BaseViewHolder> {
+        pageDelegate.getItemLayoutId()?: throw RuntimeException("getItemLayoutId can't be null")
         return object :
-            BaseQuickAdapter<T, BaseViewHolder>(pageDelegate.getItemLayoutId(), arrayListOf()) {
+            BaseQuickAdapter<T, BaseViewHolder>(pageDelegate.getItemLayoutId()!!, arrayListOf()) {
             override fun convert(holder: BaseViewHolder, item: T) {
                 pageDelegate.setItemView(holder, item)
             }
         }
     }
 
-    fun getDefaultLayoutManager(): RecyclerView.LayoutManager {
+    private fun getDefaultLayoutManager(): RecyclerView.LayoutManager {
         return LinearLayoutManager(context)
     }
 
