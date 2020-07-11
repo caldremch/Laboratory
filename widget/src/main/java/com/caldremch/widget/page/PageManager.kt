@@ -3,7 +3,6 @@ package com.caldremch.widget.page
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.caldremch.widget.page.base.IPageOperator
 
@@ -18,7 +17,7 @@ import com.caldremch.widget.page.base.IPageOperator
 class PageManager<T> private constructor(
     mContext: Context,
     pageDelegate: IPageDelegate<T>,
-    loadingEnable: Boolean = false
+    loadingEnable: Boolean
 ) : PageWrapper<T>(mContext, pageDelegate, loadingEnable) {
 
     //通过Builder约束
@@ -60,16 +59,8 @@ class PageManager<T> private constructor(
         }
     }
 
-    init {
-
-    }
-
-    override fun getLoading(): IPageLoading? {
-        return DefaultLoadingView(context)
-    }
-
     override fun getStatusView(): IPageStatus? {
-        return DefaultStatusView(context)
+        return DefaultPageStatus(context)
     }
 
 }

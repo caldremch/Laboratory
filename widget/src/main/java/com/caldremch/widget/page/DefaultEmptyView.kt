@@ -17,9 +17,9 @@ import android.widget.TextView
  *
  **/
 
-class DefaultStatusView @JvmOverloads constructor(
+class DefaultEmptyView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), IPageStatus {
+) : LinearLayout(context, attrs, defStyleAttr){
 
     init {
         val tv = TextView(context)
@@ -27,10 +27,6 @@ class DefaultStatusView @JvmOverloads constructor(
         addView(tv)
         gravity = Gravity.CENTER
 
-    }
-
-    override fun statusView(): View {
-        return this
     }
 
 }

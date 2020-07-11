@@ -9,8 +9,12 @@ import android.view.View
  * @describe
  * 1.空
  * 2.错误
+ * 3.加载
  *
  **/
 interface IPageStatus {
-    fun statusView(): View
+    fun setStatus(status: PageStatus)
+    fun startLoading()
+    fun stopLoading()
+    fun statusView(): View //根据当前不同的状态, 返回不同的 View
 }

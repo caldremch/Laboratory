@@ -45,11 +45,27 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
         )
 
         //获取第一页数据
-        getData(1)
+        setError()
     }
 
     override fun getData(pageIndex: Int) {
         //模拟网路请求
+        setData()
+    }
+
+    private fun setError() {
+        Handler().postDelayed(Runnable {
+            pageManager.handleError()
+        }, 2000)
+    }
+
+    private fun setEmpty() {
+        Handler().postDelayed(Runnable {
+            pageManager.handleData(null)
+        }, 2000)
+    }
+
+    private fun setData() {
         Handler().postDelayed(Runnable {
             val list = arrayListOf<TestData>()
             for (x in 0 until 10) {
@@ -57,12 +73,12 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
                 testData.title = "标题$x"
                 list.add(testData)
             }
-//            pageManager.handleData(list)
-            pageManager.handleData(null)
+            //            pageManager.handleData(list)
+            pageManager.handleData(list)
         }, 2000)
     }
 
-    override fun getItemLayoutId(): Int?{
+    override fun getItemLayoutId(): Int? {
         return R.layout.item_test
     }
 
@@ -71,7 +87,7 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? {
-        return object :RecyclerView.ItemDecoration(){
+        return object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,
