@@ -12,11 +12,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
  * @email caldremch@163.com
  * @describe 分页数据处理 ,代理控制者进行操作
  **/
-public interface IPageDelegate<T> {
+public interface IPageDelegate<T> extends ICustomerConfig<T> {
 
     /*数据与view*/
-    default void setItemView(BaseViewHolder holder, T item) {
-    }
+    default void setItemView(BaseViewHolder holder, T item) { }
 
     /**
      * 获取 item 布局, 可以不传, 当不使用默认的 adapter 时
@@ -28,16 +27,12 @@ public interface IPageDelegate<T> {
     /**
      * item 点击
      */
-    default void handleItemClick(T item, View view, BaseQuickAdapter adapter, int position) {
-
-    }
+    default void handleItemClick(T item, View view, BaseQuickAdapter adapter, int position) { }
 
     /**
      * 子view item 点击
      */
-    default void handleItemChildClick(T item, View view, BaseQuickAdapter adapter, int position) {
-
-    }
+    default void handleItemChildClick(T item, View view, BaseQuickAdapter adapter, int position) { }
 
     /**
      * 获取列表数据
@@ -52,13 +47,5 @@ public interface IPageDelegate<T> {
      */
 //    default int getListContainerId(){
 //        return R.id.listContainer;
-//    }
-
-    /**
-     * 创建 adapter
-     * @return
-     */
-//    default BaseQuickAdapter<T, BaseViewHolder> createAdapter(){
-//return  null;
 //    }
 }

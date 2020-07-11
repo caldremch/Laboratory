@@ -31,7 +31,7 @@ abstract open class PageWrapper<T>(
     protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
     var loadingEnable: Boolean
-) : ICustomerConfig<T>, IPageOperator<T>, LifecycleObserver {
+) :  IPageOperator<T>, LifecycleObserver {
 
     private lateinit var mRv: RecyclerView
     private lateinit var mRootView: ViewGroup
@@ -227,7 +227,7 @@ abstract open class PageWrapper<T>(
     }
 
     override fun getItemLayoutId(): Int {
-        return pageDelegate.itemLayoutId
+        return pageDelegate.getItemLayoutId()
     }
 
     //abs

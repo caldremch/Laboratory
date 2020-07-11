@@ -1,6 +1,7 @@
 package com.caldremch.widget.page.base
 
 import android.view.View
+import com.caldremch.widget.page.ICustomerConfig
 
 /**
  *
@@ -13,7 +14,7 @@ import android.view.View
  *
  **/
 
-interface IPageOperator<T> {
+interface IPageOperator<T> : ICustomerConfig<T>{
     fun handleData(pageData: List<T>?)
     fun handleError()
     fun getPageView(): View

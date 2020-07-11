@@ -47,7 +47,7 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
                 list.add(testData)
             }
             pageManager.handleData(list)
-        }, 3000)
+        }, 2000)
 
     }
 
