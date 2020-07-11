@@ -13,8 +13,14 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *
  **/
 interface ICustomerConfig<T> {
-    fun getLayoutManager(): RecyclerView.LayoutManager
+    fun getLayoutManager(): RecyclerView.LayoutManager?{
+        return null
+    }
     fun getItemDecoration(): RecyclerView.ItemDecoration?
-    fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder>
-    fun getItemLayoutId(): Int
+    fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder>?{
+        return null
+    }
+    fun getItemLayoutId(): Int{
+        return 0
+    }
 }

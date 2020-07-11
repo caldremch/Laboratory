@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.widget.page.base.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import java.lang.RuntimeException
 
 /**
  * @author Caldremch
@@ -31,7 +32,7 @@ abstract open class PageWrapper<T>(
     protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
     var loadingEnable: Boolean
-) :  IPageOperator<T>, LifecycleObserver {
+) : LifecycleObserver {
 
     private lateinit var mRv: RecyclerView
     private lateinit var mRootView: ViewGroup
@@ -163,12 +164,12 @@ abstract open class PageWrapper<T>(
 
     private fun initAdapterConfig() {
         loadingEnable = false
-        mAdapter = getAdapter()
+        mAdapter = getDefaultAdapter()
     }
 
     private fun initRvConfig() {
-        mRv.layoutManager = getLayoutManager()
-        getItemDecoration()?.apply {
+        mRv.layoutManager = pageDelegate.getLayoutManager() ?: getDefaultLayoutManager()
+        pageDelegate.getItemDecoration()?.apply {
             mRv.addItemDecoration(this)
         }
         mRv.adapter = mAdapter
@@ -198,15 +199,17 @@ abstract open class PageWrapper<T>(
     }
 
     //使用默认方式设置adapter
-    override fun getAdapter(): BaseQuickAdapter<T, BaseViewHolder> {
-        return object : BaseQuickAdapter<T, BaseViewHolder>(getItemLayoutId(), arrayListOf()) {
+    fun getDefaultAdapter(): BaseQuickAdapter<T, BaseViewHolder> {
+        pageDelegate.getItemLayoutId() ?: throw RuntimeException("getItemLayoutId can't be null")
+        return object :
+            BaseQuickAdapter<T, BaseViewHolder>(pageDelegate.getItemLayoutId(), arrayListOf()) {
             override fun convert(holder: BaseViewHolder, item: T) {
                 pageDelegate.setItemView(holder, item)
             }
         }
     }
 
-    override fun getLayoutManager(): RecyclerView.LayoutManager {
+    fun getDefaultLayoutManager(): RecyclerView.LayoutManager {
         return LinearLayoutManager(context)
     }
 
@@ -220,14 +223,6 @@ abstract open class PageWrapper<T>(
     open fun dp2px(dpValue: Int): Int {
         val scale = context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
-    }
-
-    override fun getItemDecoration(): RecyclerView.ItemDecoration? {
-        return null
-    }
-
-    override fun getItemLayoutId(): Int {
-        return pageDelegate.getItemLayoutId()
     }
 
     //abs
