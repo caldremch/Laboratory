@@ -19,7 +19,7 @@ class PageManager<T> private constructor(
     mContext: Context,
     pageDelegate: IPageDelegate<T>,
     loadingEnable: Boolean = false
-) : PageWrapper<T>(mContext, pageDelegate, loadingEnable){
+) : PageWrapper<T>(mContext, pageDelegate, loadingEnable) {
 
     //通过Builder约束
     class Builder<T> {
@@ -68,8 +68,8 @@ class PageManager<T> private constructor(
         return DefaultLoadingView(context)
     }
 
-    override fun getStatusView(): View? {
-        return DefaultEmptyView(context)
+    override fun getStatusView(): IPageStatus? {
+        return DefaultStatusView(context)
     }
 
 }

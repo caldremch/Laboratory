@@ -3,6 +3,7 @@ package com.caldremch.widget.page
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 
@@ -16,9 +17,9 @@ import android.widget.TextView
  *
  **/
 
-class DefaultEmptyView @JvmOverloads constructor(
+class DefaultStatusView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), IPageStatus {
 
     init {
         val tv = TextView(context)
@@ -26,6 +27,10 @@ class DefaultEmptyView @JvmOverloads constructor(
         addView(tv)
         gravity = Gravity.CENTER
 
+    }
+
+    override fun statusView(): View {
+        return this
     }
 
 }

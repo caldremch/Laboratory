@@ -33,7 +33,7 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
     override fun initView() {
 
         pageManager = PageManager.Builder<TestData>(this)
-            .setLoadEnable(false)
+            .setLoadEnable(true)
             .build()
 
         rootView.addView(
@@ -44,8 +44,8 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
             )
         )
 
-
-
+        //获取第一页数据
+        getData(1)
     }
 
     override fun getData(pageIndex: Int) {
@@ -57,7 +57,8 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
                 testData.title = "标题$x"
                 list.add(testData)
             }
-            pageManager.handleData(list)
+//            pageManager.handleData(list)
+            pageManager.handleData(null)
         }, 2000)
     }
 
@@ -81,4 +82,5 @@ class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
             }
         }
     }
+
 }

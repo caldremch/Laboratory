@@ -1,6 +1,7 @@
 package com.caldremch.widget.page
 
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,8 @@ abstract open class PageWrapper<T>(
     private var mCurrentPageIndex = 1
     private val mPageSize: Int = 20
     private lateinit var refreshHandle: IRefresh
+    private var loadingHandle:IPageLoading? = null
+    private var statusHandle:IPageStatus? = null
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onDestroy() {
@@ -144,8 +147,9 @@ abstract open class PageWrapper<T>(
     }
 
     private fun initLoad() {
+        loadingHandle = getLoading()
         if (loadingEnable) {
-            getLoading()?.apply {
+            loadingHandle?.apply {
                 //todo loadingView 位置是否需要设置?
                 val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
                     dp2px(30),
@@ -154,13 +158,9 @@ abstract open class PageWrapper<T>(
                 params.gravity = Gravity.CENTER
                 mRootView.addView(loadingView(), params)
             }
-            getLoading()?.startLoading()
+
+            loadingHandle?. startLoading()
         }
-//        else {
-//            getLoading()?.apply {
-//                mRootView.removeView(loadingView())
-//            }
-//        }
     }
 
     private fun initAdapterConfig() {
@@ -189,13 +189,13 @@ abstract open class PageWrapper<T>(
 
     private fun showEmptyView() {
         getStatusView()?.apply {
-            mRootView.addView(this, createLayoutParams())
+//            mRootView.addView(this, createLayoutParams())
         }
     }
 
     private fun hideEmptyView() {
         getStatusView()?.apply {
-            mRootView.removeView(this)
+//            mRootView.removeView(this)
         }
     }
 
@@ -230,7 +230,7 @@ abstract open class PageWrapper<T>(
     abstract fun getLoading(): IPageLoading?
 
     //default empty, error View
-    abstract fun getStatusView(): View?
+    abstract fun getStatusView(): IPageStatus?
 
     //default footer view
 //    abstract fun getFooterView(): View

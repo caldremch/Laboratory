@@ -52,10 +52,8 @@ class DefaultLoadingView @JvmOverloads constructor(
 
 
     fun startAnim() {
-        postDelayed({
-            stopAnim()
-            startViewAnim(0f, 1f, 1000)
-        }, 5000)
+        stopAnim()
+        startViewAnim(0f, 1f, 1000)
     }
 
     fun stopAnim() {
@@ -114,7 +112,7 @@ class DefaultLoadingView @JvmOverloads constructor(
         super.onDraw(canvas)
         mPaint!!.color = Color.parseColor("#E6E6E6")
         canvas.drawCircle(mWidth / 2, mWidth / 2, mWidth / 2 - mPadding, mPaint!!)
-        mPaint!!.color = Color.parseColor("#FF6B00")
+        mPaint!!.color = Color.parseColor("#000000")
         val rectF = RectF(mPadding, mPadding, mWidth - mPadding, mWidth - mPadding)
         canvas.drawArc(rectF, mStartAngle, 100f, false, mPaint!!) //第四个参数是否显示半径
     }

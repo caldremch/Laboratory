@@ -1,10 +1,14 @@
 package com.caldremch.laboratory
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
+import kotlinx.android.synthetic.main.activity_main2.*
 
 class PageStatusViewActivity : AppCompatActivity() {
 
@@ -22,14 +26,13 @@ class PageStatusViewActivity : AppCompatActivity() {
     }
 
     fun addFr(view: View) {
-        Log.d("TAG", "addFr: start add")
-        val manager = supportFragmentManager.beginTransaction()
-//        manager.add(R.id.fl, TestFragment())
-        val f = NetWatchDogFragment().apply {
-            title = "网络监听"
-        }
-        manager.add(android.R.id.content, f)
-        manager.commit()
+        val tv = TextView(this)
+        tv.text = "圣诞节阿里街道啦"
+        ll_root.addView(tv, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        Handler().postDelayed(Runnable {
+            ll_root.removeView(tv)
+            Log.d("TAG", "addFr: $tv")
+        }, 3000)
     }
 
 
