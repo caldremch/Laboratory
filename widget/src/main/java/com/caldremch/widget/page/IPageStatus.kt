@@ -13,8 +13,8 @@ import android.view.View
  *
  **/
 interface IPageStatus {
-    fun setStatus(status: PageStatus)
+    fun setRetryListener(retryListenerListener: IRetryListener?)
     fun startLoading()
     fun stopLoading()
-    fun statusView(): View //根据当前不同的状态, 返回不同的 View
+    fun statusView(status: PageStatus): View //根据当前不同的状态, 返回不同的 View
 }

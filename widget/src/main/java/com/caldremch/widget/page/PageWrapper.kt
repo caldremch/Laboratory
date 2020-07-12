@@ -28,7 +28,7 @@ import java.lang.RuntimeException
  * 5.设置设置ItemDecorater
  *
  **/
-abstract open class PageWrapper<T>(
+abstract class PageWrapper<T>(
     protected var context: Context,
     var pageDelegate: IPageDelegate<T>,
     private var loadingEnable: Boolean
@@ -133,8 +133,7 @@ abstract open class PageWrapper<T>(
         if (mAdapter.data.isEmpty()) {
             //刷新能知道空状态, 但是如果列表有删除操作, 当删除结束后, 并不知道当前的数据已经被清空, 所以需要设置到 adapter 里面
             pageStatusHandle?.apply {
-                setStatus(PageStatus.EMPTY)
-                mAdapter.setEmptyView(statusView())
+                mAdapter.setEmptyView(statusView(PageStatus.EMPTY))
             }
         }
 
@@ -154,16 +153,14 @@ abstract open class PageWrapper<T>(
         //设置错误状态, 只有首次进入的时候, 失败的是的时候, 如果已经有数据了, 是不会显示的
         if (mAdapter.data.isEmpty()) {
             pageStatusHandle?.apply {
-                setStatus(PageStatus.ERROR)
-                mRootView.addView(statusView())
+                mRootView.addView(statusView(PageStatus.ERROR))
             }
         }
     }
 
     private fun hideErrorView() {
         pageStatusHandle?.apply {
-            setStatus(PageStatus.ERROR)
-            mRootView.removeView(statusView())
+            mRootView.removeView(statusView(PageStatus.ERROR))
         }
     }
 
@@ -182,19 +179,24 @@ abstract open class PageWrapper<T>(
 
     private fun initPageStatus() {
         pageStatusHandle = getStatusView()
+        pageStatusHandle?.setRetryListener(IRetryListener {
+            //重试的时候,将错误页面移除
+            hideErrorView()
+            startLoading()
+            refresh()
+        })
         startLoading()
     }
 
     private fun startLoading() {
         if (loadingEnable) {
             pageStatusHandle?.apply {
-                setStatus(PageStatus.LOADING)
                 val params: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
                     dp2px(30),
                     dp2px(30)
                 )
                 params.gravity = Gravity.CENTER
-                mRootView.addView(statusView(), params)
+                mRootView.addView(statusView(PageStatus.LOADING), params)
                 startLoading()
             }
         }
@@ -204,8 +206,7 @@ abstract open class PageWrapper<T>(
         if (loadingEnable) {
             pageStatusHandle?.apply {
                 stopLoading()
-                setStatus(PageStatus.LOADING)
-                mRootView.removeView(statusView())
+                mRootView.removeView(statusView(PageStatus.LOADING))
             }
         }
     }
@@ -235,15 +236,13 @@ abstract open class PageWrapper<T>(
 
     private fun showEmptyView() {
         pageStatusHandle?.apply {
-            setStatus(PageStatus.EMPTY)
-            mRootView.addView(statusView(), createLayoutParams())
+            mRootView.addView(statusView(PageStatus.EMPTY), createLayoutParams())
         }
     }
 
     private fun hideEmptyView() {
         pageStatusHandle?.apply {
-            setStatus(PageStatus.EMPTY)
-            mRootView.removeView(statusView())
+            mRootView.removeView(statusView(PageStatus.EMPTY))
         }
     }
 

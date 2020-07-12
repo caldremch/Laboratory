@@ -16,13 +16,19 @@ import android.view.View
  **/
 class DefaultPageStatus(val context: Context) : IPageStatus {
 
-    private var currentStatus = PageStatus.EMPTY
-
+    private var retryListenerListener: IRetryListener? = null
     val loadingView = DefaultLoadingView(context)
     val emptyView = DefaultEmptyView(context)
     val errorView = DefaultErrorView(context)
-    override fun setStatus(status: PageStatus) {
-        currentStatus = status
+
+    init {
+        errorView.tv.setOnClickListener {
+            retryListenerListener?.onRetry()
+        }
+    }
+
+    override fun setRetryListener(retryListenerListener: IRetryListener?) {
+        this.retryListenerListener = retryListenerListener
     }
 
     override fun startLoading() {
@@ -33,8 +39,8 @@ class DefaultPageStatus(val context: Context) : IPageStatus {
         loadingView.stopAnim()
     }
 
-    override fun statusView(): View {
-        when (currentStatus) {
+    override fun statusView(status: PageStatus): View {
+        when (status) {
             PageStatus.LOADING -> return loadingView
             PageStatus.EMPTY -> return emptyView
             PageStatus.ERROR -> return errorView
