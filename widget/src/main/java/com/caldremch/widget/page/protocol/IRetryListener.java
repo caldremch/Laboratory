@@ -1,4 +1,4 @@
-package com.caldremch.widget.page;
+package com.caldremch.widget.page.protocol;
 
 /**
  * @author Caldremch

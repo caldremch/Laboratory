@@ -1,6 +1,5 @@
-package com.caldremch.widget.page
+package com.caldremch.widget.page.protocol
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

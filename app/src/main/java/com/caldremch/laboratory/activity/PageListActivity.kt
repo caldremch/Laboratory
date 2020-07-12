@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.page.TestData
-import com.caldremch.widget.page.IPageDelegate
+import com.caldremch.widget.page.protocol.IPageDelegate
 import com.caldremch.widget.page.PageManager
-import com.caldremch.widget.page.base.IPageOperator
+import com.caldremch.widget.page.protocol.IPageOperator
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.activity_page_list.*
 
@@ -22,7 +22,8 @@ import kotlinx.android.synthetic.main.activity_page_list.*
  * @describe
  *
  **/
-class PageListActivity : BaseActivity<Any>(), IPageDelegate<TestData> {
+class PageListActivity : BaseActivity<Any>(),
+    IPageDelegate<TestData> {
 
     private lateinit var pageManager: IPageOperator<TestData>
 

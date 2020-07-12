@@ -1,4 +1,4 @@
-package com.caldremch.widget.page
+package com.caldremch.widget.page.view
 
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
@@ -13,6 +13,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import com.caldremch.widget.page.protocol.IPageLoading
 
 /**
  *
@@ -26,7 +27,8 @@ import androidx.core.content.ContextCompat
 
 class DefaultLoadingView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr), IPageLoading {
+) : View(context, attrs, defStyleAttr),
+    IPageLoading {
 
     private var mWidth = 0f
     private var mPadding = 0f

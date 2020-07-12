@@ -1,6 +1,7 @@
-package com.caldremch.widget.page
+package com.caldremch.widget.page.protocol
 
 import android.view.View
+import com.caldremch.widget.page.PageStatus
 
 /**
  * @author Caldremch

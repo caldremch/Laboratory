@@ -11,7 +11,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.caldremch.widget.page.base.*
+import com.caldremch.widget.page.protocol.*
+import com.caldremch.widget.page.view.WrapRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import java.lang.RuntimeException

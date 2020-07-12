@@ -1,7 +1,6 @@
-package com.caldremch.widget.page.base
+package com.caldremch.widget.page.protocol
 
 import android.view.View
-import com.caldremch.widget.page.ICustomerConfig
 
 /**
  *
@@ -14,7 +13,7 @@ import com.caldremch.widget.page.ICustomerConfig
  *
  **/
 
-interface IPageOperator<T> : ICustomerConfig<T>{
+interface IPageOperator<T> : ICustomerConfig<T> {
     fun handleData(pageData: List<T>?)
     fun handleError()
     fun refresh()

@@ -1,4 +1,4 @@
-package com.caldremch.widget.page.base;
+package com.caldremch.widget.page.protocol;
 
 import androidx.annotation.NonNull;
 

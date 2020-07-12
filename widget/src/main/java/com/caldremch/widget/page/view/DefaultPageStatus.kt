@@ -1,7 +1,10 @@
-package com.caldremch.widget.page
+package com.caldremch.widget.page.view
 
 import android.content.Context
 import android.view.View
+import com.caldremch.widget.page.PageStatus
+import com.caldremch.widget.page.protocol.IPageStatus
+import com.caldremch.widget.page.protocol.IRetryListener
 
 /**
  *
@@ -14,7 +17,8 @@ import android.view.View
  * @describe
  *
  **/
-class DefaultPageStatus(val context: Context) : IPageStatus {
+class DefaultPageStatus(val context: Context) :
+    IPageStatus {
 
     private var retryListenerListener: IRetryListener? = null
     val loadingView = DefaultLoadingView(context)

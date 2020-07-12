@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.caldremch.widget.page.base.IPageOperator
+import com.caldremch.widget.page.protocol.IPageDelegate
+import com.caldremch.widget.page.protocol.IPageOperator
+import com.caldremch.widget.page.protocol.IPageStatus
+import com.caldremch.widget.page.view.DefaultPageStatus
 
 /**
  * @author Caldremch

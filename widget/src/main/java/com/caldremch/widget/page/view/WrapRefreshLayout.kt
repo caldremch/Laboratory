@@ -1,7 +1,10 @@
-package com.caldremch.widget.page.base
+package com.caldremch.widget.page.view
 
 import android.content.Context
 import android.view.ViewGroup
+import com.caldremch.widget.page.protocol.IRefresh
+import com.caldremch.widget.page.protocol.OnLoadMoreListenerEx
+import com.caldremch.widget.page.protocol.OnRefreshListenerEx
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -16,7 +19,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *
  **/
 
-class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context), IRefresh {
+class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context),
+    IRefresh {
 
     private var onLoadMoreListenerEx: OnLoadMoreListenerEx? = null
     private var onRefreshListenerEx: OnRefreshListenerEx? = null
