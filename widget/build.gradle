@@ -39,4 +39,5 @@ dependencies {
     api Deps.refresh_header_classics
     api Deps.refresh_footer_classics
     api Deps.refresh_header_falsify
+    implementation Deps.MagicIndicator
 }

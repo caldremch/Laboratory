@@ -234,6 +234,10 @@ abstract class PageWrapper<T>(
             mRv.addItemDecoration(this)
         }
         mRv.adapter = mAdapter
+        mRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            }
+        })
     }
 
     private fun initWrapperView() {

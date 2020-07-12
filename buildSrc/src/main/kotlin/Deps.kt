@@ -43,7 +43,6 @@ object Deps {
     const val refresh_footer_classics = "com.scwang.smart:refresh-footer-classics:2.0.1"
     const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
     const val banner = "com.youth.banner:banner:2.0.12"
-
-
+    const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
 }
 
