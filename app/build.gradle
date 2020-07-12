@@ -37,7 +37,7 @@ dependencies {
     implementation Deps.BaseRecyclerViewAdapterHelper
     implementation Deps.cardview
     implementation Deps.glide
-
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
     implementation project(':PickerView')
     implementation project(':dialog')
     implementation project(':widget')

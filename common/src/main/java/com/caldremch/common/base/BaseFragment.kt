@@ -55,9 +55,6 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun setViewStatus(@StatusView.ViewState status: Int) {
         if (mContentView != null && mContentView is IStatusView) {

@@ -20,6 +20,7 @@ import com.caldremch.laboratory.bean.MenuData
 import com.caldremch.laboratory.fragment.BannerFragment
 import com.caldremch.laboratory.fragment.CommonItemViewFragment
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
+import com.caldremch.laboratory.fragment.PageListFragment
 import com.caldremch.laboratory.util.FragmentUtil
 import com.caldremch.laboratory.widget.HouseStruct
 import com.caldremch.laboratory.widget.HouseStructDialog
@@ -35,6 +36,7 @@ object ConfigMenuUtils {
     var sOwnerDialog: OwnerDialog? = null
 
     fun setSetMenuData(context: Context, menuList: ArrayList<MenuData>) {
+        pageListFragment(menuList, context)
         pageListSelfCrateAdapter(menuList, context)
         pageList(menuList, context)
         banner(menuList, context)
@@ -65,6 +67,14 @@ object ConfigMenuUtils {
         })
     }
 
+    private fun pageListFragment(menuList: java.util.ArrayList<MenuData>, context: Context) {
+        menuList.add(MenuData().apply {
+            title = "分页-Fragment Demo"
+            runnable = Runnable {
+                FragmentUtil.add(context, PageListFragment())
+            }
+        })
+    }
     private fun banner(menuList: java.util.ArrayList<MenuData>, context: Context) {
         menuList.add(MenuData().apply {
             title = "banner Demo"

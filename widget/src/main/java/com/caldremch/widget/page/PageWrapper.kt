@@ -1,16 +1,19 @@
 package com.caldremch.widget.page
 
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.caldremch.widget.BuildConfig
 import com.caldremch.widget.page.protocol.*
 import com.caldremch.widget.page.view.WrapRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -31,6 +34,7 @@ import java.lang.RuntimeException
  **/
 abstract class PageWrapper<T>(
     protected var context: Context,
+    val fragment: Fragment?,
     var pageDelegate: IPageDelegate<T>,
     private var loadingEnable: Boolean
 ) : LifecycleObserver, IPageOperator<T> {
@@ -47,7 +51,11 @@ abstract class PageWrapper<T>(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onDestroy() {
-       stopLoading()
+        if (BuildConfig.DEBUG) {
+            Log.d("TAG", "onDestroy: ")
+        }
+        refreshHandle.onFinishRefreshAndLoadMore()
+        stopLoading()
     }
 
     init {
@@ -142,10 +150,10 @@ abstract class PageWrapper<T>(
     }
 
     override fun handleError() {
+        refreshHandle.onFinishRefreshAndLoadMore()
         if (mCurrentPageIndex > 1) {
             mCurrentPageIndex--
         }
-
         stopLoading()
         showErrorView()
     }
@@ -172,7 +180,11 @@ abstract class PageWrapper<T>(
     }
 
     private fun initObs() {
-        if (context is LifecycleOwner) {
+
+        if (fragment is LifecycleOwner) {
+            val owner: LifecycleOwner = fragment as LifecycleOwner
+            owner.lifecycle.addObserver(this)
+        } else if (context is LifecycleOwner) {
             val owner: LifecycleOwner = context as LifecycleOwner
             owner.lifecycle.addObserver(this)
         }

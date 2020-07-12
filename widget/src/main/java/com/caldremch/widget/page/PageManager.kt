@@ -16,12 +16,12 @@ import com.caldremch.widget.page.view.DefaultPageStatus
  * @describe
  *
  **/
-@SuppressLint("ViewConstructor")
 class PageManager<T> private constructor(
     mContext: Context,
+    fragment: Fragment?,
     pageDelegate: IPageDelegate<T>,
     loadingEnable: Boolean
-) : PageWrapper<T>(mContext, pageDelegate, loadingEnable) {
+) : PageWrapper<T>(mContext, fragment, pageDelegate, loadingEnable) {
 
     //通过Builder约束
     class Builder<T> {
@@ -57,7 +57,7 @@ class PageManager<T> private constructor(
         }
 
         fun build(): IPageOperator<T> {
-            val pageManager = PageManager(context, pageDelegate, loadingEnable)
+            val pageManager = PageManager(context, fragment, pageDelegate, loadingEnable)
             return pageManager
         }
     }
