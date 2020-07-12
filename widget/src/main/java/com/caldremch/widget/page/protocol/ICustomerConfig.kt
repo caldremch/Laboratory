@@ -27,4 +27,9 @@ interface ICustomerConfig<T> {
     fun getItemLayoutId(): Int? {
         return null
     }
+
+    //默认 20
+    fun getPageSize():Int{
+        return 20
+    }
 }

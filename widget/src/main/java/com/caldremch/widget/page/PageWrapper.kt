@@ -43,7 +43,7 @@ abstract class PageWrapper<T>(
     private lateinit var mRootView: ViewGroup
     private lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
     private var mCurrentPageIndex = 1
-    private val mPageSize: Int = 20
+    private val mPageSize: Int = pageDelegate.getPageSize()
     private lateinit var refreshHandle: IRefresh
 
     //    private var loadingHandle:IPageLoading? = null

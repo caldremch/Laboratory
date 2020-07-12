@@ -51,7 +51,7 @@ class PageListActivity : BaseActivity<Any>(),
 
     override fun getData(pageIndex: Int) {
         //模拟网路请求
-        setData()
+        setData(pageIndex)
     }
 
     private fun setError() {
@@ -66,10 +66,16 @@ class PageListActivity : BaseActivity<Any>(),
         }, 2000)
     }
 
-    private fun setData() {
+    var start = 0
+    private fun setData(pageIndex: Int) {
+        if (pageIndex == 1){
+            start = 0
+        }else{
+            start += getPageSize()
+        }
         Handler().postDelayed(Runnable {
             val list = arrayListOf<TestData>()
-            for (x in 0 until 10) {
+            for (x in start until (start+20) ) {
                 val testData = TestData()
                 testData.title = "标题$x"
                 list.add(testData)
