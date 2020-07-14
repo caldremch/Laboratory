@@ -1,9 +1,11 @@
 package com.caldremch.dialog
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +33,7 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
     private var dialogData: DialogData
     var anim = DialogAnim.NONE
 
+
     init {
         dialogData = checkContainer(parent)
         mContext = dialogData.context
@@ -55,6 +58,14 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
 
     open fun initEvent() {
 
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            Log.d(TAG, "onCreateDialog: 显示了哦")
+        }
+        return dialog
     }
 
     /**
@@ -98,6 +109,11 @@ abstract class BaseDialog(var parent: Any, var tagStr: String? = null) : LifeDia
             window.attributes = it
         }
 
+
+    }
+
+    override fun onStart() {
+        super.onStart()
 
     }
 

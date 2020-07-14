@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Guideline
@@ -103,11 +104,11 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
     private lateinit var vVerticalDivider: View
     private lateinit var tvPositive: TextView
     private lateinit var guideline: Guideline
+    private var centerView: View? = null //内容布局
 
     fun leftClick(left: () -> Unit) {
         leftBtnListener = left
     }
-
 
     fun rightClick(right: () -> Unit) {
         rightBtnListener = right
@@ -126,6 +127,24 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
         vHorizontalDivider = rootView.findViewById(R.id.v_horization)
         vVerticalDivider = rootView.findViewById(R.id.v_vertical)
 
+        if (centerView != null) {
+            if (rootView is ViewGroup) {
+                val tvDescLayoutParams = tvDesc.layoutParams
+                centerView!!.id = tvDesc.id
+                rootView.removeView(tvDesc)
+                rootView.addView(centerView, tvDescLayoutParams)
+            }
+        } else {
+            tvStyle(
+                tv = tvDesc,
+                textStr = descText,
+                textRes = descTextRes,
+                size = descSize,
+                colorStr = descColorStr,
+                colorRes = descColorRes,
+                isBold = descBold
+            )
+        }
 
         tvStyle(
             tv = tvTitle,
@@ -136,17 +155,6 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             colorRes = titleColorRes,
             isBold = titleBold
         )
-
-        tvStyle(
-            tv = tvDesc,
-            textStr = descText,
-            textRes = descTextRes,
-            size = descSize,
-            colorStr = descColorStr,
-            colorRes = descColorRes,
-            isBold = descBold
-        )
-
 
         tvStyle(
             tv = tvNegative,
@@ -205,6 +213,10 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
 
     }
 
+    override fun initEvent() {
+
+    }
+
     //设置tv样式
     fun tvStyle(
         tv: TextView,
@@ -244,6 +256,7 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
     }
 
     class Builder(val parent: Any) {
+        private var centerView: View? = null
         private var titleText: String? = null
         private var titleTextRes: Int? = null
         private var titleSize: Float? = null
@@ -376,6 +389,11 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             return this
         }
 
+        fun setCenterView(view: View): Builder {
+            centerView = view
+            return this
+        }
+
         fun setRightColorRes(var1: Int?): Builder {
             rightColorRes = var1
             return this
@@ -470,6 +488,7 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             tipDialog.rightColorRes = rightColorRes
             tipDialog.rightSize = rightSize
             tipDialog.rightBold = rightBold
+            tipDialog.centerView = centerView
 
             //监听事件
             tipDialog.onLeftBtnListener = onLeftBtnListener
