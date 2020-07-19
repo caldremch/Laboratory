@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.tipDialog
 import com.caldremch.laboratory.entry.entry.IEntry
 import com.caldremch.utils.KBObserver
+import com.caldremch.utils.UiUtils
 import com.caldremch.widget.single.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         KBObserver.init(this)
         initSingleView()
         hackInit()
+        val x = UiUtils.getColor(R.color.cardview_shadow_end_color)
     }
 
     private lateinit var singleAdapter: SingleAdapter
