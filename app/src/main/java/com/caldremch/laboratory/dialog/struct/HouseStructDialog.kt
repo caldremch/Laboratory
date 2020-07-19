@@ -1,5 +1,6 @@
 package com.caldremch.laboratory.dialog.struct
 
+import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -20,7 +21,7 @@ import com.caldremch.laboratory.widget.SimpleListener
  *
  **/
 
-class HouseStructDialog(parent: Any, var strict: Boolean = false) : BaseDialog(parent) {
+class HouseStructDialog(parent: Context, var strict: Boolean = false) : BaseDialog(parent) {
 
     private lateinit var rv_room: RecyclerView
     private lateinit var rv_hall: RecyclerView

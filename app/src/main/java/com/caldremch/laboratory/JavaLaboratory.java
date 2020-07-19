@@ -29,7 +29,7 @@ public class JavaLaboratory {
                 .singleRight(R.string.app_name)
                 .defaultButton()
                 .defaultSingleLeft()
-                .setCenterView(view)
+                .setCustomView(view)
                 .defaultSingleRight()
                 .setDescColorRes(null)
                 .setRightText(null)

@@ -30,26 +30,7 @@ import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator
  *
  **/
 
-inline fun AppCompatActivity.ownerDialog(dsl: OwnerDialog.() -> Unit): OwnerDialog {
-    val dialog = OwnerDialog(this)
-    dialog.apply(dsl)
-    dialog.show()
-    return dialog
-}
-
-//Context dsl调用
-inline fun ownerDialog(
-    container: Any,
-    dsl: DialogFragment.() -> Unit
-): OwnerDialog {
-    val dialog = OwnerDialog(container)
-    dialog.apply(dsl)
-    dialog.show()
-    return dialog
-}
-
-
-class OwnerDialog(parent: Any) : BaseDialog(parent) {
+class OwnerDialog(parent: Context) : BaseDialog(parent) {
 
 
     interface ConfirmListener {

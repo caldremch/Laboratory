@@ -18,14 +18,20 @@ open class LifeDialogFragment : DialogFragment() {
 
     val TAG = "LifeDialogFragment"
 
+    private fun log(tagString: String, string: String) {
+        if (BuildConfig.DEBUG) {
+            Log.d(tagString, string)
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.d(TAG, "onAttach: ")
+        log(TAG, "onAttach: ")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
+        log(TAG, "onCreate: ")
     }
 
     override fun onCreateView(
@@ -33,52 +39,52 @@ open class LifeDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "onCreateView: ")
+        log(TAG, "onCreateView: ")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(TAG, "onViewCreated: ")
+        log(TAG, "onViewCreated: ")
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Log.d(TAG, "onActivityCreated: ")
+        log(TAG, "onActivityCreated: ")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: ")
+        log(TAG, "onStart: ")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume: ")
+        log(TAG, "onResume: ")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause: ")
+        log(TAG, "onPause: ")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop: ")
+        log(TAG, "onStop: ")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView: ")
+        log(TAG, "onDestroyView: ")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy: ")
+        log(TAG, "onDestroy: ")
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.d(TAG, "onDetach: ")
+        log(TAG, "onDetach: ")
     }
 }

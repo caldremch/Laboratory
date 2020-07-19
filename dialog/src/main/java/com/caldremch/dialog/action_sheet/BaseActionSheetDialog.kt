@@ -1,5 +1,6 @@
 package com.caldremch.dialog.action_sheet
 
+import android.content.Context
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -30,7 +31,7 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
  *
  **/
 
-abstract class BaseActionSheetDialog(parent: Any) : BaseDialog(parent) {
+abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
 
     protected var adapterTop: ActionSheetAdapter? = null
     protected var adapterBottom: ActionSheetAdapter? = null

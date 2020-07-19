@@ -1,9 +1,11 @@
 package com.caldremch.dialog
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -20,8 +22,6 @@ import androidx.fragment.app.Fragment
  *
  * 所有属性均可定制
  *
- * 样式详见蓝湖地址
- * https://lanhuapp.com/web/#/item/project/board?type=share_mark&pid=0be60e73-b1a4-472b-88c1-39163e02a89c&activeSectionId=&teamId=42c29bb8-6a41-48fd-90eb-2843ef8d1e5b&param=none
  **/
 
 
@@ -29,15 +29,15 @@ import androidx.fragment.app.Fragment
 inline fun AppCompatActivity.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
     val dialog = TipDialog(this)
     dialog.apply(dsl)
-    dialog.show(this.supportFragmentManager, "tipDialog")
+    dialog.show()
     return dialog
 }
 
 //fragment dsl调用
-inline fun Fragment.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
-    val dialog = TipDialog(this.context!!)
+inline fun tipDialog(fragment: androidx.fragment.app.Fragment, dsl: TipDialog.() -> Unit): TipDialog {
+    val dialog = TipDialog(fragment)
     dialog.apply(dsl)
-    dialog.show(this.childFragmentManager, "tipDialog")
+    dialog.show()
     return dialog
 }
 
@@ -45,17 +45,17 @@ inline fun Fragment.tipDialog(dsl: TipDialog.() -> Unit): TipDialog {
 inline fun tipDialog(context: Context, dsl: TipDialog.() -> Unit): TipDialog {
     val dialog = TipDialog(context)
     dialog.apply(dsl)
-    if (context is AppCompatActivity) {
-        dialog.show(context.supportFragmentManager, null)
-    } else if (context is Fragment) {
-        dialog.show((context as Fragment).childFragmentManager, null)
-    } else {
-        throw RuntimeException("啥也不是")
-    }
+    dialog.show()
     return dialog
 }
 
-open class TipDialog(parent: Any) : BaseDialog(parent) {
+open class TipDialog : BaseDialog {
+
+    constructor(context: Context) : super(context) {
+    }
+
+    constructor(fragment: Fragment) : super(fragment) {
+    }
 
     //标题文本
     var titleText: String? = null
@@ -104,11 +104,12 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
     private lateinit var vVerticalDivider: View
     private lateinit var tvPositive: TextView
     private lateinit var guideline: Guideline
-    private var centerView: View? = null //内容布局
+    var customView: View? = null //扩展布局, 任意View
 
     fun leftClick(left: () -> Unit) {
         leftBtnListener = left
     }
+
 
     fun rightClick(right: () -> Unit) {
         rightBtnListener = right
@@ -127,53 +128,55 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
         vHorizontalDivider = rootView.findViewById(R.id.v_horization)
         vVerticalDivider = rootView.findViewById(R.id.v_vertical)
 
-        if (centerView != null) {
+
+        tvStyle(
+                tv = tvTitle,
+                textStr = titleText,
+                textRes = titleTextRes,
+                size = titleSize,
+                colorStr = titleColorStr,
+                colorRes = titleColorRes,
+                isBold = titleBold
+        )
+
+
+        if (customView != null) {
             if (rootView is ViewGroup) {
                 val tvDescLayoutParams = tvDesc.layoutParams
-                centerView!!.id = tvDesc.id
+                customView!!.id = tvDesc.id
                 rootView.removeView(tvDesc)
-                rootView.addView(centerView, tvDescLayoutParams)
+                rootView.addView(customView, tvDescLayoutParams)
             }
         } else {
             tvStyle(
-                tv = tvDesc,
-                textStr = descText,
-                textRes = descTextRes,
-                size = descSize,
-                colorStr = descColorStr,
-                colorRes = descColorRes,
-                isBold = descBold
+                    tv = tvDesc,
+                    textStr = descText,
+                    textRes = descTextRes,
+                    size = descSize,
+                    colorStr = descColorStr,
+                    colorRes = descColorRes,
+                    isBold = descBold
             )
         }
 
         tvStyle(
-            tv = tvTitle,
-            textStr = titleText,
-            textRes = titleTextRes,
-            size = titleSize,
-            colorStr = titleColorStr,
-            colorRes = titleColorRes,
-            isBold = titleBold
+                tv = tvNegative,
+                textStr = leftText,
+                textRes = leftTextRes,
+                size = leftSize,
+                colorStr = leftColorStr,
+                colorRes = leftColorRes,
+                isBold = leftBold
         )
 
         tvStyle(
-            tv = tvNegative,
-            textStr = leftText,
-            textRes = leftTextRes,
-            size = leftSize,
-            colorStr = leftColorStr,
-            colorRes = leftColorRes,
-            isBold = leftBold
-        )
-
-        tvStyle(
-            tv = tvPositive,
-            textStr = rightText,
-            textRes = rightTextRes,
-            size = rightSize,
-            colorStr = rightColorStr,
-            colorRes = rightColorRes,
-            isBold = rightBold
+                tv = tvPositive,
+                textStr = rightText,
+                textRes = rightTextRes,
+                size = rightSize,
+                colorStr = rightColorStr,
+                colorRes = rightColorRes,
+                isBold = rightBold
         )
 
 
@@ -214,19 +217,13 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
     }
 
     override fun initEvent() {
+        dialog?.setOnShowListener {
 
+        }
     }
 
     //设置tv样式
-    fun tvStyle(
-        tv: TextView,
-        textStr: String?,
-        textRes: Int?,
-        size: Float?,
-        colorStr: String?,
-        colorRes: Int?,
-        isBold: Boolean
-    ) {
+    fun tvStyle(tv: TextView, textStr: String?, textRes: Int?, size: Float?, colorStr: String?, colorRes: Int?, isBold: Boolean) {
 
         var str: String? = null
         if (textRes != null) {
@@ -255,7 +252,7 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
 
     }
 
-    class Builder(val parent: Any) {
+    class Builder private constructor() {
         private var centerView: View? = null
         private var titleText: String? = null
         private var titleTextRes: Int? = null
@@ -281,8 +278,40 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
         private var rightColorRes: Int? = null
         private var rightSize: Float? = null
         private var rightBold: Boolean = true
+        private var backPressDisable: Boolean = false //禁用后退键
+
+        private var gravity: Int = Gravity.CENTER //dialog位置
+        private var widthScale: Float = 0.75f //宽占(屏幕宽度)比
+        private var cancelOutSide: Boolean = true //点击弹窗以外区域是否关闭
+        private var isAllowingStateLoss = true //commit 是否允许状态丢失
+        private var anim = DialogAnim.NONE //弹窗动画
+
         private var onLeftBtnListener: View.OnClickListener? = null
         private var onRightBtnListener: View.OnClickListener? = null
+        private var onShowListener: DialogInterface.OnShowListener? = null
+        private var dismissListener: DialogInterface.OnDismissListener? = null
+
+        private var context: Context? = null
+        private var fragment: Fragment? = null
+
+        constructor(context: Context) : this() {
+            this.context = context
+        }
+
+        constructor(fragment: Fragment) : this() {
+            this.fragment = fragment
+        }
+
+        fun setCustomView(view: View): Builder {
+            centerView = view
+            return this
+        }
+
+        fun backPressDisable(): Builder {
+            backPressDisable = true
+            cancelOutSide = false
+            return this
+        }
 
         fun setTitleText(var1: String?): Builder {
             titleText = var1
@@ -389,11 +418,6 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             return this
         }
 
-        fun setCenterView(view: View): Builder {
-            centerView = view
-            return this
-        }
-
         fun setRightColorRes(var1: Int?): Builder {
             rightColorRes = var1
             return this
@@ -431,7 +455,7 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
         }
 
         fun defaultSingleLeft(): Builder {
-            rightText = "取消"
+            leftText = "取消"
             return this
         }
 
@@ -455,8 +479,51 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             return this
         }
 
+
+        fun setGravity(gravity: Int): Builder {
+            this.gravity = gravity
+            return this
+        }
+
+        fun setWidthScale(widthScale: Float): Builder {
+            this.widthScale = widthScale
+            return this
+        }
+
+        fun setCancelOutSide(cancelOutSide: Boolean): Builder {
+            this.cancelOutSide = cancelOutSide
+            return this
+        }
+
+        fun setAllowingStateLoss(allowingStateLoss: Boolean): Builder {
+            this.isAllowingStateLoss = allowingStateLoss
+            return this
+        }
+
+        fun setOnDismissListener(listener: DialogInterface.OnDismissListener?): Builder {
+            this.dismissListener = listener
+            return this
+        }
+
+        fun setOnShowListener(listener: DialogInterface.OnShowListener?): Builder {
+            this.onShowListener = listener
+            return this
+        }
+
         fun build(): TipDialog {
-            val tipDialog = TipDialog(parent)
+
+            val tipDialog: TipDialog = when {
+                context != null -> {
+                    TipDialog(context!!)
+                }
+                fragment != null -> {
+                    TipDialog(fragment!!)
+                }
+                else -> {
+                    throw RuntimeException("unknow error")
+                }
+            }
+
             //标题
             tipDialog.titleBold = titleBold
             tipDialog.titleColorRes = titleColorRes
@@ -488,11 +555,23 @@ open class TipDialog(parent: Any) : BaseDialog(parent) {
             tipDialog.rightColorRes = rightColorRes
             tipDialog.rightSize = rightSize
             tipDialog.rightBold = rightBold
-            tipDialog.centerView = centerView
 
             //监听事件
             tipDialog.onLeftBtnListener = onLeftBtnListener
             tipDialog.onRightBtnListener = onRightBtnListener
+
+            //设置自定义View
+            tipDialog.customView = centerView
+            tipDialog.backPressDisable = backPressDisable
+
+            //基类属性
+            tipDialog.cancelOutSide = cancelOutSide
+            tipDialog.widthScale = widthScale
+            tipDialog.gravity = gravity
+            tipDialog.isAllowingStateLoss = isAllowingStateLoss
+            tipDialog.anim = anim
+            tipDialog.onShowListener = onShowListener
+            tipDialog.dismissListener = dismissListener
 
             return tipDialog
         }

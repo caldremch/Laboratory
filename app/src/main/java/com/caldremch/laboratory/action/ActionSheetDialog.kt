@@ -1,5 +1,6 @@
 package com.caldremch.laboratory.action
 
+import android.content.Context
 import com.caldremch.dialog.action_sheet.ActionSheetDragListener
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
 import com.caldremch.dialog.action_sheet.IActionHeader
@@ -15,7 +16,7 @@ import com.caldremch.dialog.action_sheet.IData
  *
  **/
 
-class ActionSheetDialog(parent: Any) : BaseActionSheetDialog(parent) {
+class ActionSheetDialog(parent: Context) : BaseActionSheetDialog(parent) {
 
     val testBundleData = TestBundleData()
 
