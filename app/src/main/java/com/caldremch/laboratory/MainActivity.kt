@@ -1,97 +1,35 @@
 package com.caldremch.laboratory
 
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.caldremch.date.OnDateSelectedListener
-import com.caldremch.date.StringPickDialog
 import com.caldremch.dialog.tipDialog
-import com.caldremch.laboratory.adapter.MenuListAdapter
-import com.caldremch.laboratory.bean.MenuData
-import com.caldremch.pickerview.callback.OnItemSelectedListener
+import com.caldremch.laboratory.entry.entry.IEntry
 import com.caldremch.utils.KBObserver
-import com.caldremch.wheel.StringAdapter
 import com.caldremch.widget.single.*
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import dalvik.system.DexFile
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-
-    private var simpleDateFormat = SimpleDateFormat("YYYY-MM-dd HH:mm:ss", Locale.CHINA)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         KBObserver.init(this)
-        val context = this
-        initMenuList()
         initSingleView()
-
-
-
-        wv.post {
-
-            val stringList = mutableListOf<String>(
-                "超强",
-                "我只看优秀",
-                "只看中等",
-                "我啥都要",
-                "不可能不可能不可能",
-                "超强",
-                "我只看优秀",
-                "只看中等",
-                "我啥都要",
-                "不可能不可能不可能"
-            )
-            stringPickDialog.setData(stringList)
-            stringPickDialog.listener = object : OnItemSelectedListener {
-                override fun onItemSelected(index: Int) {
-                    Log.d("tag", "index=$index")
-                }
-
-            }
-            val adapter = StringAdapter()
-            adapter.data.clear()
-            adapter.data.addAll(stringList)
-            wv.setAdapter(adapter)
-        }
-
-        wv.listener = object : OnItemSelectedListener {
-            override fun onItemSelected(index: Int) {
-                Toast.makeText(context, "index = $index", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        dpv.listener = object : OnDateSelectedListener {
-            override fun onItemSelected(year: Int, month: Int, day: Int) {
-            }
-
-        }
-    }
-
-    private fun initMenuList() {
-        val adapter = MenuListAdapter()
-        rvMenu.layoutManager = LinearLayoutManager(this)
-        rvMenu.adapter = adapter
-        adapter.setOnItemClickListener { adapter, view, position ->
-            (adapter.data[position] as MenuData).runnable?.run()
-        }
-        setMenuData()
-    }
-
-    private fun setMenuData() {
-        val menuList = arrayListOf<MenuData>()
-        ConfigMenuUtils.setSetMenuData(this, menuList)
-        (rvMenu.adapter as BaseQuickAdapter<MenuData, *>).setList(menuList)
-
+        hackInit()
     }
 
     private lateinit var singleAdapter: SingleAdapter
@@ -146,10 +84,52 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 初始化所有继承IEntry的类到列表中
+     * 功能入口列表初始化
+     */
+    fun hackInit() {
+        val list = arrayListOf<IEntry>()
+        val flagInterface = IEntry::class.java
+        if (flagInterface.isInterface) {
+            val packName = flagInterface.`package`!!.name
+            val dexFile = DexFile(packageCodePath)
+            val enumeration = dexFile.entries()
+            while (enumeration.hasMoreElements()) {
+                val className = enumeration.nextElement();
+                if (className.contains(packName) && className != flagInterface.name) {
+                    val clz = Class.forName(className)
+                    list.add(clz.newInstance() as IEntry)
+                }
+            }
+        }
+        rv.layoutManager = LinearLayoutManager(this)
+        rv.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                outRect.top = 40
+            }
+        })
+        rv.adapter = object : BaseQuickAdapter<IEntry, BaseViewHolder>(0, list) {
+            override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+                val tv = TextView(parent.context)
+                tv.setPadding(38, 36, 36, 36)
+                tv.setBackgroundColor(Color.BLUE)
+                tv.setTextColor(Color.WHITE)
+                return BaseViewHolder(tv)
+            }
 
-    val stringPickDialog by lazy {
-        StringPickDialog(this)
+            override fun convert(holder: BaseViewHolder, item: IEntry) {
+                (holder.itemView as TextView).text = item.title
+            }
+        }
+        (rv.adapter as BaseQuickAdapter<*, *>).setOnItemClickListener { adapter, view, position ->
+            ((rv.adapter as BaseQuickAdapter<*, *>).data[position] as IEntry).onClick(context = this)
+        }
     }
-
 
 }

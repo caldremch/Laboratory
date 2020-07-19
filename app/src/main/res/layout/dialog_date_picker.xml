@@ -96,7 +96,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_start_date"
             android:layout_height="0.7dp"/>
 
-        <com.caldremch.date.DatePickerView
+        <com.caldremch.laboratory.date.DatePickerView
             android:id="@+id/dpv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

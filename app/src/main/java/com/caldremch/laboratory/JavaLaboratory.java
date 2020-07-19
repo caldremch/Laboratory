@@ -13,7 +13,7 @@ import com.caldremch.dialog.TipDialog;
  * @describe:
  **/
 
-class JavaLaboratory {
+public class JavaLaboratory {
 
     public static void showTipDialog(Context context) {
 

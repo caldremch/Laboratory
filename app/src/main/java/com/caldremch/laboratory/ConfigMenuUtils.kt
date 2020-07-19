@@ -17,13 +17,13 @@ import com.caldremch.laboratory.action.WeChatActionData
 import com.caldremch.laboratory.activity.PageListActivity
 import com.caldremch.laboratory.activity.PageListAdapterActivity
 import com.caldremch.laboratory.bean.MenuData
+import com.caldremch.laboratory.dialog.struct.HouseStruct
+import com.caldremch.laboratory.dialog.struct.HouseStructDialog
 import com.caldremch.laboratory.fragment.BannerFragment
 import com.caldremch.laboratory.fragment.CommonItemViewFragment
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
 import com.caldremch.laboratory.fragment.PageListFragment
 import com.caldremch.laboratory.util.FragmentUtil
-import com.caldremch.laboratory.widget.HouseStruct
-import com.caldremch.laboratory.widget.HouseStructDialog
 import com.caldremch.laboratory.widget.SimpleListener
 
 /**
@@ -153,7 +153,10 @@ object ConfigMenuUtils {
         menuList.add(MenuData().apply {
             title = "House struct dialog"
             runnable = Runnable {
-                val dialog = HouseStructDialog(context)
+                val dialog =
+                    HouseStructDialog(
+                        context
+                    )
                 dialog.strict = true
                 val bundle = Bundle()
                 bundle.putSerializable("data", houseStruct)
