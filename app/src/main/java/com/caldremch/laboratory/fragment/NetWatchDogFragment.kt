@@ -1,8 +1,12 @@
 package com.caldremch.laboratory.fragment
 
+import android.util.Log
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
-import com.caldremch.utils.NetWatchDog
+import com.caldremch.utils.networklistener.ConnectInfo
+import com.caldremch.utils.networklistener.ListenerType
+import com.caldremch.utils.networklistener.NetListener
+import com.caldremch.utils.networklistener.NetWatchDog
 import kotlinx.android.synthetic.main.fragment_watch_dog.*
 
 /**
@@ -19,10 +23,24 @@ import kotlinx.android.synthetic.main.fragment_watch_dog.*
 class NetWatchDogFragment() : LaboratoryFragment() {
 
     override fun getTitle(): String {
-        return "wifi相关"
+        return "网络监听"
     }
 
-    val netWatchDog by lazy { NetWatchDog(context!!) }
+    val netWatchDog by lazy {
+        NetWatchDog(this,
+            viewLifecycleOwner,
+            ListenerType.MOBILE_DATA,
+            object : NetListener {
+                override fun onStatus(info: ConnectInfo) {
+                    tv.text = "type:${info.typeName} status: ${info.state.name}"
+                    Log.d(
+                        "NetWatchDog",
+                        "onStatus: type:${info.typeName} status: ${info.state.name} "
+                    )
+                }
+            }
+        )
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_watch_dog
@@ -35,18 +53,18 @@ class NetWatchDogFragment() : LaboratoryFragment() {
     override fun initEvent() {
         sc.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                netWatchDog.start()
+                netWatchDog.register()
             } else {
-                netWatchDog.stop()
+                netWatchDog.unRegister()
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (sc.isChecked) {
-            netWatchDog.stop()
-        }
+//        if (sc.isChecked) {
+//            netWatchDog.stop()
+//        }
 
     }
 }

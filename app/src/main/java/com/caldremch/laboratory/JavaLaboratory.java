@@ -15,6 +15,8 @@ import com.caldremch.dialog.TipDialog;
 
 public class JavaLaboratory {
 
+    public static Boolean aBoolean = null;
+
     public static void showTipDialog(Context context) {
 
         ImageView imageView = new ImageView(context);

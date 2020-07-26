@@ -24,7 +24,7 @@ object Deps {
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val ktx = "androidx.core:core-ktx:1.3.0"
+    const val ktx = "androidx.core:core-ktx:1.3.1"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
 
     //android dep
@@ -44,5 +44,7 @@ object Deps {
     const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
     const val banner = "com.youth.banner:banner:2.0.12"
     const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
+    const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.4"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5"
 }
 
