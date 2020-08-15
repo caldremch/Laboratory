@@ -9,7 +9,7 @@ import android.net.NetworkInfo
  *
  * @author Caldremch
  *
- * @date 2020-07-25 15:29
+ * @date 2020-07-27
  *
  * @email caldremch@163.com
  *
@@ -24,7 +24,6 @@ open class ConnectInfo {
     companion object {
         fun handleNetInfo(context: Context, listenerType: ListenerType = ListenerType.ALL): ConnectInfo {
             val connectInfo = ConnectInfo()
-
             if (listenerType == ListenerType.MOBILE_DATA){
                 connectInfo.type = NetworkCapabilities.TRANSPORT_CELLULAR
                 connectInfo.typeName = "MOBILE_DATA"

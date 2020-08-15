@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
  *
  * @author Caldremch
  *
- * @date 2020-07-25 15:07
+ * @date 2020-07-27
  *
  * @email caldremch@163.com
  *
@@ -42,7 +42,6 @@ open class NetWatchDog private constructor() : INetWorkStrategy {
         }
     }
 
-
     /**
      * 如果只用Fragment的LifecycleOwner, 在 fragment 销毁的时候, 不会调用 ON_DESTROY 事件
      */
@@ -60,7 +59,7 @@ open class NetWatchDog private constructor() : INetWorkStrategy {
     }
 
     private fun bindLifeCycle(owner: LifecycleOwner) {
-        //声明周期监听
+        //生命周期监听
         owner.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onDestroy(owner: LifecycleOwner) {
                 Log.d(TAG, "onDestroy: 取消网络监听")

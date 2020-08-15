@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  *
  * @author Caldremch
  *
- * @date 2020-07-25 16:43
+ * @date 2020-07-27
  *
  * @email caldremch@163.com
  *
@@ -33,27 +33,27 @@ class AtLeastLollipop(
     var filter: ListenerType = ListenerType.ALL
 ) : INetWorkStrategy {
 
+    //监听请求
     private var request: NetworkRequest
     var mainScope: CoroutineScope? = null
     private val builder = NetworkRequest.Builder()
     private val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    private var networkCallback: ConnectivityManager.NetworkCallback? = null
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null //监听回调
 
     private fun createCallback(): ConnectivityManager.NetworkCallback {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
+                Log.d("NetWatchDog", "onAvailable: ")
                 mainScope?.launch {
                     listener?.onStatus(ConnectInfo.handleNetInfo(context, filter))
                 }
-//                Log.d("NetWatchDog", "onAvailable: ${ConnectInfo.handleNetInfo(context, filter).toString()}")
-
             }
 
             override fun onLost(network: Network) {
+                Log.d("NetWatchDog", "onLost: ")
                 mainScope?.launch {
                     listener?.onStatus(ConnectInfo.handleNetInfo(context, filter))
                 }
-//                Log.d("NetWatchDog", "onAvailable: ${ConnectInfo.handleNetInfo(context, filter).toString()}")
             }
 
         }
@@ -83,7 +83,6 @@ class AtLeastLollipop(
             .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
 
         networkCallback = createCallback()
-
         request = builder.build()
     }
 

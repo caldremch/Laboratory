@@ -29,7 +29,7 @@ class NetWatchDogFragment() : LaboratoryFragment() {
     val netWatchDog by lazy {
         NetWatchDog(this,
             viewLifecycleOwner,
-            ListenerType.MOBILE_DATA,
+            ListenerType.WIFI,
             object : NetListener {
                 override fun onStatus(info: ConnectInfo) {
                     tv.text = "type:${info.typeName} status: ${info.state.name}"
@@ -47,7 +47,9 @@ class NetWatchDogFragment() : LaboratoryFragment() {
     }
 
     override fun initData() {
-
+        netWatchDog.register()
+        netWatchDog.register()
+        netWatchDog.register()
     }
 
     override fun initEvent() {

@@ -4,11 +4,11 @@ package com.caldremch.utils.networklistener
  *
  * @author Caldremch
  *
- * @date 2020-07-26 13:32
+ * @date 2020-07-27
  *
  * @email caldremch@163.com
  *
- * @describe
+ * @describe 监听类型
  *
  **/
 enum class ListenerType {

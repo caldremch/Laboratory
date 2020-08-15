@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -15,11 +14,13 @@ import kotlinx.coroutines.launch
  *
  * @author Caldremch
  *
- * @date 2020-07-25 16:43
+ * @date 2020-07-27
  *
  * @email caldremch@163.com
  *
  * @describe 5.0 以下
+ *
+ * todo 4.4版本未测试
  *
  **/
 class BelowLollipop(
@@ -29,6 +30,7 @@ class BelowLollipop(
 ) : INetWorkStrategy {
 
     var mainScope : CoroutineScope? = null
+
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             mainScope?.launch {
