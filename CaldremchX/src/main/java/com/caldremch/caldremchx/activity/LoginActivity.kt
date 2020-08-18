@@ -3,6 +3,7 @@ package com.caldremch.caldremchx.activity
 import android.text.TextUtils
 import com.caldremch.SimpleRequest
 import com.caldremch.caldremchx.R
+import com.caldremch.caldremchx.bean.AData
 import com.caldremch.caldremchx.http.ApiConstant
 import com.caldremch.caldremchx.utils.UserManager
 import com.caldremch.callback.DialogCallback
@@ -19,9 +20,13 @@ class LoginActivity : BaseActivity<Any>() {
 
     override fun initEvent() {
 
+        var adata:AData? = AData()
+        adata?.age = 23;
+        adata?.name = "acaldal"
 
         bt_login.setOnClickListener {
 
+            adata = null
             val name = et_user_name.text.toString()
             val password = et_password.text.toString()
 

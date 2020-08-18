@@ -1,11 +1,12 @@
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.dsl.BuildType
-import com.android.build.gradle.internal.dsl.SigningConfigFactory
-import com.android.builder.model.SigningConfig
+import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.builder.core.BuilderConstants
 import com.android.builder.signing.DefaultSigningConfig
 import com.android.ide.common.signing.KeystoreHelper
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import java.io.File
 
 /**
  *
@@ -21,15 +22,18 @@ import org.gradle.api.Project
 class LaboratoryPlugin : BasePlugin<Project>() {
 
     override fun apply(project: Project) {
+
         var isApp = true
         val taskName = project.displayName
+
         if (!project.hasProperty("isApp")) {
             println("$taskName is running as Library")
         } else {
-            println("$taskName is running as Application")
             isApp = getBoolean(project.properties["isApp"] as String)
         }
+
         if (isApp) {
+            println("$taskName is running as Application")
             configSign(project)
         }
     }
@@ -42,17 +46,21 @@ class LaboratoryPlugin : BasePlugin<Project>() {
         //获取 buildTypes 节点
         val android = project.extensions.getByType(AppExtension::class.java)
         val buildTypesClosure: NamedDomainObjectContainer<BuildType> = android.buildTypes
-//        val debug = buildTypesClosure.maybeCreate("debug")
-//        val release= buildTypesClosure.maybeCreate("release")
-        val s = com.android.build.gradle.internal.dsl.SigningConfig("debug")
+
         println("default key folder: ${KeystoreHelper.defaultDebugKeystoreLocation()}")
-        buildTypesClosure.register("release")
-//        println("sign info: ${release.signingConfig.toString()}")
-//        println("sign info: ${release.signingConfig.toString()}")
-//        println(
-//            "sign info: ${buildTypesClosure.}")
-//        val config = DefaultSigningConfig()
-//        release.signingConfig = config as SigningConfig
-//        debug.buildConfigField("boolean", "minifyEnabled", "false")
-            }
+        val debugConfig = buildTypesClosure.getByName(BuilderConstants.DEBUG).apply {
+        }
+        val debugSignConfig = debugConfig.signingConfig
+        val tempSign = PluginUtils.copySign(debugSignConfig)
+        val releaseSign = SigningConfig(BuilderConstants.RELEASE).initWith(tempSign)
+        //给release 添加默认的证书和混淆打开
+        val releaseConfig = buildTypesClosure.getByName(BuilderConstants.RELEASE).apply {
+            isMinifyEnabled = true
+            signingConfig = releaseSign
+        }
+
+        println("debugConfig = ${debugConfig.toString()}")
+        println("releaseConfig = ${releaseConfig.toString()}")
+
+    }
 }
