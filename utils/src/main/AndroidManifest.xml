@@ -7,7 +7,7 @@
 
         <provider
             android:name=".UtilsProvider"
-            android:authorities="com.caldremch.utils.UtilsProvider"
+            android:authorities="${applicationId}.UtilsProvider"
             android:grantUriPermissions="true"
             android:exported="false" >
             <meta-data

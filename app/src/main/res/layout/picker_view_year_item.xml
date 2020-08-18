@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    tools:background="@color/colorPrimary"
+    tools:background="@color/cm_colorPrimary"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
-        tools:background="@color/colorAccent"
+        tools:background="@color/cm_colorAccent"
         android:layout_height="match_parent"
         android:text="2020年"
         android:textColor="@android:color/black"

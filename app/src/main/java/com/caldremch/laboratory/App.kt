@@ -15,8 +15,10 @@ import com.caldremch.utils.Utils
  *
  **/
 class App : Application() {
+
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
     }
+
 }

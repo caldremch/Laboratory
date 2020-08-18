@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
@@ -63,5 +63,10 @@ dependencies {
     implementation project(':utils')
     implementation project(':common')
     implementation project(':data-core')
+
+    implementation project(':laboratory-annotation')
+//    annotationProcessor project(':entry-compiler') //annotationProcessor用于 java, 而 kapt 是用于 kotlin
+    kapt project(':laboratory-compiler')
+
 
 }

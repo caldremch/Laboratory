@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 tipDialog {
                     titleText = "我是标题"
-                    titleColorRes = R.color.colorPrimary
+                    titleColorRes = R.color.cm_colorPrimary
                     descText = "我是内容啊"
                     descColorStr = "#3282EF"
                     descBold = true
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     leftBold = true
                     leftColorStr = "#3282EF"
                     rightText = "确定啊"
-                    rightColorRes = R.color.colorAccent
+                    rightColorRes = R.color.cm_colorAccent
                     gravity = Gravity.CENTER
                     widthScale = 0.74f
                     cancelOutSide = false

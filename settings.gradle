@@ -1,3 +1,5 @@
+include ':laboratory-compiler'
+include ':laboratory-annotation'
 include ':Clone'
 include ':image-core'
 include ':data-core'

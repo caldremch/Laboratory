@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -80,7 +79,7 @@ abstract class BaseDialog private constructor() : LifeDialogFragment() {
     override fun getTheme(): Int {
         var themeId = super.getTheme()
         when (anim) {
-            DialogAnim.BOTTOM_IN_BOTTOM_OUT -> themeId = R.style.dialog_bottom_style
+            DialogAnim.BOTTOM_IN_BOTTOM_OUT -> themeId = R.style.cm_dialog_bottom_style
         }
         return themeId
     }

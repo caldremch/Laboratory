@@ -1,8 +1,10 @@
 package com.caldremch.clone
 
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
 
 /**
  *
@@ -16,6 +18,11 @@ import org.mockito.Mockito.mock
  *
  **/
 class MockitoUnitTest {
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+    }
 
     @Test
     fun mockListTest() {

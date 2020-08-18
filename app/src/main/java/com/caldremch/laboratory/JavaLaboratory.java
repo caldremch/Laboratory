@@ -35,7 +35,7 @@ public class JavaLaboratory {
                 .defaultSingleRight()
                 .setDescColorRes(null)
                 .setRightText(null)
-                .setRightColorRes(R.color.colorPrimary)
+                .setRightColorRes(R.color.cm_colorPrimary)
                 .setOnLeftBtnListener(null)
                 //.setXXX
                 .build()

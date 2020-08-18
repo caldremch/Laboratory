@@ -14,11 +14,11 @@ object Deps {
 
     //version
     const val minSdkVersion = 18
-    const val compileSdkVersion = 29
-    const val targetSdkVersion = 29
+    const val compileSdkVersion = 30
+    const val targetSdkVersion = 30
     const val versionCode = 1
     const val versionName = "1.0"
-    const val buildToolsVersion = "29.0.3"
+    const val buildToolsVersion = "30.0.2"
 
     //support
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"

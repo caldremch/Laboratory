@@ -22,7 +22,7 @@ object FragmentUtil {
         val activity = context as AppCompatActivity
         val manager = activity.supportFragmentManager
         val tran = manager.beginTransaction()
-        tran.setCustomAnimations(R.anim.fragemnt_in, R.anim.fragemnt_out)
+        tran.setCustomAnimations(R.anim.cm_fragemnt_in, R.anim.cm_fragemnt_out)
         tran.add(android.R.id.content, fragment)
         tran.commit()
     }
@@ -36,7 +36,7 @@ object FragmentUtil {
 
     fun remove(context: Context, fragment: Fragment) {
         val manager = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        manager.setCustomAnimations(R.anim.fragemnt_in, R.anim.fragemnt_out)
+        manager.setCustomAnimations(R.anim.cm_fragemnt_in, R.anim.cm_fragemnt_out)
         manager.remove(fragment)
         manager.commit()
     }
