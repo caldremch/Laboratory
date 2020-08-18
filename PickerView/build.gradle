@@ -24,8 +24,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation Deps.appcompat
+    implementation Deps.kotlin_stdlib
     implementation Deps.ktx
     implementation Deps.constraintlayout
     implementation Deps.recyclerview

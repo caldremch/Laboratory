@@ -55,5 +55,12 @@ object Deps {
     const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
     const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.4"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5"
+
+
+    //maven url
+    const val maven_aliyun_public = "http://maven.aliyun.com/nexus/content/groups/public/"
+    const val maven_aliyun_jcenter = "https://maven.aliyun.com/nexus/content/repositories/jcenter"
+    const val maven_aliyun_google = "https://maven.aliyun.com/nexus/content/repositories/google"
+    const val maven_jitpack = "https://jitpack.io"
 }
 

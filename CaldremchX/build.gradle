@@ -34,7 +34,7 @@ def versions_okhttp3 = "4.3.1"
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation Deps.kotlin_stdlib
     implementation Deps.appcompat
     implementation Deps.ktx
     implementation Deps.constraintlayout
