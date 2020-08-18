@@ -10,6 +10,13 @@
  *
  **/
 
+object Plugin{
+    const val application = "com.android.application"
+    const val library = "com.android.library"
+    const val kotlin_android = "kotlin-android"
+    const val kotlin_android_extensions = "kotlin-android-extensions"
+}
+
 object Deps {
 
     //version
@@ -20,11 +27,13 @@ object Deps {
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
 
+    const val kotlin_version = "1.3.72"
     //support
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val cardview = "androidx.cardview:cardview:1.0.0"
     const val ktx = "androidx.core:core-ktx:1.3.1"
+    const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
 
     //android dep
