@@ -7,7 +7,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.caldremch.common.R
-import kotlinx.android.synthetic.main.view_title_bar.view.*
+import kotlinx.android.synthetic.main.cm_view_title_bar.view.*
 
 /**
  *
@@ -50,9 +50,9 @@ class TitleBar @JvmOverloads constructor(
     }
 
     init {
-        View.inflate(context, R.layout.view_title_bar, this)
+        View.inflate(context, R.layout.cm_view_title_bar, this)
         setBackgroundColor(Color.WHITE)
-        id = R.id.android_common_title_view_id
+        id = R.id.cm_android_common_title_view_id
         tv_left.setOnClickListener { listener?.leftClick() }
         tv_right.setOnClickListener { listener?.rightClick() }
         tv_title.setOnClickListener { listener?.titleClick() }

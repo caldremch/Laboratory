@@ -111,7 +111,7 @@ class DecorViewProxy {
         var isSellConfigTitleView = false
         if (titleView == null) {
             //选寻找布局中的 titleId
-            targetTitleView = childRootView.findViewById(R.id.android_common_title_view_id)
+            targetTitleView = childRootView.findViewById(R.id.cm_android_common_title_view_id)
         } else {
             isSellConfigTitleView = true
             targetTitleView = titleView!!
@@ -139,7 +139,7 @@ class DecorViewProxy {
                 titleParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 autoAddTitleView.layoutParams = titleParams
                 if (autoAddTitleView.id == View.NO_ID) {
-                    autoAddTitleView.id = R.id.android_common_title_view_id
+                    autoAddTitleView.id = R.id.cm_android_common_title_view_id
                 }
 
                 val contentLayoutParams =
@@ -204,7 +204,7 @@ class DecorViewProxy {
                 titleParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 targetTitleView.layoutParams = titleParams
                 if (targetTitleView.id == View.NO_ID) {
-                    targetTitleView.id = R.id.android_common_title_view_id
+                    targetTitleView.id = R.id.cm_android_common_title_view_id
                 }
 
                 val contentLayoutParams =

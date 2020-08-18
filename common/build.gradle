@@ -11,6 +11,7 @@ android {
         versionCode Deps.versionCode
         versionName Deps.versionName
         consumerProguardFiles "consumer-rules.pro"
+        resourcePrefix "cm_"
     }
 
     compileOptions {

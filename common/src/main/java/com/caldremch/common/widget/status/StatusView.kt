@@ -150,7 +150,7 @@ class StatusView : FrameLayout, IStatusView, LifecycleObserver {
     }
 
     override fun initErrorView(): View {
-        mErrorView = LayoutInflater.from(context).inflate(R.layout.common_loading_error, null)
+        mErrorView = LayoutInflater.from(context).inflate(R.layout.cm_common_loading_error, null)
         mErrorView?.setBackgroundColor(Color.WHITE)
         val textView = mErrorView!!.findViewById<TextView>(R.id.tv_reload)
         textView?.setOnClickListener { v: View? ->
