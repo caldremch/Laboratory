@@ -49,8 +49,8 @@ class LaboratoryPlugin : BasePlugin<Project>() {
         buildTypesClosure.register("release")
 //        println("sign info: ${release.signingConfig.toString()}")
 //        println("sign info: ${release.signingConfig.toString()}")
-        println(
-            "sign info: ${buildTypesClosure.}")
+//        println(
+//            "sign info: ${buildTypesClosure.}")
 //        val config = DefaultSigningConfig()
 //        release.signingConfig = config as SigningConfig
 //        debug.buildConfigField("boolean", "minifyEnabled", "false")
