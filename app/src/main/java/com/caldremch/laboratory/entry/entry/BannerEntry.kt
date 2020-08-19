@@ -1,6 +1,8 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
+import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
 import com.caldremch.laboratory.fragment.BannerFragment
 import com.caldremch.laboratory.util.FragmentUtil
 
@@ -15,9 +17,12 @@ import com.caldremch.laboratory.util.FragmentUtil
  * @describe
  *
  **/
+@Entry
 class BannerEntry : IEntry {
     override val title: String = "Banner测试"
-    override fun onClick(context: Context) {
-        FragmentUtil.add(context, BannerFragment())
+    override fun onClick(context: Any) {
+        FragmentUtil.add(context as Context, BannerFragment())
+
     }
+
 }

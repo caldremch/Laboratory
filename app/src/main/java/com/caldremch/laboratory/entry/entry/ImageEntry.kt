@@ -3,10 +3,10 @@ package com.caldremch.laboratory.entry.entry
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
 import com.caldremch.image.ImageTools
 import com.caldremch.laboratory.R
-import com.caldremch.laboratory.fragment.BannerFragment
-import com.caldremch.laboratory.util.FragmentUtil
 
 /**
  *
@@ -19,9 +19,12 @@ import com.caldremch.laboratory.util.FragmentUtil
  * @describe 图片计算分析 https://juejin.im/post/5bc406b9f265da0aa664ea1e
  *
  **/
+@Entry
 class ImageEntry : IEntry {
     override val title: String = "calculate image size"
-    override fun onClick(context: Context) {
+    override fun onClick(any: Any) {
+
+        val context = any as Context
 
         //Bitmap.Config.ARGB_8888 每个像素 4 个字节
 

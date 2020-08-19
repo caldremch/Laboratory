@@ -13,5 +13,6 @@ package com.caldremch.annotation.compiler
  **/
 object Const {
     const val PACKNAME = "com.caldremch.annotation.entry"
+    const val ENTRY_PKG = "$PACKNAME.temp.entrys"
     const val ENTRY = "$PACKNAME.Entry"
 }

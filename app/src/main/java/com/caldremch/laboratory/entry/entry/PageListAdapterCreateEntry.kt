@@ -2,6 +2,8 @@ package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
 import android.content.Intent
+import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
 import com.caldremch.laboratory.activity.PageListAdapterActivity
 
 /**
@@ -15,9 +17,15 @@ import com.caldremch.laboratory.activity.PageListAdapterActivity
  * @describe
  *
  **/
+@Entry
 class PageListAdapterCreateEntry : IEntry {
     override val title: String = "分页Adapter创建"
-    override fun onClick(context: Context) {
-        context.startActivity(Intent(context, PageListAdapterActivity::class.java))
+    override fun onClick(context: Any) {
+        (context as Context).startActivity(
+            Intent(
+                context as Context,
+                PageListAdapterActivity::class.java
+            )
+        )
     }
 }

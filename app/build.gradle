@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
@@ -44,4 +44,6 @@ dependencies {
     implementation project(':utils')
     implementation project(':common')
     implementation project(':image-core')
+    implementation project(':laboratory-annotation')
+    kapt project(':laboratory-compiler')
 }

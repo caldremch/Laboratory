@@ -1,6 +1,8 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
+import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
 import com.caldremch.laboratory.fragment.PageListFragment
 import com.caldremch.laboratory.util.FragmentUtil
 
@@ -15,9 +17,10 @@ import com.caldremch.laboratory.util.FragmentUtil
  * @describe
  *
  **/
+@Entry
 class PageListEntry : IEntry {
     override val title: String = "Fragment分页测试"
-    override fun onClick(context: Context) {
-        FragmentUtil.add(context, PageListFragment())
+    override fun onClick(context: Any) {
+        FragmentUtil.add(context as Context, PageListFragment())
     }
 }

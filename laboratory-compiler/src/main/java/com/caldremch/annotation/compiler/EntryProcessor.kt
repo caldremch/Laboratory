@@ -2,11 +2,14 @@ package com.caldremch.annotation.compiler
 
 import com.caldremch.annotation.compiler.base.BaseProcessor
 import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
+import com.caldremch.annotation.entry.IEntryCollection
 import com.google.auto.service.AutoService
-import com.squareup.javapoet.JavaFile
-import com.squareup.javapoet.TypeSpec
+import com.squareup.javapoet.*
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
+import javax.lang.model.element.Element
+import javax.lang.model.element.ElementKind
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 
@@ -30,17 +33,55 @@ class EntryProcessor : BaseProcessor() {
 
         if (set != null && set.isNotEmpty()) {
             logger.info("EntryProcessor start.......")
-            logger.info("EntryProcessor annotation size: ${set.size}")
-            val typeSpec = TypeSpec.classBuilder("A")
-                .addModifiers(Modifier.PUBLIC)
-                .build()
-            val file = JavaFile.builder("com.caldremch", typeSpec).build()
-            file.writeTo(filter)
+            val clzs = roundEnvironment.getElementsAnnotatedWith(Entry::class.java)
+            handleAnnotation(clzs)
             logger.info("EntryProcessor done.......")
             return true
         }
 
         return false
+    }
+
+    private fun handleAnnotation(entryElements: MutableSet<out Element>) {
+        val typeEle = elementUtils.getTypeElement(IEntryCollection::class.java.name)
+        logger.info("typeEle --> $${typeEle.toString()}")
+        logger.info("enclosedElements --> $${typeEle.enclosedElements.toString()}")
+
+
+        //创建参数
+        val inputEntryListType = ParameterizedTypeName.get(
+            ClassName.get(MutableList::class.java),
+            ClassName.get(IEntry::class.java)
+        )
+
+        val entryParamSpec: ParameterSpec =
+            ParameterSpec.builder(inputEntryListType, "entrys").build()
+
+        val methodBuild =
+            MethodSpec.methodBuilder(typeEle.enclosedElements[0].simpleName.toString())
+                .addAnnotation(Override::class.java)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(entryParamSpec)
+
+        println("entryElements: ${entryElements.size}")
+        for (an in entryElements) {
+            println("kind: ${an.kind}")
+            if (an.kind == ElementKind.CLASS) {
+                val typeElement = an as TypeElement
+                methodBuild.addStatement("entrys.add(new \$T())", typeElement)
+            }
+        }
+
+
+        //创建类
+        JavaFile.builder(
+            Const.ENTRY_PKG, TypeSpec.classBuilder("AppConfigEntrys")
+                .addSuperinterface(IEntryCollection::class.java)
+                .addModifiers(Modifier.PUBLIC)
+                .addMethod(methodBuild.build())
+                .build()
+        ).build().writeTo(filter)
+
     }
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {

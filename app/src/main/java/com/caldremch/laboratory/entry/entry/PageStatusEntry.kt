@@ -2,6 +2,8 @@ package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
 import android.content.Intent
+import com.caldremch.annotation.entry.Entry
+import com.caldremch.annotation.entry.IEntry
 import com.caldremch.laboratory.PageStatusViewActivity
 
 /**
@@ -15,9 +17,11 @@ import com.caldremch.laboratory.PageStatusViewActivity
  * @describe
  *
  **/
+@Entry
 class PageStatusEntry : IEntry {
     override val title: String = "页面状态测试"
-    override fun onClick(context: Context) {
+    override fun onClick(context: Any) {
+        context as Context
         context.startActivity(Intent(context, PageStatusViewActivity::class.java))
     }
 }

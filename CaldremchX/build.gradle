@@ -66,8 +66,5 @@ dependencies {
     implementation project(':data-core')
 
     implementation project(':laboratory-annotation')
-//    annotationProcessor project(':entry-compiler') //annotationProcessor用于 java, 而 kapt 是用于 kotlin
     kapt project(':laboratory-compiler')
-
-
 }

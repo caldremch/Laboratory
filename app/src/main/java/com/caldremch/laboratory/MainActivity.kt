@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.caldremch.annotation.entry.IEntry
+import com.caldremch.annotation.entry.temp.entrys.AppConfigEntrys
 import com.caldremch.dialog.tipDialog
-import com.caldremch.laboratory.entry.entry.IEntry
 import com.caldremch.utils.KBObserver
 import com.caldremch.widget.single.*
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -91,19 +92,8 @@ class MainActivity : AppCompatActivity() {
      */
     fun hackInit() {
         val list = arrayListOf<IEntry>()
-        val flagInterface = IEntry::class.java
-        if (flagInterface.isInterface) {
-            val packName = flagInterface.`package`!!.name
-            val dexFile = DexFile(packageCodePath)
-            val enumeration = dexFile.entries()
-            while (enumeration.hasMoreElements()) {
-                val className = enumeration.nextElement();
-                if (className.contains(packName) && className != flagInterface.name) {
-                    val clz = Class.forName(className)
-                    list.add(clz.newInstance() as IEntry)
-                }
-            }
-        }
+//        setList(list)
+        AppConfigEntrys().load(list)
         rv.layoutManager = LinearLayoutManager(this)
         rv.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -130,6 +120,22 @@ class MainActivity : AppCompatActivity() {
         }
         (rv.adapter as BaseQuickAdapter<*, *>).setOnItemClickListener { adapter, view, position ->
             ((rv.adapter as BaseQuickAdapter<*, *>).data[position] as IEntry).onClick(context = this)
+        }
+    }
+
+    private fun setList(list: ArrayList<IEntry>) {
+        val flagInterface = IEntry::class.java
+        if (flagInterface.isInterface) {
+            val packName = flagInterface.`package`!!.name
+            val dexFile = DexFile(packageCodePath)
+            val enumeration = dexFile.entries()
+            while (enumeration.hasMoreElements()) {
+                val className = enumeration.nextElement();
+                if (className.contains(packName) && className != flagInterface.name) {
+                    val clz = Class.forName(className)
+                    list.add(clz.newInstance() as IEntry)
+                }
+            }
         }
     }
 

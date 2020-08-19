@@ -22,13 +22,13 @@ class Logger(val msg: Messager) {
      * Print info log.
      */
     fun info(info: CharSequence) {
-        msg.printMessage(Diagnostic.Kind.NOTE, info)
+        msg.printMessage(Diagnostic.Kind.NOTE, "$info \n")
     }
 
     fun error(error: CharSequence) {
         msg.printMessage(
             Diagnostic.Kind.ERROR,
-            error
+            "$error \n"
         )
     }
 
@@ -44,7 +44,7 @@ class Logger(val msg: Messager) {
     }
 
     fun warning(warning: CharSequence) {
-        msg.printMessage(Diagnostic.Kind.WARNING, warning)
+        msg.printMessage(Diagnostic.Kind.WARNING, "$warning \n")
     }
 
     private fun formatStackTrace(stackTrace: Array<StackTraceElement>): String {

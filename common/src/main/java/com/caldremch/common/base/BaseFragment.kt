@@ -57,7 +57,7 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
 
 
     override fun setViewStatus(@StatusView.ViewState status: Int) {
-        if (mContentView != null && mContentView is IStatusView) {
+        if (mContentView is IStatusView) {
             (mContentView as IStatusView).setViewStatus(status)
         }
     }
@@ -96,7 +96,7 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
 
 
     protected fun <K : View> findViewById(@IdRes id: Int): K {
-        return mContentView!!.findViewById(id)
+        return mContentView.findViewById(id)
     }
 
 

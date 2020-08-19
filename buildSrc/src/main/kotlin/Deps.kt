@@ -26,7 +26,6 @@ object Deps {
     const val versionCode = 1
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
-
     const val kotlin_version = "1.3.72"
     //support
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
