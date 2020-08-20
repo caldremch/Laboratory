@@ -1,3 +1,4 @@
+include ':EntryLib'
 include ':laboratory-compiler'
 include ':laboratory-annotation'
 include ':Clone'

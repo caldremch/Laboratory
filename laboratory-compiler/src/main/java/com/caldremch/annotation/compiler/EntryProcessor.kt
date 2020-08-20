@@ -1,6 +1,7 @@
 package com.caldremch.annotation.compiler
 
 import com.caldremch.annotation.compiler.base.BaseProcessor
+import com.caldremch.annotation.const.EntryConst
 import com.caldremch.annotation.entry.Entry
 import com.caldremch.annotation.entry.IEntry
 import com.caldremch.annotation.entry.IEntryCollection
@@ -75,7 +76,7 @@ class EntryProcessor : BaseProcessor() {
 
         //创建类
         JavaFile.builder(
-            Const.ENTRY_PKG, TypeSpec.classBuilder("AppConfigEntrys")
+            EntryConst.ENTRY_PKG, TypeSpec.classBuilder(EntryConst.ENTRY_NAME)
                 .addSuperinterface(IEntryCollection::class.java)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(methodBuild.build())

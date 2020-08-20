@@ -1,8 +1,7 @@
 plugins {
-    id(Plugin.application)
-    kotlin("android")
-    kotlin("android.extensions")
-    kotlin("kapt")
+    id(Plugin.library)
+    id(Plugin.kotlin_android)
+    id(Plugin.kotlin_android_extensions)
 }
 
 android {
@@ -34,21 +33,10 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(Deps.kotlin_stdlib)
-    implementation(Deps.appcompat)
-    implementation(Deps.ktx)
-    implementation(Deps.constraintlayout)
-    implementation(Deps.recyclerview)
-    implementation(Deps.BaseRecyclerViewAdapterHelper)
-    implementation(Deps.cardview)
-    implementation(Deps.glide)
-    debugImplementation(Deps.leakcanary)
-    implementation(project(":PickerView"))
-    implementation(project(":dialog"))
-    implementation(project(":widget"))
-    implementation(project(":utils"))
-    implementation(project(":common"))
-    implementation(project(":image-core"))
-    implementation(project(":EntryLib"))
-    kapt(project(":laboratory-compiler"))
+    compileOnly(Deps.kotlin_stdlib)
+    compileOnly(Deps.appcompat)
+    compileOnly(Deps.ktx)
+    compileOnly(Deps.recyclerview)
+    compileOnly(Deps.BaseRecyclerViewAdapterHelper)
+    api(project(":laboratory-annotation"))
 }

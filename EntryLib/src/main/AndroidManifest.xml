@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.caldremch.entrylib">
+
+    <application>
+        <activity android:name=".EntryActivity" />
+    </application>
+</manifest>
