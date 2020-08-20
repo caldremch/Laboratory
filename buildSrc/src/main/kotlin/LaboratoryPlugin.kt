@@ -2,11 +2,9 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.builder.core.BuilderConstants
-import com.android.builder.signing.DefaultSigningConfig
 import com.android.ide.common.signing.KeystoreHelper
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import java.io.File
 
 /**
  *
@@ -31,6 +29,11 @@ class LaboratoryPlugin : BasePlugin<Project>() {
         } else {
             isApp = getBoolean(project.properties["isApp"] as String)
         }
+
+//        val appPlugin = AppPlugin()
+//        appPlugin.apply(project)
+//        val libraryPlugin = LibraryPlugin()
+//        libraryPlugin.apply(project)
 
         if (isApp) {
             println("$taskName is running as Application")

@@ -1,9 +1,10 @@
 plugins {
-    id(Plugin.library)
-    id(Plugin.kotlin_android)
-    id(Plugin.kotlin_android_extensions)
-    id(Plugin.kotlin_kapt)
+    id(Plugin.application)
+    kotlin("android")
+    kotlin("android.extensions")
+    kotlin("kapt")
 }
+
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
