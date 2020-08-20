@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:3.5.4")
+    implementation("com.android.tools.build:gradle:4.0.1")
     implementation(gradleApi())
 }
 

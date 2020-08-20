@@ -4,7 +4,6 @@ plugins {
     id(Plugin.kotlin_android_extensions)
 }
 
-
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
@@ -32,10 +31,11 @@ android {
 
 }
 
+
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(Deps.kotlin_stdlib)
     implementation(Deps.appcompat)
     implementation(Deps.ktx)
-    implementation(Deps.glide)
+    implementation(Deps.recyclerview)
 }

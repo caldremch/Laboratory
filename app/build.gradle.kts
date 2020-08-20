@@ -2,9 +2,8 @@ plugins {
     id(Plugin.library)
     id(Plugin.kotlin_android)
     id(Plugin.kotlin_android_extensions)
+    id(Plugin.kotlin_kapt)
 }
-
-
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
@@ -37,5 +36,18 @@ dependencies {
     implementation(Deps.kotlin_stdlib)
     implementation(Deps.appcompat)
     implementation(Deps.ktx)
+    implementation(Deps.constraintlayout)
+    implementation(Deps.recyclerview)
+    implementation(Deps.BaseRecyclerViewAdapterHelper)
+    implementation(Deps.cardview)
     implementation(Deps.glide)
+    debugImplementation(Deps.leakcanary)
+    implementation(project(":PickerView"))
+    implementation(project(":dialog"))
+    implementation(project(":widget"))
+    implementation(project(":utils"))
+    implementation(project(":common"))
+    implementation(project(":image-core"))
+    implementation(project(":laboratory-annotation"))
+    kapt(project(":laboratory-compiler"))
 }

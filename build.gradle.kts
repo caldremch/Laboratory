@@ -21,17 +21,7 @@ buildscript {
 
 allprojects {
     repositories {
-        //本地仓库
-        mavenLocal()
-        //优先查找镜像地址
-        maven { setUrl(Deps.maven_aliyun_public) }
-        maven { setUrl(Deps.maven_aliyun_jcenter) }
-        maven { setUrl(Deps.maven_aliyun_google) }
-        //官方地址
-        mavenCentral()
-        google()
-        jcenter()
-        maven { setUrl(Deps.maven_jitpack) }
+        Deps.addDefaultRepo(this)
     }
 }
 

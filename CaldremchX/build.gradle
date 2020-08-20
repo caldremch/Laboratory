@@ -29,8 +29,8 @@ android {
     }
 }
 
-def versions_retrofit = "2.7.1"
-def versions_okhttp3 = "4.3.1"
+def versions_retrofit = "2.9.0"
+def versions_okhttp3 = "4.8.1"
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
@@ -53,7 +53,7 @@ dependencies {
     api "com.squareup.okhttp3:okhttp:$versions_okhttp3"
     api "com.squareup.okhttp3:logging-interceptor:$versions_okhttp3"
 
-    api "io.reactivex.rxjava2:rxjava:2.2.12"
+    api 'io.reactivex.rxjava2:rxjava:2.2.19'
     api "io.reactivex.rxjava2:rxandroid:2.1.1"
     api 'com.trello.rxlifecycle3:rxlifecycle-components:3.1.0'
     api 'com.trello.rxlifecycle3:rxlifecycle-kotlin:3.1.0'

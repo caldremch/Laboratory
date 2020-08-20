@@ -4,7 +4,6 @@ plugins {
     id(Plugin.kotlin_android_extensions)
 }
 
-
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
@@ -37,5 +36,14 @@ dependencies {
     implementation(Deps.kotlin_stdlib)
     implementation(Deps.appcompat)
     implementation(Deps.ktx)
-    implementation(Deps.glide)
+    implementation(Deps.constraintlayout)
+    implementation(Deps.recyclerview)
+    api(Deps.banner)
+
+    implementation(Deps.BaseRecyclerViewAdapterHelper)
+    api(Deps.refresh)
+    api(Deps.refresh_header_classics)
+    api(Deps.refresh_footer_classics)
+    api(Deps.refresh_header_falsify)
+    implementation(Deps.MagicIndicator)
 }

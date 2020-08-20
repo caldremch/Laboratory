@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.CompileOptions
-
 plugins {
     id(Plugin.library)
     id(Plugin.kotlin_android)
@@ -27,8 +25,8 @@ android {
         }
     }
 
-    compileOptions(Action<CompileOptions> {
-       sourceCompatibility = JavaVersion.VERSION_1_8
+    compileOptions(Action<com.android.build.gradle.internal.CompileOptions> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     })
 

@@ -1,3 +1,5 @@
+import org.gradle.api.artifacts.dsl.RepositoryHandler
+
 /**
  *
  * @author Caldremch
@@ -10,14 +12,18 @@
  *
  **/
 
-object Plugin{
+object Plugin {
     const val application = "com.android.application"
     const val library = "com.android.library"
     const val kotlin_android = "kotlin-android"
+    const val kotlin_kapt = "kotlin-kapt"
+    const val kotlin = "kotlin"
+    const val java = "java"
     const val kotlin_android_extensions = "kotlin-android-extensions"
 }
 
 object Deps {
+
 
     //version
     const val minSdkVersion = 18
@@ -27,6 +33,7 @@ object Deps {
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
     const val kotlin_version = "1.3.72"
+
     //support
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
@@ -61,5 +68,28 @@ object Deps {
     const val maven_aliyun_jcenter = "https://maven.aliyun.com/nexus/content/repositories/jcenter"
     const val maven_aliyun_google = "https://maven.aliyun.com/nexus/content/repositories/google"
     const val maven_jitpack = "https://jitpack.io"
+
+    //plugin
+    const val auto_service = "com.google.auto.service:auto-service:1.0-rc6"
+    const val javapoet = "com.squareup:javapoet:1.10.0"
+    const val kotlin_stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jdk8-$kotlin_version"
+
+    /**
+     * 添加默认的maven url
+     */
+    fun addDefaultRepo(repositoryHandler: RepositoryHandler) {
+        //本地仓库
+        repositoryHandler.mavenLocal()
+        //优先查找镜像地址
+        repositoryHandler.maven { setUrl(maven_aliyun_public) }
+        repositoryHandler.maven { setUrl(maven_aliyun_jcenter) }
+        repositoryHandler.maven { setUrl(maven_aliyun_google) }
+        //官方地址
+        repositoryHandler.mavenCentral()
+        repositoryHandler.google()
+        repositoryHandler.jcenter()
+        repositoryHandler.maven { setUrl(Deps.maven_jitpack) }
+
+    }
 }
 
