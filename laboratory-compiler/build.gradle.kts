@@ -29,3 +29,5 @@ tasks {
         kotlinOptions.jvmTarget = "1.8"
     }
 }
+
+apply(from = "../bintray.gradle.kts")

@@ -7,6 +7,7 @@ import com.caldremch.annotation.entry.IEntry
 import com.caldremch.annotation.entry.IEntryCollection
 import com.google.auto.service.AutoService
 import com.squareup.javapoet.*
+import java.lang.Exception
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
@@ -73,16 +74,18 @@ class EntryProcessor : BaseProcessor() {
             }
         }
 
-
         //创建类
-        JavaFile.builder(
-            EntryConst.ENTRY_PKG, TypeSpec.classBuilder(EntryConst.ENTRY_NAME)
-                .addSuperinterface(IEntryCollection::class.java)
-                .addModifiers(Modifier.PUBLIC)
-                .addMethod(methodBuild.build())
-                .build()
-        ).build().writeTo(filter)
-
+        try {
+            JavaFile.builder(
+                EntryConst.ENTRY_PKG, TypeSpec.classBuilder(EntryConst.ENTRY_NAME)
+                    .addSuperinterface(IEntryCollection::class.java)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethod(methodBuild.build())
+                    .build()
+            ).build().writeTo(filter)
+        }catch (e:Exception){
+            logger.error(e)
+        }
     }
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
