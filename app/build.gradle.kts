@@ -50,5 +50,5 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":image-core"))
     implementation(project(":EntryLib"))
-    kapt(project(":laboratory-compiler"))
+    kapt(Deps.entry_compiler)
 }

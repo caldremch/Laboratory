@@ -4,6 +4,14 @@ plugins {
     id(Plugin.kotlin_android_extensions)
 }
 
+ext {
+    this[BintrayConst.libraryVersion] = "1.0.0"
+    this[BintrayConst.bintrayName] = "entry"
+    this[BintrayConst.artifact] = "entry"
+    this[BintrayConst.libraryName] = "entry for list"
+    this[BintrayConst.libraryDescription] = "auto config entrys"
+}
+
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
@@ -38,5 +46,7 @@ dependencies {
     compileOnly(Deps.ktx)
     compileOnly(Deps.recyclerview)
     compileOnly(Deps.BaseRecyclerViewAdapterHelper)
-    api(project(":laboratory-annotation"))
+    api(Deps.entry_api)
 }
+
+apply(from = "../bintray.gradle.kts")

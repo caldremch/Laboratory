@@ -1,4 +1,5 @@
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.kotlin.dsl.maven
 
 /**
  *
@@ -22,8 +23,15 @@ object Plugin {
     const val kotlin_android_extensions = "kotlin-android-extensions"
 }
 
-object Deps {
+object BintrayConst {
+    const val bintrayName = "bintrayName"
+    const val artifact = "artifact"
+    const val libraryName = "libraryName"
+    const val libraryDescription = "libraryDescription"
+    const val libraryVersion = "libraryVersion"
+}
 
+object Deps {
 
     //version
     const val minSdkVersion = 18
@@ -33,12 +41,13 @@ object Deps {
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
     const val kotlin_version = "1.3.72"
+    const val bintray_plugin_version = "1.8.5"
 
     //support
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val ktx = "androidx.core:core-ktx:1.3.1"
+    const val ktx = "androidx.core:core-ktx:1.3.0"
     const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
 
@@ -74,6 +83,9 @@ object Deps {
     const val javapoet = "com.squareup:javapoet:1.10.0"
     const val kotlin_stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jdk8-$kotlin_version"
 
+    const val entry_api = "com.caldremch.android:annotation-api:1.0.0"
+    const val entry_compiler = "com.caldremch.android:annotation-compiler:1.0.0"
+
     /**
      * 添加默认的maven url
      */
@@ -81,9 +93,9 @@ object Deps {
         //本地仓库
         repositoryHandler.mavenLocal()
         //优先查找镜像地址
-        repositoryHandler.maven { setUrl(maven_aliyun_public) }
-        repositoryHandler.maven { setUrl(maven_aliyun_jcenter) }
-        repositoryHandler.maven { setUrl(maven_aliyun_google) }
+        repositoryHandler.maven(url = maven_aliyun_public)
+        repositoryHandler.maven(url = maven_aliyun_jcenter)
+        repositoryHandler.maven(url = maven_aliyun_google)
         //官方地址
         repositoryHandler.mavenCentral()
         repositoryHandler.google()
