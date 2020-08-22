@@ -128,7 +128,7 @@ configure<BintrayExtension> {
         vcsUrl = myGitUrl
         setLicenses(myAllLicenses)
         publicDownloadNumbers = true
-        publish = false
+        publish = true
         version.apply {
             desc = myLibraryDescription
         }
