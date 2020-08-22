@@ -49,7 +49,6 @@ dependencies {
     implementation(project(":utils"))
     implementation(project(":common"))
     implementation(project(":image-core"))
-//    implementation(project(":EntryLib"))
     implementation(Deps.entry)
     kapt(Deps.entry_compiler)
 }

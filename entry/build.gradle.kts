@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    this[BintrayConst.myLibraryVersion] = "1.0.3"
+    this[BintrayConst.myLibraryVersion] = "1.0.4"
     this[BintrayConst.myBintrayName] = "entry"
     this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
     this[BintrayConst.myLibraryName] = "entry for list"
