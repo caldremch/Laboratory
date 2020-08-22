@@ -3,11 +3,11 @@ plugins {
 }
 
 ext {
-    this[BintrayConst.libraryVersion] = "1.0.0"
-    this[BintrayConst.bintrayName] = "annotation-api"
-    this[BintrayConst.artifact] = this[BintrayConst.bintrayName]
-    this[BintrayConst.libraryName] = "Laboratory annotation api"
-    this[BintrayConst.libraryDescription] = "annotation for entrys"
+    this[BintrayConst.myLibraryVersion] = "1.0.4"
+    this[BintrayConst.myBintrayName] = "annotation-api"
+    this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
+    this[BintrayConst.myLibraryName] = "Laboratory annotation api"
+    this[BintrayConst.myLibraryDescription] = "annotation for entrys"
 }
 
 dependencies {
@@ -35,4 +35,7 @@ tasks {
     }
 }
 
-apply(from = "../bintray.gradle.kts")
+//apply(from = "../bintray.gradle.kts")
+//apply(from = "../install.gradle.kts")
+apply(from = "../bintray_publish.gradle.kts")
+

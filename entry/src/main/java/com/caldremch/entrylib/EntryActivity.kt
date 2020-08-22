@@ -23,7 +23,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  *
  * @email caldremch@163.com
  *
- * @describe
+ * @describe 入口列表界面
  *
  **/
 class EntryActivity : AppCompatActivity() {

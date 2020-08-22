@@ -30,4 +30,5 @@ tasks {
     }
 }
 
-apply(from = "../bintray.gradle.kts")
+
+//apply(from = "../install.gradle")

@@ -5,11 +5,11 @@ plugins {
 }
 
 ext {
-    this[BintrayConst.libraryVersion] = "1.0.0"
-    this[BintrayConst.bintrayName] = "entry"
-    this[BintrayConst.artifact] = "entry"
-    this[BintrayConst.libraryName] = "entry for list"
-    this[BintrayConst.libraryDescription] = "auto config entrys"
+    this[BintrayConst.myLibraryVersion] = "1.0.3"
+    this[BintrayConst.myBintrayName] = "entry"
+    this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
+    this[BintrayConst.myLibraryName] = "entry for list"
+    this[BintrayConst.myLibraryDescription] = "auto config entrys"
 }
 
 android {
@@ -20,6 +20,7 @@ android {
         targetSdkVersion(Deps.targetSdkVersion)
         versionCode = Deps.versionCode
         versionName = Deps.versionName
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -48,5 +49,4 @@ dependencies {
     compileOnly(Deps.BaseRecyclerViewAdapterHelper)
     api(Deps.entry_api)
 }
-
-apply(from = "../bintray.gradle.kts")
+apply(from = "../bintray_publish.gradle.kts")
