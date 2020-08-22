@@ -5,8 +5,8 @@ import com.jfrog.bintray.gradle.BintrayPlugin
 plugins.apply(BintrayPlugin::class)
 
 //设置版本
-val libraryVersion: String by project
-version = libraryVersion
+val libraryVersion: String? by project
+//version = libraryVersion
 var sourcesJar: TaskProvider<Jar>
 if (project.hasProperty("android")) {
     println("this project is android library")
@@ -93,12 +93,12 @@ if (apiKey.isNullOrEmpty()) {
     println("bintray.apiKey found in local.properties--> $apiKey   ")
 }
 
-val bintrayRepo: String by project
-val bintrayName: String by project
-val libraryDescription: String by project
-val siteUrl: String by project
-val myGitUrl: String by project
-val allLicenses: String by project
+val bintrayRepo: String? by project
+val bintrayName: String? by project
+val libraryDescription: String? by project
+val siteUrl: String? by project
+val myGitUrl: String? by project
+val allLicenses: String? by project
 
 configure<BintrayExtension> {
     user = userName

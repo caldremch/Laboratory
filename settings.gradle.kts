@@ -12,4 +12,4 @@ include(":dialog")
 rootProject.name = "Laboratory"
 include(":app")
 include(":PickerView")
-include(":lib")
+include(":maven-publish-example")

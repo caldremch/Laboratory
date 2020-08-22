@@ -33,23 +33,24 @@ buildscript {
 //
 //}
 //扩展属性
-val publishedGroupId: String by project
-val libraryName: String by project
-val libraryVersion: String by project
-val artifact: String by project
-val libraryDescription: String by project
-val licenseName: String by project
-val licenseUrl: String by project
-val developerId: String by project
-val developerName: String by project
-val developerEmail: String by project
-val myGitUrl: String by project
-val siteUrl: String by project
+val publishedGroupId: String? by project
+val libraryName: String? by project
+val libraryVersion: String? by project
+val artifact: String? by project
+val libraryDescription: String? by project
+val licenseName: String? by project
+val licenseUrl: String? by project
+val developerId: String? by project
+val developerName: String? by project
+val developerEmail: String? by project
+val myGitUrl: String? by project
+val siteUrl: String? by project
 
 println("publishedGroupId=$publishedGroupId")
 println("artifact=$artifact")
-group = publishedGroupId
-version = libraryVersion
+
+//group = publishedGroupId
+//version = libraryVersion
 
 //val sourcesJar by tasks
 

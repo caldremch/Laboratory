@@ -7,27 +7,27 @@ plugins.apply(BintrayPlugin::class)
 plugins.apply(AndroidMavenPlugin::class)
 
 //所有属性
-val myBintrayName: String by project
-val myLibraryVersion: String by project
-val myBintrayRepo: String by project
-val myLibraryDescription: String by project
-val myGitUrl: String by project
-val myAllLicenses: String by project
-val myPublishedGroupId: String by project
-val myLibraryName: String by project
-val myArtifactId: String by project
-val myLicenseName: String by project
-val myLicenseUrl: String by project
-val myDeveloperId: String by project
-val myDeveloperName: String by project
-val myDeveloperEmail: String by project
-val mySiteUrl: String by project
+val myBintrayName: String? by project
+val myLibraryVersion: String? by project
+val myBintrayRepo: String? by project
+val myLibraryDescription: String? by project
+val myGitUrl: String? by project
+val myAllLicenses: String? by project
+val myPublishedGroupId: String? by project
+val myLibraryName: String? by project
+val myArtifactId: String? by project
+val myLicenseName: String? by project
+val myLicenseUrl: String? by project
+val myDeveloperId: String? by project
+val myDeveloperName: String? by project
+val myDeveloperEmail: String? by project
+val mySiteUrl: String? by project
 
 println("publishedGroupId=$myPublishedGroupId")
 println("artifact=$myArtifactId")
 
-version = myLibraryVersion
-group = myPublishedGroupId
+version = myLibraryVersion ?: ""
+group = myPublishedGroupId ?: ""
 
 var sourcesJar: TaskProvider<Jar>
 if (project.hasProperty("android")) {

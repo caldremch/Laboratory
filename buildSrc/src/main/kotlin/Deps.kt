@@ -1,3 +1,4 @@
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.maven
 
@@ -103,6 +104,15 @@ object Deps {
         repositoryHandler.jcenter()
         repositoryHandler.maven { setUrl(Deps.maven_jitpack) }
 
+    }
+
+    /**
+     * find properties in local.properties
+     */
+    fun findInLocalProperties(project: Project, key: String): String? {
+        val properties = java.util.Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        return properties.getProperty(key)
     }
 }
 
