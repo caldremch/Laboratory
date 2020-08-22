@@ -1,6 +1,7 @@
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.BintrayPlugin
 
+//set plugins
 plugins.apply(BintrayPlugin::class)
 
 //设置版本
@@ -52,7 +53,6 @@ artifacts {
     add("archives", sourcesJar)
 }
 
-
 repositories {
     Deps.addDefaultRepo(this)
 }
@@ -80,6 +80,7 @@ properties.load(project.rootProject.file("local.properties").inputStream())
 
 var userName: String? = properties.getProperty("bintray.user")
 var apiKey: String? = properties.getProperty("bintray.apiKey")
+
 if (userName.isNullOrEmpty()) {
     println("there is no bintray.user in local.properties")
 } else {
@@ -92,21 +93,28 @@ if (apiKey.isNullOrEmpty()) {
     println("bintray.apiKey found in local.properties--> $apiKey   ")
 }
 
+val bintrayRepo: String by project
+val bintrayName: String by project
+val libraryDescription: String by project
+val siteUrl: String by project
+val myGitUrl: String by project
+val allLicenses: String by project
+
 configure<BintrayExtension> {
     user = userName
-    user = apiKey
+    key = apiKey
     setConfigurations("archives")
     pkg.apply {
-        repo = findProperties("bintrayRepo")
-        name = findProperties("bintrayName")
-        desc = findProperties("libraryDescription")
-        websiteUrl = findProperties("siteUrl")
-        vcsUrl = findProperties("gitUrl")
-        setLicenses(findProperties("allLicenses"))
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = myGitUrl
+        setLicenses(allLicenses)
         publicDownloadNumbers = true
         publish = true
         version.apply {
-            desc = findProperties("libraryDescription")
+            desc = libraryDescription
         }
     }
 }
