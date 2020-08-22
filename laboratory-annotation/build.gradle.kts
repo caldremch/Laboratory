@@ -35,7 +35,5 @@ tasks {
     }
 }
 
-//apply(from = "../bintray.gradle.kts")
-//apply(from = "../install.gradle.kts")
 apply(from = "../bintray_publish.gradle.kts")
 
