@@ -80,69 +80,91 @@ if (project.hasProperty("android")) {
     }
 }
 
+//https://developer.android.google.cn/studio/build/maven-publish-plugin?hl=zh-cn
+// in Android, Because the components are created only during the afterEvaluate phase, you must
+// configure your publications using the afterEvaluate() lifecycle method.
+//afterEvaluate 在所有模块都配置完以后, 就会回调afterEvaluate, 为什么要在afterEvaluate 配置 publishing? 因为publishing 里面的 components 在配置完后才会创建
+//可以测试一下, 不在afterEvaluate回调里面配置 publishing 在 sync 的时候, components.size = 0, 在afterEvaluate里面的话, components.size=3, 分别是
+//debug, release, all
+
 
 //configure use for plugin
-configure<PublishingExtension> {
+afterEvaluate {
+    configure<PublishingExtension> {
 
-    repositories {
-        maven {
+        repositories {
+            maven {
 //            url = uri("$buildDir/repo")
-            myMavenUrl?.apply { url = java.net.URI.create(this) }
+                myMavenUrl?.apply { url = java.net.URI.create(this) }
 
-            /**
-             * [AuthenticationSupported]
-             */
-            if (myMavenUserName.isNullOrEmpty().not() && myMavenPassword.isNullOrEmpty().not()) {
-                credentials {
-                    username = myMavenUserName
-                    password = myMavenPassword
+                /**
+                 * [AuthenticationSupported]
+                 */
+                if (myMavenUserName.isNullOrEmpty().not() && myMavenPassword.isNullOrEmpty()
+                        .not()
+                ) {
+                    credentials {
+                        username = myMavenUserName
+                        password = myMavenPassword
+                    }
                 }
+
             }
-
         }
-    }
 
-    publications {
-        //create use for node
-        create<MavenPublication>("a_name_whatere_you_what") {
+        publications {
+            //create use for node
+            create<MavenPublication>("a_name_whatere_you_what") {
 
-            //使用默认的产物
-            //from(components["java"])
+                //使用默认的产物
+                //from(components["java"])
 
-            //使用我们自定义的sourcesJar task 所打包出来的代码
-            artifact(sourcesJar)
-            //artifact 'my-file-name.jar' // Publish a file created outside of the build
-
-            groupId = myPublishedGroupId
-            artifactId = myArtifactId
-            version = myLibraryVersion
-
-            //modify by yours
-            pom {
-                name.set(myLibraryName)
-                description.set(myLibraryDescription)
-                url.set(mySiteUrl)
-                licenses {
-                    license {
-                        name.set(myLicenseName)
-                        url.set(myLicenseUrl)
+                //使用我们自定义的sourcesJar task 所打包出来的代码
+                artifact(sourcesJar)
+                if (isAndroid) {
+                    //is ok to set the aar of build/output dir
+//                artifact("$buildDir/output/xx.aar")
+                    println("check result is Android ${components.size}")
+                    components.forEach {
+                        println("check result is Android--> ${it.name.toString()}")
+                    }
+                    if (components.size > 0) {
+                        from(components["release"])
                     }
                 }
-                developers {
-                    developer {
-                        id.set(myDeveloperId)
-                        name.set(myDeveloperName)
-                        email.set(myDeveloperEmail)
-                    }
-                }
-                scm {
-                    connection.set(myGitUrl)
-                    developerConnection.set(myGitUrl)
+                //artifact 'my-file-name.jar' // Publish a file created outside of the build
+
+                groupId = myPublishedGroupId
+                artifactId = myArtifactId
+                version = myLibraryVersion
+
+                //modify by yours
+                pom {
+                    name.set(myLibraryName)
+                    description.set(myLibraryDescription)
                     url.set(mySiteUrl)
+                    licenses {
+                        license {
+                            name.set(myLicenseName)
+                            url.set(myLicenseUrl)
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set(myDeveloperId)
+                            name.set(myDeveloperName)
+                            email.set(myDeveloperEmail)
+                        }
+                    }
+                    scm {
+                        connection.set(myGitUrl)
+                        developerConnection.set(myGitUrl)
+                        url.set(mySiteUrl)
+                    }
                 }
+
             }
-
         }
-    }
 
+    }
 }
