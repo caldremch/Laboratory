@@ -1,6 +1,6 @@
 include(":entry")
-include(":laboratory-compiler")
-include(":laboratory-annotation")
+include(":entry-compiler")
+include(":entry-annotation")
 include(":Clone")
 include(":image-core")
 include(":data-core")

@@ -4,11 +4,11 @@ plugins {
 }
 
 ext {
-    this[BintrayConst.myLibraryVersion] = "1.0.4"
-    this[BintrayConst.myBintrayName] = "annotation-compiler"
+    this[BintrayConst.myLibraryVersion] = "1.1.0.1"
+    this[BintrayConst.myBintrayName] = "entry-compiler"
     this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
-    this[BintrayConst.myLibraryName] = "Laboratory annotation compiler"
-    this[BintrayConst.myLibraryDescription] = "compiler for entrys"
+    this[BintrayConst.myLibraryName] = "entry annotation compiler"
+    this[BintrayConst.myLibraryDescription] = "compiler for entry annotaion"
 }
 
 
@@ -17,7 +17,7 @@ dependencies {
     implementation(Deps.auto_service)
     implementation(Deps.javapoet)
     implementation(Deps.kotlin_stdlib)
-    implementation(project(":laboratory-annotation"))
+    implementation(Deps.entry_annotation)
 }
 buildscript {
     repositories {
@@ -40,4 +40,5 @@ tasks {
     }
 }
 
-//apply(from = "../bintray_publish.gradle.kts")
+apply(from = "../bintray-with-maven-publish.gradle.kts")
+

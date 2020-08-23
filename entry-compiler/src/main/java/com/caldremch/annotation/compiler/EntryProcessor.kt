@@ -1,13 +1,12 @@
 package com.caldremch.annotation.compiler
 
+import com.caldremch.annotation.EntryConst
 import com.caldremch.annotation.compiler.base.BaseProcessor
-import com.caldremch.annotation.const.EntryConst
 import com.caldremch.annotation.entry.Entry
 import com.caldremch.annotation.entry.IEntry
 import com.caldremch.annotation.entry.IEntryCollection
 import com.google.auto.service.AutoService
 import com.squareup.javapoet.*
-import java.lang.Exception
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element

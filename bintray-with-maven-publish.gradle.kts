@@ -41,7 +41,7 @@ val myMavenUserName = Deps.findInLocalProperties(project, "myMavenUserName")
 val myMavenPassword = Deps.findInLocalProperties(project, "myMavenPassword")
 
 fun println(log: String) {
-    kotlin.io.println("bintray-publish > $log")
+    kotlin.io.println("maven-publish-bintray > $log")
 }
 
 /**
@@ -49,11 +49,11 @@ fun println(log: String) {
  * 我们自定义[MavenArtifact]-->artifact方法可以接受多种输入
  *
  */
-var sourcesJar: TaskProvider<Jar>
 
+//var sourcesJar: TaskProvider<Jar>
 if (project.hasProperty("android")) {
     val android = project.extensions["android"] as com.android.build.gradle.BaseExtension
-    sourcesJar = tasks.register("sourcesJar", Jar::class) {
+    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
         classifier = "sources"
         from(android.sourceSets.getByName("main").java.srcDirs)
     }
@@ -64,17 +64,23 @@ if (project.hasProperty("android")) {
     }
 
 } else {
-    sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        val classes by tasks
-        dependsOn(classes)
-        val javaOrKotlinExtends = project.extensions["sourceSets"] as SourceSetContainer
-        from(javaOrKotlinExtends.getByName("main").allSource)
+
+    configure<JavaPluginExtension> {
+        withSourcesJar()
+        withJavadocJar()
     }
+
+//    sourcesJar = tasks.register("sourcesJar", Jar::class) {
+//        val classes by tasks
+//        dependsOn(classes)
+//        val javaOrKotlinExtends = project.extensions["sourceSets"] as SourceSetContainer
+//        from(javaOrKotlinExtends.getByName("main").allSource)
+//    }
 }
 
-artifacts {
-    add("archives", sourcesJar)
-}
+//artifacts {
+//    add("archives", sourcesJar)
+//}
 
 configure<PublishingExtension> {
 
@@ -93,12 +99,15 @@ configure<PublishingExtension> {
                 //使用我们自定义的sourcesJar task 所打包出来的产物
                 if (isAndroid) {
                     if (components.size > 0) {
+                        val sourcesJar by tasks
                         artifact(sourcesJar)
                         from(components["release"])
                     }
                 } else {
-                    artifact(sourcesJar)
-//                    from(components["java"])
+//                    artifact(sourcesJar)
+                    println("components.size = ${components.size}")
+                    println("components: ${components.names.toString()}")
+                    from(components["java"])
                 }
             }
 
@@ -140,7 +149,6 @@ afterEvaluate {
         key = apiKey
         //设置maven-publish 配置好的 Publication
         setPublications(Deps.a_name_whatever_you_want)
-        //有相同版本-则覆盖
         //有相同版本-则覆盖
         override = true
         pkg.apply {

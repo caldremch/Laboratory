@@ -64,7 +64,4 @@ dependencies {
     implementation project(':utils')
     implementation project(':common')
     implementation project(':data-core')
-
-    implementation project(':entry')
-    kapt project(':laboratory-compiler')
 }

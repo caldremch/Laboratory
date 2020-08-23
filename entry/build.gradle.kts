@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    api(project(mapOf("path" to ":laboratory-annotation")))
+    api(Deps.entry_annotation)
     compileOnly(Deps.appcompat)
 }
 //apply(from = "../bintray_publish.gradle.kts") upload to bintray
