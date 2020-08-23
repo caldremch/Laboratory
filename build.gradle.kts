@@ -13,8 +13,7 @@ buildscript {
 allprojects {
     repositories {
         Deps.addDefaultRepo(this)
-        configMyTestUrl(this)
-
+//        configMyTestUrl(this)
     }
 
     //如果是kotlin项目,请添加此项,纯Java项目请忽略

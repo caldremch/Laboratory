@@ -34,6 +34,9 @@ object BintrayConst {
 
 object Deps {
 
+    //maven publication name
+    const val a_name_whatever_you_want = "a_name_whatever_you_want"
+
     //version
     const val minSdkVersion = 18
     const val compileSdkVersion = 30
@@ -85,7 +88,7 @@ object Deps {
     const val kotlin_stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jdk8-$kotlin_version"
 
     const val entry_api = "com.caldremch.android:annotation-api:1.0.0"
-    const val entry = "com.caldremch.android:entry:1.0.6"
+    const val entry = "com.caldremch.android:entry:1.0.8"
     const val entry_compiler = "com.caldremch.android:annotation-compiler:1.0.0"
 
     /**

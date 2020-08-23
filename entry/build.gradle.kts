@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    this[BintrayConst.myLibraryVersion] = "1.0.6"
+    this[BintrayConst.myLibraryVersion] = "1.0.0"
     this[BintrayConst.myBintrayName] = "entry"
     this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
     this[BintrayConst.myLibraryName] = "entry for list"
@@ -49,5 +49,7 @@ dependencies {
     compileOnly(Deps.BaseRecyclerViewAdapterHelper)
     api(Deps.entry_api)
 }
-//apply(from = "../bintray_publish.gradle.kts")
-apply(from = "../maven-publish.gradle.kts")
+//apply(from = "../bintray_publish.gradle.kts") upload to bintray
+//apply(from = "../maven-publish.gradle.kts") upload to your own repo
+
+//apply(from = "../bintray-with-maven-publish.gradle.kts")

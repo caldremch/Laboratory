@@ -113,8 +113,8 @@ afterEvaluate {
         }
 
         publications {
-            //create use for node
-            create<MavenPublication>("a_name_whatere_you_what") {
+            //create for node
+            create<MavenPublication>(Deps.a_name_whatever_you_want) {
 
                 //使用默认的产物
                 //from(components["java"])

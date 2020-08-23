@@ -1,3 +1,4 @@
+import com.example.lib.IExample
 import org.junit.Test
 
 /**
@@ -16,6 +17,17 @@ class MavenUrlValidatorTest {
 
     @Test
     fun checkMavenUrl() {
+
+    }
+
+    class A : IExample {
+        override fun hello() {
+
+        }
+
+        override fun world(name: String?) {
+
+        }
 
     }
 

@@ -40,4 +40,4 @@ tasks {
     }
 }
 
-apply(from = "../bintray_publish.gradle.kts")
+//apply(from = "../bintray_publish.gradle.kts")
