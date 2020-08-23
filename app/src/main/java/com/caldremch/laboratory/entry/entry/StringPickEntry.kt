@@ -18,7 +18,10 @@ import com.caldremch.laboratory.date.StringPickDialog
  **/
 @Entry
 class StringPickEntry : IEntry {
-    override val title: String = "字符列表选择"
+    override fun getTitle(): String {
+        return "字符列表选择"
+    }
+
     override fun onClick(context: Any) {
         context as Context
         val stringList = mutableListOf<String>(

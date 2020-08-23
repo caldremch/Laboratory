@@ -1,11 +1,9 @@
 plugins {
     id(Plugin.library)
-    id(Plugin.kotlin_android)
-    id(Plugin.kotlin_android_extensions)
 }
 
 ext {
-    this[BintrayConst.myLibraryVersion] = "1.0.0"
+    this[BintrayConst.myLibraryVersion] = "1.0.1"
     this[BintrayConst.myBintrayName] = "entry"
     this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
     this[BintrayConst.myLibraryName] = "entry for list"
@@ -42,14 +40,10 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    compileOnly(Deps.kotlin_stdlib)
+    api(project(mapOf("path" to ":laboratory-annotation")))
     compileOnly(Deps.appcompat)
-    compileOnly(Deps.ktx)
-    compileOnly(Deps.recyclerview)
-    compileOnly(Deps.BaseRecyclerViewAdapterHelper)
-    api(Deps.entry_api)
 }
 //apply(from = "../bintray_publish.gradle.kts") upload to bintray
 //apply(from = "../maven-publish.gradle.kts") upload to your own repo
 
-//apply(from = "../bintray-with-maven-publish.gradle.kts")
+apply(from = "../bintray-with-maven-publish.gradle.kts")

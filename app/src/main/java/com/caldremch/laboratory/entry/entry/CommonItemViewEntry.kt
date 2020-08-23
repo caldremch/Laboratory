@@ -19,7 +19,10 @@ import com.caldremch.laboratory.util.FragmentUtil
  **/
 @Entry
 class CommonItemViewEntry : IEntry {
-    override val title: String = "CommonItemView Demo"
+    override fun getTitle(): String {
+        return "CommonItemView Demo"
+    }
+
     override fun onClick(context: Any) {
         FragmentUtil.add(context as Context, CommonItemViewFragment())
     }

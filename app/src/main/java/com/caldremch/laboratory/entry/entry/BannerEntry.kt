@@ -19,7 +19,11 @@ import com.caldremch.laboratory.util.FragmentUtil
  **/
 @Entry
 class BannerEntry : IEntry {
-    override val title: String = "Banner测试"
+
+    override fun getTitle(): String {
+        return "Banner测试"
+    }
+
     override fun onClick(context: Any) {
         FragmentUtil.add(context as Context, BannerFragment())
 

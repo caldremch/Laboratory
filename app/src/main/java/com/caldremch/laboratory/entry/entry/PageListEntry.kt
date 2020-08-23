@@ -19,7 +19,11 @@ import com.caldremch.laboratory.util.FragmentUtil
  **/
 @Entry
 class PageListEntry : IEntry {
-    override val title: String = "Fragment分页测试"
+
+    override fun getTitle(): String {
+        return "Fragment分页测试"
+    }
+
     override fun onClick(context: Any) {
         FragmentUtil.add(context as Context, PageListFragment())
     }

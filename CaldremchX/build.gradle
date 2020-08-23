@@ -65,6 +65,6 @@ dependencies {
     implementation project(':common')
     implementation project(':data-core')
 
-    implementation project(':laboratory-annotation')
+    implementation project(':entry')
     kapt project(':laboratory-compiler')
 }

@@ -19,7 +19,10 @@ import com.caldremch.laboratory.PageStatusViewActivity
  **/
 @Entry
 class PageStatusEntry : IEntry {
-    override val title: String = "页面状态测试"
+    override fun getTitle(): String {
+        return "页面状态测试"
+    }
+
     override fun onClick(context: Any) {
         context as Context
         context.startActivity(Intent(context, PageStatusViewActivity::class.java))

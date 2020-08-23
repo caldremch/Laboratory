@@ -21,7 +21,10 @@ import com.caldremch.laboratory.R
  **/
 @Entry
 class ImageEntry : IEntry {
-    override val title: String = "calculate image size"
+    override fun getTitle(): String {
+        return "calculate image size"
+    }
+
     override fun onClick(any: Any) {
 
         val context = any as Context

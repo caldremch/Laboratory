@@ -19,7 +19,10 @@ import com.caldremch.laboratory.activity.PageListAdapterActivity
  **/
 @Entry
 class PageListAdapterCreateEntry : IEntry {
-    override val title: String = "分页Adapter创建"
+    override fun getTitle(): String {
+        return "分页Adapter创建"
+    }
+
     override fun onClick(context: Any) {
         (context as Context).startActivity(
             Intent(

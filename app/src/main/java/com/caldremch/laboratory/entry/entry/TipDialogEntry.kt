@@ -18,7 +18,10 @@ import com.caldremch.laboratory.JavaLaboratory
  **/
 @Entry
 class TipDialogEntry : IEntry {
-    override val title: String = "提示弹窗"
+    override fun getTitle(): String {
+        return "提示弹窗"
+    }
+
     override fun onClick(context: Any) {
         context as Context
         //java调用方式

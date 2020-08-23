@@ -82,23 +82,24 @@ configure<PublishingExtension> {
 
         create<MavenPublication>(Deps.a_name_whatever_you_want) {
 
-            //使用我们自定义的sourcesJar task 所打包出来的产物
-            if (isAndroid) {
-                if (components.size > 0) {
-                    from(components["release"])
-                }
-            } else {
-                artifact(sourcesJar)
-//                    from(components["java"])
-            }
-
-
             //https://docs.gradle.org/current/userguide/publishing_maven.html
             //官方规定必须加上afterEvaluate,否则上传出现unspecified
             afterEvaluate {
                 groupId = myPublishedGroupId
                 artifactId = myArtifactId
                 version = myLibraryVersion ?: "unspecified-version"
+
+
+                //使用我们自定义的sourcesJar task 所打包出来的产物
+                if (isAndroid) {
+                    if (components.size > 0) {
+                        artifact(sourcesJar)
+                        from(components["release"])
+                    }
+                } else {
+                    artifact(sourcesJar)
+//                    from(components["java"])
+                }
             }
 
             //modify by yours

@@ -1,15 +1,17 @@
 package com.caldremch.clone
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.caldremch.entrylib.EntryActivity
 import com.caldremch.utils.UiUtils
 import com.caldremch.utils.Utils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
 
 /**
  *
@@ -25,12 +27,20 @@ import org.mockito.Mockito.mock
 @RunWith(AndroidJUnit4::class)
 class AndroidUtilsTestCase {
 
-    val context = mock(Context::class.java)
+    private lateinit var context: Context
 
     @Before
     fun setUp() {
-        val context = InstrumentationRegistry.getInstrumentation().context
+        context = InstrumentationRegistry.getInstrumentation().context
         Utils.init(context)
+
+    }
+
+    @Test
+    fun lanchAt() {
+        val intent = Intent(context, EntryActivity::class.java)
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
     }
 
     @Test
@@ -47,4 +57,6 @@ class AndroidUtilsTestCase {
     fun testUtilGetString2() {
         Assert.assertEquals("我是测试数据", UiUtils.getString(R.string.test_name))
     }
+
+
 }

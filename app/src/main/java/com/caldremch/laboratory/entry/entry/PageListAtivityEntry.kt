@@ -19,7 +19,10 @@ import com.caldremch.laboratory.activity.PageListActivity
  **/
 @Entry
 class PageListAtivityEntry : IEntry {
-    override val title: String = "Activity分页测试"
+    override fun getTitle(): String {
+        return "Activity分页测试"
+    }
+
     override fun onClick(any: Any) {
         val context = any as Context
         context.startActivity(Intent(context, PageListActivity::class.java))

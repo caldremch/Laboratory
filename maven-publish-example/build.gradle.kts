@@ -30,4 +30,4 @@ dependencies {
 
 
 //publish to bintray
-apply(from = "../bintray-with-maven-publish.gradle.kts")
+//apply(from = "../bintray-with-maven-publish.gradle.kts")

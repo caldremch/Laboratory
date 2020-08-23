@@ -27,8 +27,9 @@ import com.caldremch.laboratory.util.FragmentUtil
  **/
 @Entry
 class NetEntry : IEntry {
-    override val title: String
-        get() = "网络监听"
+    override fun getTitle(): String {
+        return "网络监听"
+    }
 
     override fun onClick(context: Any) {
         FragmentUtil.add(context as Context, NetWatchDogFragment())
