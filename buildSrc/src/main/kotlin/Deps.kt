@@ -117,5 +117,9 @@ object Deps {
         properties.load(project.rootProject.file("local.properties").inputStream())
         return properties.getProperty(key)
     }
+
+    fun addUsualDep() {
+
+    }
 }
 

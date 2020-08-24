@@ -40,5 +40,5 @@ tasks {
     }
 }
 
-apply(from = "../bintray-with-maven-publish.gradle.kts")
+apply(from = "../uploadCenter.gradle.kts")
 

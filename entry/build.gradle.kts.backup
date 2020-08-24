@@ -1,0 +1,135 @@
+//这个entry 模块有问题, 重新配置需要
+plugins {
+    id(Plugin.library)
+    `maven-publish`
+}
+
+ext {
+    this[BintrayConst.myLibraryVersion] = "1.2.1"
+    this[BintrayConst.myBintrayName] = "entry"
+    this[BintrayConst.myArtifactId] = this[BintrayConst.myBintrayName]
+    this[BintrayConst.myLibraryName] = "entry for list"
+    this[BintrayConst.myLibraryDescription] = "auto config entrys"
+}
+
+
+buildscript {
+    repositories {
+        Deps.addDefaultRepo(this)
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.0.1")
+    }
+}
+
+android {
+    compileSdkVersion(Deps.compileSdkVersion)
+    buildToolsVersion(Deps.buildToolsVersion)
+    defaultConfig {
+        minSdkVersion(Deps.minSdkVersion)
+        targetSdkVersion(Deps.targetSdkVersion)
+        versionCode = Deps.versionCode
+        versionName = Deps.versionName
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+        getByName(com.android.builder.core.BuilderConstants.RELEASE) {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                file("proguard-rules.pro")
+            )
+        }
+    }
+
+    compileOptions(Action<com.android.build.gradle.internal.CompileOptions> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    })
+
+}
+
+dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    api(Deps.entry_annotation)
+    compileOnly(Deps.appcompat)
+}
+
+
+
+publishing {
+    repositories {
+        maven {
+            url = uri("")
+            credentials {
+                username = ""
+                password = ""
+            }
+
+        }
+    }
+
+    publications {
+        create<MavenPublication>("mavenAndroid"){
+            afterEvaluate {
+                val myPublishedGroupId: String? by project
+                val myArtifactId: String? by project
+                val myLibraryVersion: String? by project
+
+                groupId = myPublishedGroupId
+                artifactId = myArtifactId
+                version = myLibraryVersion!!
+                from(components.getByName("all"))
+            }
+
+
+
+            val myBintrayName: String? by project
+            val myLibraryVersion: String? by project
+            val myLibraryDescription: String? by project
+            val myGitUrl: String? by project
+            val myAllLicenses: String? by project
+            val myPublishedGroupId: String? by project
+            val myLibraryName: String? by project
+            val myArtifactId: String? by project
+            val myLicenseName: String? by project
+            val myLicenseUrl: String? by project
+            val myDeveloperId: String? by project
+            val myDeveloperName: String? by project
+            val myDeveloperEmail: String? by project
+            val mySiteUrl: String? by project
+
+            //modify by yours
+            pom {
+                name.set(myLibraryName)
+                description.set(myLibraryDescription)
+                url.set(mySiteUrl)
+                licenses {
+                    license {
+                        name.set(myLicenseName)
+                        url.set(myLicenseUrl)
+                    }
+                }
+                developers {
+                    developer {
+                        id.set(myDeveloperId)
+                        name.set(myDeveloperName)
+                        email.set(myDeveloperEmail)
+                    }
+                }
+                scm {
+                    connection.set(myGitUrl)
+                    developerConnection.set(myGitUrl)
+                    url.set(mySiteUrl)
+                }
+            }
+        }
+    }
+}
+//apply(from = "../bintray_publish.gradle.kts") upload to bintray
+//apply(from = "../maven-publish.gradle.kts") upload to your own repo
+
+//apply(from = "../bintray-with-maven-publish.gradle.kts")
+
+//apply(from = "../uploadCenter.gradle.kts")

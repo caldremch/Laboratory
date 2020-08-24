@@ -110,8 +110,8 @@ public final class EntryActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup parent) {
-            IEntry entry = data.get(i);
+        public View getView(int i, View view, final ViewGroup parent) {
+            final IEntry entry = data.get(i);
             ViewHolder holder;
             if (view == null) {
                 TextView tv = createView(parent.getContext());

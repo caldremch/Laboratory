@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+ext {
+    myLibraryVersion = "1.2.3"
+    myBintrayName = "entry"
+    myArtifactId = "entry"
+    myLibraryName = "entry"
+    myLibraryDescription = "entry"
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    api Deps.entry_annotation
+}
+
+apply from: "../uploadCenter.gradle.kts"

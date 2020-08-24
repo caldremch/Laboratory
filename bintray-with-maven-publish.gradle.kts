@@ -70,17 +70,7 @@ if (project.hasProperty("android")) {
         withJavadocJar()
     }
 
-//    sourcesJar = tasks.register("sourcesJar", Jar::class) {
-//        val classes by tasks
-//        dependsOn(classes)
-//        val javaOrKotlinExtends = project.extensions["sourceSets"] as SourceSetContainer
-//        from(javaOrKotlinExtends.getByName("main").allSource)
-//    }
 }
-
-//artifacts {
-//    add("archives", sourcesJar)
-//}
 
 configure<PublishingExtension> {
 

@@ -45,3 +45,27 @@ A Module 使用bintray1.gradle.kts
 B Module 使用bintray2.gradle.kts
 在其中一个执行bintrayUpload时, 将会报错, 原因想了解可以去这里看看 http://dub.podval.org/2020/06/29/bintray-gradle-plugin.html
 里面也说到了共享 bintray 配置, 其实是一个道理
+
+
+Failed to publish publication 'AnyName' to repository 'maven'  代理问题,关闭代理
+
+
+Cannot convert the provided notation to an object of type MavenArtifact: task ':entry:javadoc'.
+The following types/formats are supported:
+  - Instances of MavenArtifact.
+  - Instances of AbstractArchiveTask, for example jar.
+  - Instances of PublishArtifact
+  - Instances of Provider
+  - Maps containing a 'source' entry, for example [source: '/path/to/file', extension: 'zip'].
+  - Anything that can be converted to a file, as per Project.file()
+
+问题: https://stackoverflow.com/questions/53654190/what-is-the-difference-between-registering-and-creating-in-gradle-kotlin-dsl
+
+相关maven-publish的参考
+https://stackoverflow.com/questions/26874498/publish-an-android-library-to-maven-with-aar-and-source-jar
+
+by https://stackoverflow.com/questions/58233773/what-is-an-archive-classifier-in-gradle
+classifier :
+The classifier distinguishes different artifacts build from the same project.
+A classifier could be something like fat or shaded where all dependencies are in a fat jar and/or shaded.
+Classifiers like debug or source are quite common. The debug artifact will contain all debug information and the source artifact will contain the source files.

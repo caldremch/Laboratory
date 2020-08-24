@@ -15,9 +15,12 @@ buildscript {
     }
 }
 
+fun println(log: String) {
+    kotlin.io.println("maven-publish > $log")
+}
+
 val myBintrayName: String? by project
 val myLibraryVersion: String? by project
-val myBintrayRepo: String? by project
 val myLibraryDescription: String? by project
 val myGitUrl: String? by project
 val myAllLicenses: String? by project
@@ -39,35 +42,51 @@ val myMavenUrl = Deps.findInLocalProperties(project, "myMavenUrl")
 val myMavenUserName = Deps.findInLocalProperties(project, "myMavenUserName")
 val myMavenPassword = Deps.findInLocalProperties(project, "myMavenPassword")
 
-
-fun println(log: String) {
-    kotlin.io.println("maven-publish > $log")
-}
-
-println("myMavenUrl-->:$myMavenUrl")
+println("myMavenUrl:$myMavenUrl")
+println("myMavenUserName:$myMavenUserName")
+println("myMavenPassword:$myMavenPassword")
 
 /**
  * 默认打包方式不会生成 java doc
  * 我们自定义[MavenArtifact]-->artifact方法可以接受多种输入
  *
  */
-var sourcesJar: TaskProvider<Jar>
 if (project.hasProperty("android")) {
     println("this project is android type")
+
     val android = project.extensions["android"] as com.android.build.gradle.BaseExtension
-    sourcesJar = tasks.register("sourcesJar", Jar::class) {
+
+    //register sourcesJar for android
+    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
         classifier = "sources"
         from(android.sourceSets.getByName("main").java.srcDirs)
     }
 
-    tasks.register("javadoc", Javadoc::class) {
+    //register task javadoc for android
+    val javadoc = tasks.register("javadoc", Javadoc::class) {
         setSource(android.sourceSets.getByName("main").java.srcDirs)
         classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
-        println("classpath--> ${classpath.asPath}")
     }
+
+
+    tasks.register("androidJavaDocsJar", Jar::class) {
+        archiveClassifier.set("javadoc")
+        dependsOn(javadoc)
+        from(javadoc.get().destinationDir)
+    }
+
 
 } else {
     println("this project is java/kotlin type")
+
+    //use gradle packing-->components["java]
+    configure<JavaPluginExtension> {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    /*
+    this is a usual packing way
     sourcesJar = tasks.register("sourcesJar", Jar::class) {
         //通过tasks 寻找 task 名字为classes的 task, by---->provideDelegate 代理查找
         val classes by tasks
@@ -77,7 +96,7 @@ if (project.hasProperty("android")) {
         val dirs = javaOrKotlinExtends.getByName("main").allSource.sourceDirectories
         println("sourceSet---> : ${dirs.asPath}")
         from(javaOrKotlinExtends.getByName("main").allSource)
-    }
+    }*/
 }
 
 //https://developer.android.google.cn/studio/build/maven-publish-plugin?hl=zh-cn
@@ -95,8 +114,7 @@ afterEvaluate {
         repositories {
             maven {
 //            url = uri("$buildDir/repo")
-                myMavenUrl?.apply { url = java.net.URI.create(this) }
-
+                myMavenUrl?.apply { url = uri(this) }
                 /**
                  * [AuthenticationSupported]
                  */
@@ -114,26 +132,35 @@ afterEvaluate {
 
         publications {
             //create for node
-            create<MavenPublication>(Deps.a_name_whatever_you_want) {
+            //AnyName publication
+            create<MavenPublication>("AnyName") {
 
                 //使用默认的产物
                 //from(components["java"])
 
                 //使用我们自定义的sourcesJar task 所打包出来的代码
-                artifact(sourcesJar)
                 if (isAndroid) {
                     //is ok to set the aar of build/output dir
-//                artifact("$buildDir/output/xx.aar")
+                    //artifact("$buildDir/output/xx.aar")
                     println("check result is Android ${components.size}")
                     components.forEach {
                         println("check result is Android--> ${it.name.toString()}")
                     }
                     if (components.size > 0) {
-                        from(components["release"])
+                        //单纯的components["release"]是不包含javadoc和源码的
+                        //from(components["debug"]) todo debug
+                        //添加源码和Javadoc
+                        val androidJavaDocsJar by tasks
+                        val sourcesJar by tasks
+                        artifact(sourcesJar)
+                        //artifact(javadoc) wrong usage, solution: javadoc show cast to TaskProvider<JavaDoc>, and use javadoc.get(), and then ,artifact(javadoc.get().destinationDir
+                        artifact(androidJavaDocsJar)
                     }
+                } else {
+                    from(components["java"])
                 }
                 //artifact 'my-file-name.jar' // Publish a file created outside of the build
-
+                //show wrap with afterEvaluate
                 groupId = myPublishedGroupId
                 artifactId = myArtifactId
                 version = myLibraryVersion
