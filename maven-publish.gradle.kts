@@ -58,7 +58,7 @@ if (project.hasProperty("android")) {
 
     //register sourcesJar for android
     val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        classifier = "sources"
+        archiveClassifier.set("sources")
         from(android.sourceSets.getByName("main").java.srcDirs)
     }
 
@@ -148,7 +148,7 @@ afterEvaluate {
                     }
                     if (components.size > 0) {
                         //单纯的components["release"]是不包含javadoc和源码的
-                        //from(components["debug"]) todo debug
+                        from(components["debug"])
                         //添加源码和Javadoc
                         val androidJavaDocsJar by tasks
                         val sourcesJar by tasks
