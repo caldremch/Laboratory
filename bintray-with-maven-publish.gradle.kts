@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         //添加dependencies, 不然会提示无法站到BintrayExtension等插件
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:${Deps.bintray_plugin_version}")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("com.android.tools.build:gradle:4.0.1")
     }
 }
@@ -53,14 +53,21 @@ fun println(log: String) {
 //var sourcesJar: TaskProvider<Jar>
 if (project.hasProperty("android")) {
     val android = project.extensions["android"] as com.android.build.gradle.BaseExtension
+    //register sourcesJar for android
     val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        classifier = "sources"
+        archiveClassifier.set("sources")
         from(android.sourceSets.getByName("main").java.srcDirs)
     }
-
-    tasks.register("javadoc", Javadoc::class) {
+    //register task javadoc for android
+    val javadoc = tasks.register("javadoc", Javadoc::class) {
         setSource(android.sourceSets.getByName("main").java.srcDirs)
         classpath += project.files(android.bootClasspath.joinToString(File.pathSeparator))
+    }
+
+    tasks.register("androidJavaDocsJar", Jar::class) {
+        archiveClassifier.set("javadoc")
+        dependsOn(javadoc)
+        from(javadoc.get().destinationDir)
     }
 
 } else {
@@ -71,12 +78,12 @@ if (project.hasProperty("android")) {
     }
 
 }
-
+val publicationName = "Publication"
 configure<PublishingExtension> {
 
     publications {
 
-        create<MavenPublication>(Deps.a_name_whatever_you_want) {
+        create<MavenPublication>(publicationName) {
 
             //https://docs.gradle.org/current/userguide/publishing_maven.html
             //官方规定必须加上afterEvaluate,否则上传出现unspecified
@@ -89,14 +96,13 @@ configure<PublishingExtension> {
                 //使用我们自定义的sourcesJar task 所打包出来的产物
                 if (isAndroid) {
                     if (components.size > 0) {
+                        val androidJavaDocsJar by tasks
                         val sourcesJar by tasks
                         artifact(sourcesJar)
-                        from(components["release"])
+                        artifact(androidJavaDocsJar)
+                        from(components["debug"])
                     }
                 } else {
-//                    artifact(sourcesJar)
-                    println("components.size = ${components.size}")
-                    println("components: ${components.names.toString()}")
                     from(components["java"])
                 }
             }
@@ -138,7 +144,7 @@ afterEvaluate {
         user = userName
         key = apiKey
         //设置maven-publish 配置好的 Publication
-        setPublications(Deps.a_name_whatever_you_want)
+        setPublications(publicationName)
         //有相同版本-则覆盖
         override = true
         pkg.apply {

@@ -86,8 +86,8 @@ buildscript {
     //添加dependencies, 不然会提示无法站到BintrayExtension等插件
     dependencies {
         classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:${Deps.bintray_plugin_version}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlin_version}")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
     }
 }
 

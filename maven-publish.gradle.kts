@@ -143,9 +143,6 @@ afterEvaluate {
                     //is ok to set the aar of build/output dir
                     //artifact("$buildDir/output/xx.aar")
                     println("check result is Android ${components.size}")
-                    components.forEach {
-                        println("check result is Android--> ${it.name.toString()}")
-                    }
                     if (components.size > 0) {
                         //单纯的components["release"]是不包含javadoc和源码的
                         from(components["debug"])
