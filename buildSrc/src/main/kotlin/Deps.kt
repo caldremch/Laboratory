@@ -44,7 +44,7 @@ object Deps {
     const val versionCode = 1
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
-    const val kotlin_version = "1.3.72"
+    const val kotlin_version = "1.4.0"
     const val bintray_plugin_version = "1.8.5"
 
     //support
