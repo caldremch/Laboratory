@@ -69,3 +69,12 @@ classifier :
 The classifier distinguishes different artifacts build from the same project.
 A classifier could be something like fat or shaded where all dependencies are in a fat jar and/or shaded.
 Classifiers like debug or source are quite common. The debug artifact will contain all debug information and the source artifact will contain the source files.
+
+记录一个问题: 发生在android kotlin dsl项目中, groovy的配置并没有测试
+//https://docs.gradle.org/current/userguide/organizing_gradle_projects.html
+在 apply from "" 的时候,做一些maven打包操作, 但是由于在apply的时候, gradle并没有编译源代码, 所以会导致
+无法找到一些Extension,比如BaseExtension/LibraryExtension,
+同时你在通过 SourceSets.main获取源码文件的时候,会提示can not find "main"等错误提示
+解决办法
+1.配置buildSrc目录, 使其自动编译了所有的源码文件
+2.换成Groovy语言

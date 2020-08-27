@@ -1,6 +1,3 @@
-include(":entry")
-include(":entry-compiler")
-include(":entry-annotation")
 include(":Clone")
 include(":image-core")
 include(":data-core")

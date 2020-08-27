@@ -5,7 +5,7 @@ if (upload2MyRepo != null) {
     isUpload2MyRepo = upload2MyRepo!!.toBoolean()
 }
 
-println("upload-center > $upload2MyRepo")
+println("upload-center upload2MyRepo=> $upload2MyRepo")
 
 if (isUpload2MyRepo) {
     apply(from = "../maven-publish.gradle.kts")
