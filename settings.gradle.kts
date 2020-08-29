@@ -9,4 +9,3 @@ include(":dialog")
 rootProject.name = "Laboratory"
 include(":app")
 include(":PickerView")
-include(":maven-publish-example")
