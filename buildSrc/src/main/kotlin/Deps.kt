@@ -88,8 +88,8 @@ object Deps {
     const val kotlin_stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jdk8-$kotlin_version"
 
     const val entry_annotation = "com.caldremch.android:entry-annotation:1.1.0.2"
-    const val entry = "com.caldremch.android:entry:1.0.0.1"
-    const val entry_compiler = "com.caldremch.android:annotation-compiler:1.1.0.1"
+    const val entry = "com.caldremch.android:entry:1.3.0"
+    const val entry_compiler = "com.caldremch.android:entry-compiler:1.4.0"
 
     /**
      * 添加默认的maven url
