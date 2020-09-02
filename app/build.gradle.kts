@@ -50,6 +50,6 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":image-core"))
     implementation(Deps.entry)
-    implementation(Deps.entry_compiler)
+    kapt(Deps.entry_compiler)
 
 }

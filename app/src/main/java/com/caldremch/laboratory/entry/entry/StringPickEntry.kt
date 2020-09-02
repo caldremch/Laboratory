@@ -1,7 +1,6 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.date.StringPickDialog
 
@@ -16,7 +15,7 @@ import com.caldremch.laboratory.date.StringPickDialog
  * @describe
  *
  **/
-@Entry
+//@Entry
 class StringPickEntry : IEntry {
     override fun getTitle(): String {
         return "字符列表选择"

@@ -3,7 +3,6 @@ package com.caldremch.laboratory.entry.entry
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.image.ImageTools
 import com.caldremch.laboratory.R
@@ -19,7 +18,7 @@ import com.caldremch.laboratory.R
  * @describe 图片计算分析 https://juejin.im/post/5bc406b9f265da0aa664ea1e
  *
  **/
-@Entry
+//@Entry
 class ImageEntry : IEntry {
     override fun getTitle(): String {
         return "calculate image size"

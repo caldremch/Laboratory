@@ -1,7 +1,6 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.fragment.NetWatchDogFragment
 import com.caldremch.laboratory.util.FragmentUtil
@@ -25,7 +24,7 @@ import com.caldremch.laboratory.util.FragmentUtil
  *   在反射调用时, 如果还需要创建匿名类就会报错, 原因未知
  *
  **/
-@Entry
+//@Entry
 class NetEntry : IEntry {
     override fun getTitle(): String {
         return "网络监听"

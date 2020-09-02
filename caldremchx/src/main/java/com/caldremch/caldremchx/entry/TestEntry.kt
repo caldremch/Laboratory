@@ -18,8 +18,9 @@ import com.caldremch.android.annotation.entry.IEntry
 @Entry
 class TestEntry : IEntry {
 
-    override val title: String
-        get() = "test title"
+    override fun getTitle(): String {
+        return "test title"
+    }
 
     override fun onClick(context: Context) {
 

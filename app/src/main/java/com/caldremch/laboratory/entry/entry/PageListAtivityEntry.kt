@@ -2,7 +2,6 @@ package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
 import android.content.Intent
-import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.activity.PageListActivity
 
@@ -17,7 +16,7 @@ import com.caldremch.laboratory.activity.PageListActivity
  * @describe
  *
  **/
-@Entry
+//@Entry
 class PageListAtivityEntry : IEntry {
     override fun getTitle(): String {
         return "Activity分页测试"
