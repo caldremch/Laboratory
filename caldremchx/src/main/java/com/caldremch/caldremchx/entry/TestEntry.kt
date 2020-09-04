@@ -1,7 +1,7 @@
 package com.caldremch.caldremchx.entry
 
-import com.caldremch.annotation.entry.Entry
-import com.caldremch.annotation.entry.IEntry
+import com.caldremch.android.annotation.entry.Entry
+import com.caldremch.android.annotation.entry.IEntry
 
 /**
  *
@@ -21,7 +21,7 @@ class TestEntry : IEntry {
     override val title: String
         get() = "test title"
 
-    override fun onClick(context: Any) {
+    override fun onClick(context: Context) {
 
     }
 

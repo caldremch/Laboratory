@@ -5,7 +5,6 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.0.1")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:${Deps.bintray_plugin_version}")
-        classpath("com.github.dcendents:android-maven-gradle-plugin:2.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlin_version}")
     }
 }

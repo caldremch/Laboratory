@@ -43,6 +43,8 @@ dependencies {
     implementation Deps.cardview
     implementation Deps.glide
     implementation Deps.lottie
+    implementation Deps.entry
+    kapt Deps.entry_compiler
 
 
     //网络请求依赖

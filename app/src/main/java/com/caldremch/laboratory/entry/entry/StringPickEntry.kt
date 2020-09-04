@@ -1,8 +1,8 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import com.caldremch.annotation.entry.Entry
-import com.caldremch.annotation.entry.IEntry
+import com.caldremch.android.annotation.entry.Entry
+import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.date.StringPickDialog
 
 /**
@@ -22,7 +22,7 @@ class StringPickEntry : IEntry {
         return "字符列表选择"
     }
 
-    override fun onClick(context: Any) {
+    override fun onClick(context: Context) {
         context as Context
         val stringList = mutableListOf<String>(
             "标题1",

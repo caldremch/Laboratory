@@ -2,8 +2,8 @@ package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
 import android.content.Intent
-import com.caldremch.annotation.entry.Entry
-import com.caldremch.annotation.entry.IEntry
+import com.caldremch.android.annotation.entry.Entry
+import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.activity.PageListActivity
 
 /**
@@ -23,7 +23,7 @@ class PageListAtivityEntry : IEntry {
         return "Activity分页测试"
     }
 
-    override fun onClick(any: Any) {
+    override fun onClick(any: Context) {
         val context = any as Context
         context.startActivity(Intent(context, PageListActivity::class.java))
 

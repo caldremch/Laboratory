@@ -3,8 +3,8 @@ package com.caldremch.laboratory.entry.entry
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import com.caldremch.annotation.entry.Entry
-import com.caldremch.annotation.entry.IEntry
+import com.caldremch.android.annotation.entry.Entry
+import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.image.ImageTools
 import com.caldremch.laboratory.R
 
@@ -25,7 +25,7 @@ class ImageEntry : IEntry {
         return "calculate image size"
     }
 
-    override fun onClick(any: Any) {
+    override fun onClick(any: Context) {
 
         val context = any as Context
 

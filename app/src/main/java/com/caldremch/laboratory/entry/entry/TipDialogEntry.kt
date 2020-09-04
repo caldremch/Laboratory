@@ -1,8 +1,8 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import com.caldremch.annotation.entry.Entry
-import com.caldremch.annotation.entry.IEntry
+import com.caldremch.android.annotation.entry.Entry
+import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.JavaLaboratory
 
 /**
@@ -22,7 +22,7 @@ class TipDialogEntry : IEntry {
         return "提示弹窗"
     }
 
-    override fun onClick(context: Any) {
+    override fun onClick(context: Context) {
         context as Context
         //java调用方式
         JavaLaboratory.showTipDialog(context)
