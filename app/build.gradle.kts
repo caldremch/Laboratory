@@ -43,6 +43,7 @@ dependencies {
     implementation(Deps.cardview)
     implementation(Deps.glide)
     debugImplementation(Deps.leakcanary)
+    implementation(Deps.coroutines)
     implementation(project(":PickerView"))
     implementation(project(":dialog"))
     implementation(project(":widget"))

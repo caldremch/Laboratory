@@ -1,4 +1,4 @@
-package com.caldremch.laboratory.page
+package com.caldremch.laboratory.bean
 
 /**
  * @author Caldremch
