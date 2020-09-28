@@ -54,6 +54,7 @@ object Deps {
     const val ktx = "androidx.core:core-ktx:1.3.0"
     const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    const val design = "com.google.android.material:material:1.1.0"
 
     //android dep
     const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"

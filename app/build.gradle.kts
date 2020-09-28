@@ -41,6 +41,7 @@ dependencies {
     implementation(Deps.recyclerview)
     implementation(Deps.BaseRecyclerViewAdapterHelper)
     implementation(Deps.cardview)
+    implementation(Deps.design)
     implementation(Deps.glide)
     debugImplementation(Deps.leakcanary)
     implementation(Deps.coroutines)
