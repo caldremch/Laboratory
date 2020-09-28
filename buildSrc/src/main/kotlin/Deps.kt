@@ -44,7 +44,7 @@ object Deps {
     const val versionCode = 1
     const val versionName = "1.0"
     const val buildToolsVersion = "30.0.2"
-    const val kotlin_version = "1.3.72"
+    const val kotlin_version = "1.4.0"
     const val bintray_plugin_version = "1.8.5"
 
     //support
@@ -73,7 +73,7 @@ object Deps {
     const val banner = "com.youth.banner:banner:2.0.12"
     const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
     const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.4"
-    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
 
 
     //maven url

@@ -1,12 +1,11 @@
 package com.caldremch.laboratory.fragment
 
 import android.os.Handler
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
-import com.caldremch.laboratory.page.TestData
+import com.caldremch.laboratory.bean.TestData
 import com.caldremch.widget.page.PageManager
 import com.caldremch.widget.page.protocol.IPageDelegate
 import com.caldremch.widget.page.protocol.IPageOperator

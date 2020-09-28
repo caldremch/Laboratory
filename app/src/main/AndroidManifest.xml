@@ -15,8 +15,7 @@
         <activity android:name=".PageStatusViewActivity">
 
         </activity>
-        <!--        <activity android:name="com.caldremch.android.entry.EntryActivity">-->
-        <activity android:name=".activity.SearchTaskActivity">
+        <activity android:name="com.caldremch.android.entry.EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

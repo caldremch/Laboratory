@@ -2,8 +2,8 @@ package com.caldremch.laboratory.action
 
 import android.content.Context
 import com.caldremch.dialog.action_sheet.ActionSheetDragListener
+import com.caldremch.dialog.action_sheet.BaseActionData
 import com.caldremch.dialog.action_sheet.BaseActionSheetDialog
-import com.caldremch.dialog.action_sheet.IActionHeader
 import com.caldremch.dialog.action_sheet.IData
 
 /**
@@ -20,12 +20,11 @@ class ActionSheetDialog(parent: Context) : BaseActionSheetDialog(parent) {
 
     val testBundleData = TestBundleData()
 
-    override fun getTitleView(): IActionHeader? {
-        return TestActionHeaderView(mContext)
-    }
-
     init {
-        dragListener = ActionSheetDragListener { startPos, endPos, data -> }
+        dragListener =
+            ActionSheetDragListener { i: Int, i1: Int, mutableList: MutableList<BaseActionData>, i2: Int ->
+
+            }
     }
 
     override fun getData(): IData? {

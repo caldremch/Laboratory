@@ -1,7 +1,10 @@
 package com.caldremch.dialog.action_sheet
 
+import android.annotation.SuppressLint
+import android.app.Service
 import android.content.Context
-import android.util.Log
+import android.graphics.Rect
+import android.os.Vibrator
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.caldremch.dialog.BaseDialog
 import com.caldremch.dialog.DialogAnim
 import com.caldremch.dialog.R
+import com.caldremch.utils.UiUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemDragListener
 
@@ -31,20 +35,22 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
  *
  **/
 
-abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
+abstract class BaseActionSheetDialog(context: Context) : BaseDialog(context) {
 
     protected var adapterTop: ActionSheetAdapter? = null
     protected var adapterBottom: ActionSheetAdapter? = null
-    protected var titleView: View? = null
+    protected var mTitleView: View? = null
+    private var actionHeader: IActionHeader? = null
     private lateinit var rvTop: RecyclerView
     private lateinit var rvBottom: RecyclerView
     private lateinit var topGroup: Group
     private lateinit var tvCancel: TextView
-    private var iActionHeader: IActionHeader? = null
+    protected var dragEnable: Boolean = false
 
-    abstract fun getData(): IData?
-
-    var dragListener: ActionSheetDragListener? = null
+    /**
+     * 拖拽监听
+     */
+    protected var dragListener: ActionSheetDragListener? = null
 
     companion object {
         const val DATA_TOP = "DATA_TOP"
@@ -58,7 +64,22 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.dialog_action_sheet
+        return R.layout.dialog_base_action_sheet
+    }
+
+    private class ItemDecor : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            parent.adapter?.apply {
+                if (itemCount - 1 == parent.getChildLayoutPosition(view)) {
+                    outRect.right = UiUtils.dp2px(16f)
+                }
+            }
+        }
     }
 
     override fun initView(rootView: View) {
@@ -66,10 +87,15 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
         rvBottom = rootView.findViewById(R.id.rv_bottom)
         tvCancel = rootView.findViewById(R.id.tv_cancel)
         topGroup = rootView.findViewById(R.id.g)
-        iActionHeader = getTitleView()
-        iActionHeader?.apply {
-            titleView = getHeaderView()
-            titleView?.apply {
+
+        rvBottom.addItemDecoration(ItemDecor())
+        rvTop.addItemDecoration(ItemDecor())
+
+        //初始化Header
+        actionHeader = getActionHeader()
+        actionHeader?.apply {
+            mTitleView = getHeaderView()
+            mTitleView?.apply {
                 val titleLayoutParams = ConstraintLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -79,11 +105,12 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
                 (rootView as ViewGroup).addView(this, titleLayoutParams)
             }
         }
-
     }
 
     override fun initData() {
-        iActionHeader?.initData(getData())
+        actionHeader?.initData(getData())
+        mTitleView?.apply { initTitleView(this) }
+
         var dataTop: MutableList<BaseActionData>? = null
         var dataBottom: MutableList<BaseActionData>? = null
         arguments?.apply {
@@ -106,7 +133,6 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
             initSmart(rvBottom, dataBottom!!, true)
         }
 
-        titleView?.apply { initTitleView(this) }
     }
 
     override fun initEvent() {
@@ -124,7 +150,7 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
         }
     }
 
-
+    //点击事件, 优先action, 而后onClick
     private fun handleClick(adapter: BaseQuickAdapter<*, *>, position: Int) {
         val data = adapter.data[position] as BaseActionData
         if (data.getData().action != null) {
@@ -135,6 +161,7 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
         dismiss()
     }
 
+    //初始化穿件adapter
     private fun initSmart(
         rv: RecyclerView,
         data: MutableList<BaseActionData>,
@@ -143,42 +170,37 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
 
         val tempAdapter = ActionSheetAdapter(data)
         //拖拽功能
-        var startPos = 0
-        val dragListener = object : OnItemDragListener {
-            override fun onItemDragMoving(
-                source: RecyclerView.ViewHolder?,
-                from: Int,
-                target: RecyclerView.ViewHolder?,
-                to: Int
-            ) {
-            }
-
-            override fun onItemDragStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-                Log.d(TAG, "onItemDragStart: $pos")
-                startPos = pos
-            }
-
-            override fun onItemDragEnd(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-                Log.d(TAG, "onItemDragEnd: $pos")
-
-                if (startPos == pos) {
-                    return
+        if (dragEnable) {
+            var startPos = 0
+            val dragListener = object : OnItemDragListener {
+                override fun onItemDragMoving(
+                    source: RecyclerView.ViewHolder?,
+                    from: Int,
+                    target: RecyclerView.ViewHolder?,
+                    to: Int
+                ) {
                 }
 
-//                修改的是底部数据源还是顶部数据源
-//                if (isBottom) {
-//                    val endPos = pos
-//                    dragListener?.onDragEnd(startPos, endPos, tempAdapter.data)
-//                } else {
-//
-//                }
-                dragListener?.onDragEnd(startPos, pos, tempAdapter.data)
+                @SuppressLint("MissingPermission")
+                override fun onItemDragStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
+                    val vibrator = mContext.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
+                    vibrator.vibrate(100)
+                    startPos = pos
+                }
+
+                override fun onItemDragEnd(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
+                    if (startPos == pos) {
+                        return
+                    }
+                    val row = if (isBottom) 1 else 0
+                    dragListener?.onDragEnd(startPos, pos, tempAdapter.data, row)
+                }
 
             }
-
+            tempAdapter.draggableModule.isDragEnabled = true
+            tempAdapter.draggableModule.setOnItemDragListener(dragListener)
         }
-        tempAdapter.draggableModule.isDragEnabled = true
-        tempAdapter.draggableModule.setOnItemDragListener(dragListener)
+
         rv.layoutManager = getLayoutManager()
         rv.adapter = tempAdapter
         if (isBottom) {
@@ -194,11 +216,23 @@ abstract class BaseActionSheetDialog(parent: Context) : BaseDialog(parent) {
         return manager
     }
 
-    protected open fun getTitleView(): IActionHeader? {
+    /**
+     * 获取titleView布局
+     */
+    protected open fun getActionHeader(): IActionHeader? {
         return null
     }
 
+    /**
+     * 重写处理titleView
+     */
     protected open fun initTitleView(titleView: View) {
 
     }
+
+    /**
+     * 点击事件所用数据
+     */
+    abstract fun getData(): IData?
+
 }
