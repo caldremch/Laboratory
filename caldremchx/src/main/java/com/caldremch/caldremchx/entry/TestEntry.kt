@@ -1,5 +1,6 @@
 package com.caldremch.caldremchx.entry
 
+import android.content.Context
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 

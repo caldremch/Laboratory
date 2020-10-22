@@ -4,6 +4,15 @@ plugins {
     id(Plugin.kotlin_android_extensions)
 }
 
+
+ext {
+    this["myLibraryVersion"] = "1.0.1"
+    this["myBintrayName"] = "utils"
+    this["myArtifactId"] = "utils"
+    this["myLibraryName"] = "utils for android base develop"
+    this["myLibraryDescription"] = "utils for android base develop"
+}
+
 android {
     compileSdkVersion(Deps.compileSdkVersion)
     buildToolsVersion(Deps.buildToolsVersion)
@@ -40,3 +49,6 @@ dependencies {
     implementation(Deps.coroutines)
     implementation(Deps.lifecycle)
 }
+
+apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")
+//apply(from="https://raw.githubusercontent.com/caldremch/gradle-maven-kotlin-dsl/master/bintray-with-maven-publish.gradle")

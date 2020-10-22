@@ -38,7 +38,7 @@ object Deps {
     const val a_name_whatever_you_want = "a_name_whatever_you_want"
 
     //version
-    const val minSdkVersion = 18
+    const val minSdkVersion = 21
     const val compileSdkVersion = 30
     const val targetSdkVersion = 30
     const val versionCode = 1
