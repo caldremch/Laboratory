@@ -3,6 +3,7 @@ package com.caldremch.laboratory
 import android.app.Application
 import com.caldremch.common.util.CommonLog
 import com.caldremch.common.util.DefaultLogger
+import com.caldremch.utils.FileUtils
 import com.caldremch.utils.Utils
 
 /**
@@ -20,6 +21,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        FileUtils.init(this)
         Utils.init(this)
         CommonLog.logger = DefaultLogger()
         CommonLog.d { "好的" }
