@@ -32,6 +32,7 @@ class DecorViewProxy {
     private var statusView: StatusView? = null
     private var inflater: LayoutInflater? = null
     var titleView: View? = null
+    var layoutView: View? = null
 
 
     class Builder {
@@ -46,6 +47,7 @@ class DecorViewProxy {
         private var container: ViewGroup? = null //fragment 使用
         private var inflater: LayoutInflater? = null
         private var titleView: View? = null
+        private var layoutView: View? = null
 
         constructor(fragment: Fragment, inflater: LayoutInflater, container: ViewGroup?) {
             this.fragment = fragment
@@ -90,7 +92,13 @@ class DecorViewProxy {
             proxy.inflater = inflater
             proxy.context = context
             proxy.titleView = titleView
+            proxy.layoutView = layoutView
             return proxy
+        }
+
+        fun setContentView(layoutView: View?): Builder {
+            this.layoutView = layoutView
+            return this
         }
 
     }
@@ -104,7 +112,13 @@ class DecorViewProxy {
         if (isActivity) {
             childRootView = LayoutInflater.from(context).inflate(contentViewId, null)
         } else {
-            childRootView = inflater!!.inflate(contentViewId, container, false)
+
+            //优先使用View
+            if (layoutView != null) {
+                childRootView = layoutView!!
+            } else {
+                childRootView = inflater!!.inflate(contentViewId, container, false)
+            }
         }
 
         var targetTitleView: View? = null

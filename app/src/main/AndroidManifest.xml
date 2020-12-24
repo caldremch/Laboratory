@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".activity.PageListActivity" />
         <activity android:name=".activity.PageListAdapterActivity" />
+        <activity android:name=".entry.entry.ActTest" />
     </application>
 
 </manifest>

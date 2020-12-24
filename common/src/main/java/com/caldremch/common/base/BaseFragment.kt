@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
 import com.caldremch.common.helper.EventManager
 import com.caldremch.common.mvp.BaseContract
 import com.caldremch.common.mvp.BaseContract.BasePresenter
@@ -21,7 +20,8 @@ import com.caldremch.common.widget.status.StatusView
  * @email caldremch@163.com
  * @describe 基类
  */
-abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IStatusView {
+abstract class BaseFragment<T> : LifeCycleLogFragment(), BaseContract.BaseView, BaseInit,
+    IStatusView {
 
     private val TAG = "BaseFragment"
     protected var mPresenter: T? = null
@@ -55,7 +55,6 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
 
     }
 
-
     override fun setViewStatus(@StatusView.ViewState status: Int) {
         if (mContentView is IStatusView) {
             (mContentView as IStatusView).setViewStatus(status)
@@ -83,7 +82,7 @@ abstract class BaseFragment<T> : Fragment(), BaseContract.BaseView, BaseInit, IS
 
     private fun inflaterView(inflater: LayoutInflater, container: ViewGroup?) {
         decorViewProxy = DecorViewProxy.Builder(this, inflater, container)
-            .setContentViewId(layoutId)
+            .setContentViewId(layoutId).setContentView(layoutView)
             .setTitleViewId(titleViewId)
             .setTitleView(titleView)
             .build()
