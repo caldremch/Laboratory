@@ -10,3 +10,4 @@ include ":app"
 include ":PickerView"
 includeBuild './version-plugin'
 include ':view-binding-extension'
+include ':native-logger'
