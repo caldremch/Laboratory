@@ -51,6 +51,7 @@ dependencies {
     implementation(Deps.immersionbar)
     implementation(Deps.eventbus)
     implementation(Deps.lifecycle)
+    implementation('android.arch.lifecycle:extensions:1.1.1')
 }
 
 //apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")

@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+//    id 'kotlin-parcelize'
 }
 
 android {
@@ -26,7 +27,9 @@ android {
         }
     }
 
-
+    viewBinding {
+        enabled = true
+    }
 }
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
