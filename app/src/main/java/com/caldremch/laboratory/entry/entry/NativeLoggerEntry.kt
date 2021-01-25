@@ -1,9 +1,9 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import android.os.Process
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
+import com.caldremch.android.log.NativeLogger
 
 /**
  *
@@ -24,7 +24,9 @@ class NativeLoggerEntry : IEntry {
     }
 
     override fun onClick(context: Context) {
-        val a = 1 / 0
-        Process.killProcess(Process.myPid())
+        val path = context.getExternalFilesDir("test_mmap")?.absolutePath + "/a.txt"
+        NativeLogger.saveToFile(path, "i am content hahahh")
+//        val a = 1 / 0
+//        Process.killProcess(Process.myPid())
     }
 }
