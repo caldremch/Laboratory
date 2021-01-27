@@ -27,8 +27,15 @@ android {
         }
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 dependencies {
@@ -51,6 +58,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":image-core"))
     implementation(project(":native-logger"))
+    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1'
     implementation(Deps.entry)
     kapt(Deps.entry_compiler)
 }

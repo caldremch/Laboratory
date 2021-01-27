@@ -9,7 +9,10 @@ import android.os.Process
 import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
-import java.io.*
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.io.Writer
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,18 +96,8 @@ class CrashHandler private constructor() : Thread.UncaughtExceptionHandler {
             if (Environment.getExternalStorageState() ==
                 Environment.MEDIA_MOUNTED
             ) {
-                val file = File(exceptionDir, fileName)
-                if (!file.exists()) {
-                    val isSucc = file.createNewFile()
-                    if (!isSucc) {
-                        //尝试再创建一次
-                        file.createNewFile()
-                    }
-                }
-                val fos = FileOutputStream(file.absolutePath)
-                fos.write(sb.toString().toByteArray())
-                Log.d("tag", "数据写入完毕:$sb")
-                fos.close()
+                val path = mContext!!.getExternalFilesDir("crash_files")?.absolutePath + "/$fileName"
+                NativeLogger.saveToFile(path, sb.toString())
             }
         } catch (exception: Exception) {
             Log.d("tag", "写入文件由问题?")

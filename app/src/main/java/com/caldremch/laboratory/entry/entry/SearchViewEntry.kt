@@ -3,6 +3,8 @@ package com.caldremch.laboratory.entry.entry
 import android.content.Context
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
+import com.caldremch.laboratory.fragment.SearchViewFragment
+import com.caldremch.laboratory.util.FragmentUtil
 
 /**
  *
@@ -22,6 +24,6 @@ class SearchViewEntry : IEntry {
     }
 
     override fun onClick(context: Context) {
-
+        FragmentUtil.add(context, SearchViewFragment())
     }
 }
