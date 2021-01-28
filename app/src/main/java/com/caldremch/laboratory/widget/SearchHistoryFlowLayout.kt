@@ -30,17 +30,18 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
     protected var mAllViews: MutableList<MutableList<View>> = ArrayList()
     protected var mLineHeight: MutableList<Int> = ArrayList()
     private var lineViews: MutableList<View> = ArrayList()
-    private var viewInfoList = arrayListOf<ViewInfo>()
+    protected var viewInfoList = arrayListOf<ViewInfo>()
     private val measureLines = SparseIntArray()
     private val measureLinesWidthsForFold = SparseIntArray() //专门给折叠使用的临时记录
-    private val measureFlexLines = SparseArray<List<ViewInfo>>()
-    private var isAddFoldView = false
-    private val FOLD_MAX_LINE = 2
+    protected val measureFlexLines = SparseArray<List<ViewInfo>>()
+    protected var isAddFoldView = false
+    protected val FOLD_MAX_LINE = 2
 
     class ViewInfo(
             var index: Int,
             var childWidth: Int,
             var childHeight: Int,
+            var debugTitle: String? = null
     ) {
 //        fun getChildWidth():Int{
 //            val lp = view.layoutParams as MarginLayoutParams
@@ -118,6 +119,7 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
                 measureChild(foldView, widthMeasureSpec, heightMeasureSpec)
 
                 if (lineViewInfoListFlag.size == 1) {
+                    //行---单item
                     val itemViewInfo = lineViewInfoListFlag.first()
                     //直接修改当前 ItemView 的宽度
                     val itemViewIndex = itemViewInfo.index
@@ -133,32 +135,50 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
                             (itemViewLayoutParams.leftMargin + itemViewLayoutParams.rightMargin)
 
                 } else {
+                    //行---多item
                     val itemViewInfo = lineViewInfoListFlag.last()
                     val itemViewIndex = itemViewInfo.index
-                    Log.d(TAG, "onMeasure: itemViewIndex=$itemViewIndex")
                     var insertIndex = -1
                     val foldWidth = foldView.measuredWidth + foldViewLp.leftMargin + foldViewLp.rightMargin
-                    val needToUpdatePreItemWidth = itemViewInfo.childWidth / 2 >= (foldView.measuredWidth + foldViewLp.leftMargin + foldViewLp.rightMargin)
+
+                    //是否需要更改前一个的 Item 宽度
+                    val needToUpdatePreItemWidth = itemViewInfo.childWidth / 2 > foldWidth
+
+                    Log.d(TAG, "onMeasure: foldWidth=$foldWidth ,itemViewInfo.childWidth / 2=${itemViewInfo.childWidth / 2}")
+
+                    //计算累加宽度
                     var lineTotalWidth = 0
                     lineViewInfoListFlag.forEach {
                         lineTotalWidth += it.childWidth
                     }
-                    val widthAfterAddedFold = foldWidth + lineTotalWidth
+
                     if (needToUpdatePreItemWidth) {
                         //修改最后一个 item 的宽度, 并加折叠加到最后面,
                         insertIndex = itemViewIndex + 1
+                        Log.d(TAG, "onMeasure: 压缩 pre-item 宽度 $insertIndex")
                         val itemView = getChildAt(itemViewInfo.index)
                         val itemViewLayoutParams = itemView.layoutParams as MarginLayoutParams
                         val blank = maxWidth - marginLeft - marginRight - lineTotalWidth
                         itemView.layoutParams.width = maxWidth - (lineTotalWidth - (itemViewInfo.childWidth - itemViewLayoutParams.leftMargin - itemViewLayoutParams.rightMargin) + blank + foldWidth + marginLeft + marginRight)
                     } else if (foldWidth < itemViewInfo.childWidth) {
-                        //直接加到最后一个 item 的前面
-                        Log.d(TAG, "onMeasure:foldWidth<itemViewInfo.childWidth-->${foldWidth < itemViewInfo.childWidth} ")
                         insertIndex = itemViewIndex
+                        Log.d(TAG, "onMeasure: 足够摆放 targetItemView, 直接加载后面 $insertIndex")
                     } else {
-                        //todo  暂时先再往前一个, 应该循环判断, + 直到满足为止
-                        insertIndex = itemViewIndex - 1
+                        // 该循环判断, + 直到能找到足够宽度, 放下目标 itemView
+                        val size = lineViewInfoListFlag.size
+                        var tempNeedWidth = 0
+                        for (j in (size - 1) downTo 0) {
+                            val data = lineViewInfoListFlag[j]
+                            if (foldWidth <= (tempNeedWidth + data.childWidth)) {
+                                insertIndex = data.index
+                                break
+                            } else {
+                                tempNeedWidth += data.childWidth
+                            }
+                        }
+
                     }
+                    Log.d(TAG, "onMeasure: 寻找能摆放的位置, 直接加载后面 $insertIndex")
                     viewInfoList.add(itemViewIndex, ViewInfo(insertIndex, foldWidth, 0))
                     addView(foldView, insertIndex, foldViewLp)
                 }
@@ -171,7 +191,7 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
         }
 
         measureFlexLines.forEach { key, value ->
-            Log.d(TAG, "onMeasure: $key --> ${value.size}")
+//            Log.d(TAG, "onMeasure: $key --> ${value.size}")
         }
 
 //        Log.d(TAG, "onMeasure: 最终的高度: $lineHeight ---  $flexLineCount")
@@ -182,9 +202,9 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
         )
     }
 
-    private fun createFoldView(index: Int, foldViewLp: LayoutParams, widthMeasureSpec: Int, heightMeasureSpec: Int): View {
+    protected fun createFoldView(index: Int, foldViewLp: LayoutParams, widthMeasureSpec: Int, heightMeasureSpec: Int): View {
         val foldView = inflate(context, R.layout.house_item_history_tag, null)
-        foldView.findViewById<TextView>(R.id.tv_title).text = "箭头"
+        foldView.findViewById<TextView>(R.id.tv_title).text = "箭头箭头"
         isAddFoldView = true
         return foldView
     }
@@ -280,15 +300,17 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
     }
 
     companion object {
-        private const val TAG = "FlowLayout"
-        private const val LEFT = -1
+        const val TAG = "FlowLayout"
+        const val LEFT = -1
     }
 
     fun setList(data: List<String>) {
-
-
+        fold = true
+        isAddFoldView = false
+        removeAllViews()
+        viewInfoList.clear()
         data.forEachIndexed { index, item ->
-            val info = ViewInfo(index, 0, 0)
+            val info = ViewInfo(index, 0, 0, item)
             viewInfoList.add(info)
             val itemView = View.inflate(context, R.layout.house_item_history_tag, null)
             val tv = itemView.findViewById<TextView>(R.id.tv_title)
@@ -297,10 +319,9 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
             addView(itemView, lp)
         }
 
-
     }
 
-    private fun neededLp(): MarginLayoutParams {
+    protected fun neededLp(): MarginLayoutParams {
         val lp = MarginLayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT)

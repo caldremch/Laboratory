@@ -1,7 +1,6 @@
 package com.caldremch.laboratory
 
 import android.app.Application
-import com.caldremch.android.log.CrashHandler
 import com.caldremch.common.util.CommonLog
 import com.caldremch.common.util.DefaultLogger
 import com.caldremch.utils.FileUtils
@@ -22,7 +21,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        CrashHandler.instance.init(this)
+//        CrashHandler.instance.init(this)
         FileUtils.init(this)
         Utils.init(this)
         CommonLog.logger = DefaultLogger()
