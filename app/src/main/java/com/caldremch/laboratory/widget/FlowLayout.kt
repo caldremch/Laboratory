@@ -125,6 +125,7 @@ open class FlowLayout @JvmOverloads constructor(
                                 val tempView = getChildAt(data.index)
                                 val tempLayoutParams = tempView.layoutParams as MarginLayoutParams
                                 //更新后的宽度 = 总宽度 - (除当前 View 之外的Line 宽度) - 行留空宽度 - 插队View宽度
+                                updateViewWidthCache[tempView] = tempView.layoutParams.width
                                 tempView.layoutParams.width = maxWidth - (lineTotalWidth - data.childWidth) - deltaWidth - foldWidth
                                 insertIndex++ //+在后面
                             }

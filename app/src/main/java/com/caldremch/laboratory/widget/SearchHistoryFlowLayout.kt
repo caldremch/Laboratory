@@ -2,6 +2,7 @@ package com.caldremch.laboratory.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.util.SparseArray
 import android.util.SparseIntArray
 import android.view.View
@@ -30,8 +31,10 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
     private val measureLines = SparseIntArray()
     private val measureLinesWidthsForFold = SparseIntArray() //专门给折叠使用的临时记录
     protected val measureFlexLines = SparseArray<List<ViewInfo>>()
+    protected val updateViewWidthCache = hashMapOf<View, Int>()
     protected var isAddFoldView = false
     protected val FOLD_MAX_LINE = 2
+    protected var limitLineHeight = 0
 
     class ViewInfo(
             var index: Int,
@@ -56,6 +59,17 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
         val foldView = inflate(context, R.layout.house_item_history_tag, null)
         foldView.findViewById<TextView>(R.id.tv_title).text = "箭头箭头"
         isAddFoldView = true
+        foldView.setOnClickListener {
+            fold = false
+            isAddFoldView = false
+
+            //如果之前有缓存的改变 view宽度的, 重置回当初的宽度
+            updateViewWidthCache.forEach {
+                it.key.layoutParams.width = it.value
+            }
+            removeView(foldView)
+            requestLayout()
+        }
         return foldView
     }
 
@@ -84,8 +98,11 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
             val lp = child.layoutParams as MarginLayoutParams
             val childWidth = child.measuredWidth
             val childHeight = child.measuredHeight
+            val h = childHeight + lp.topMargin + lp.bottomMargin
             //折叠的情况先, 显示箭头
             val isOverSize = childWidth + lineWidth + lp.leftMargin + lp.rightMargin > containerMaxWidth
+            Log.d(TAG, "onLayout: lineHeight=$lineHeight , h=$h")
+
             if (isOverSize) {
                 //统计行数
                 flexLineCount++
@@ -114,10 +131,18 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
         //遍历每行, 开始进行布局
         val lineNum = mAllViews.size
         for (i in 0 until lineNum) {
+
+//            if (fold && isAddFoldView && flexLineCount>=2){
+
             //取出高度和子view
             lineViews = mAllViews[i]
 //            Log.d(TAG, "onLayout: lineViews = ${lineViews.size}")
             lineHeight = mLineHeight[i]
+
+            if (fold && top >= 2 * lineHeight) {
+                continue
+            }
+
             left = paddingLeft
             //行的宽度
             var lineContainerWidth = 0

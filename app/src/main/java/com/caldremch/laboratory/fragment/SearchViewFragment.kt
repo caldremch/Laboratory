@@ -35,7 +35,7 @@ class SearchViewFragment : LaboratoryFragment() {
     override fun initView() {
         searchList = findViewById(R.id.tfl_history_tags)
         title = findViewById(R.id.tv_history_str)
-        val list = getList(0)
+        val list = getList(4)
         //测量相册
         title.setOnClickListener {
             val testDataIndex = java.util.Random().nextInt(3)
