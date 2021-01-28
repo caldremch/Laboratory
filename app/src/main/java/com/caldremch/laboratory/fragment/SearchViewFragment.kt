@@ -29,14 +29,17 @@ class SearchViewFragment : LaboratoryFragment() {
         return R.layout.house_item_history_tags
     }
 
+
+    var index = 0
+
     override fun initView() {
         searchList = findViewById(R.id.tfl_history_tags)
         title = findViewById(R.id.tv_history_str)
-        val list = getList(1)
+        val list = getList(0)
         //测量相册
         title.setOnClickListener {
             val testDataIndex = java.util.Random().nextInt(3)
-            val testList = getList(testDataIndex)
+            val testList = getList(index++ % 6)
             searchList.setList(testList)
         }
         searchList.setList(list)
@@ -121,6 +124,35 @@ class SearchViewFragment : LaboratoryFragment() {
                     "99-1234567890123567890123567890123",
                     "12345678901234567890-34567890123456789012345678908901234567890",
                     "12345678901234567890-34567890"
+            )
+            3 -> arrayListOf<String>(
+                    "11",
+                    "22",
+                    "33",
+                    "44",
+                    "好3333",
+                    "好3333",
+                    "55",
+                    "66",
+                    "7",
+                    "8",
+                    "88,2",
+                    "88,3",
+                    "88,512345678901234567890-34567890123456789012345678908901234567890",
+                    "88,9",
+                    "99-1234567890123567890123567890123",
+                    "12345678901234567890-34567890123456789012345678908901234567890",
+                    "12345678901234567890-34567890"
+            )
+            4 -> arrayListOf<String>(
+                    "77,512345678901234567890-34567890123456789012345678908901234567890",
+                    "88,512345678901234567890-34567890123456789012345678908901234567890",
+                    "99,512345678901234567890-34567890123456789012345678908901234567890"
+            )
+            5 -> arrayListOf<String>(
+                    "77,512345678901234567890-34567890123456789012345678908901234567890",
+                    "88,",
+                    "99,512345678901234567890-34567890123456789012345678908901234567890"
             )
             else -> arrayListOf<String>(
                     "11",
