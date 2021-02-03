@@ -4,11 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
-import android.util.SparseIntArray
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
 import com.caldremch.laboratory.R
+import java.lang.Math.abs
 
 /**
  *
@@ -18,185 +20,81 @@ import com.caldremch.laboratory.R
  *
  * @date 2021/1/26 15:23
  *
- * @description
- *
+ * @description 自定义 View, item 摆放及折叠
  *
  */
 open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : ViewGroup(context, attrs, defStyle) {
 
-    protected var mAllViews: MutableList<MutableList<View>> = ArrayList()
-    protected var mLineHeight: MutableList<Int> = ArrayList()
-    private var lineViews: MutableList<View> = ArrayList()
-    protected var viewInfoList = arrayListOf<ViewInfo>()
-    private val measureLines = SparseIntArray()
-    private val measureLinesWidthsForFold = SparseIntArray() //专门给折叠使用的临时记录
-    protected val measureFlexLines = SparseArray<List<ViewInfo>>()
-    protected val updateViewWidthCache = hashMapOf<View, Int>()
-    protected var isAddFoldView = false
-    protected val FOLD_MAX_LINE = 2
-    protected var limitLineHeight = 0
+    private val TAG = "SearchHistoryFlowLayout"
+    private val measureFlexLines = SparseArray<List<ViewInfo>>()
+    private var viewInfoList = arrayListOf<ViewInfo>()
+    private var isAddFoldView = false //是否已经添加了
+    var foldMaxLine = 2 //折叠行数
+    private val targetItemViewInfo = ViewInfo(-1, -1) //折叠 View 对象
+    private var fold = true //是否折叠
+    private var itemClickListener: ItemClickListener? = null
+    private val updateViewWidthCache = hashMapOf<View, Int>() //更新过宽度的 View
+    private val updateWidthFactor = 2 //什么时候决定更新被插队的宽度
 
-    class ViewInfo(
+    protected var mAllViews = arrayListOf<ArrayList<View>>()
+    protected var mLineHeight = arrayListOf<Int>()
+    protected var mLineWidth = arrayListOf<Int>()
+    private var lineViews = arrayListOf<View>()
+
+    //内部使用, View 便签
+    private class ViewInfo(
             var index: Int,
             var childWidth: Int,
-            var childHeight: Int,
-            var debugTitle: String? = null
-    ) {
-//        fun getChildWidth():Int{
-//            val lp = view.layoutParams as MarginLayoutParams
-//            return  (view.measuredWidth + lp.leftMargin + lp.rightMargin)
-//        }
-//
-//        fun getChildHeight():Int{
-//            val lp = view.layoutParams as MarginLayoutParams
-//            return  (view.measuredHeight + lp.topMargin + lp.bottomMargin)
-//        }
+            var debugTitle: String? = null //debug 观察 title
+    )
 
-    }
-
-
-    protected fun createFoldView(index: Int, foldViewLp: LayoutParams, widthMeasureSpec: Int, heightMeasureSpec: Int): View {
-        val foldView = inflate(context, R.layout.house_item_history_tag, null)
-        foldView.findViewById<TextView>(R.id.tv_title).text = "箭头箭头"
+    private fun createFoldView(): View {
+        val foldView = inflate(context, R.layout.house_item_history_fold, null)
         isAddFoldView = true
         foldView.setOnClickListener {
             fold = false
             isAddFoldView = false
-
             //如果之前有缓存的改变 view宽度的, 重置回当初的宽度
             updateViewWidthCache.forEach {
                 it.key.layoutParams.width = it.value
             }
+            updateViewWidthCache.clear()
             removeView(foldView)
             requestLayout()
         }
         return foldView
     }
 
-    /**
-     * 折叠
-     */
-    var fold = true
-
-    private val containerMaxWidth
-        get() = width - paddingLeft - paddingRight
-
-    private val PRE_FOLD_ITEM_WIDTH = dip2px(context, 70f)
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        mAllViews.clear()
-        mLineHeight.clear()
-        lineViews.clear()
-        val width = width
-        var lineWidth = 0
-        var lineHeight = 0
-        val cCount = childCount
-        var flexLineCount = 0
-        for (i in 0 until cCount) {
-            val child = getChildAt(i)
-
-            if (child.visibility == GONE) continue
-            val lp = child.layoutParams as MarginLayoutParams
-            val childWidth = child.measuredWidth
-            val childHeight = child.measuredHeight
-            val h = childHeight + lp.topMargin + lp.bottomMargin
-            //折叠的情况先, 显示箭头
-            val isOverSize = childWidth + lineWidth + lp.leftMargin + lp.rightMargin > containerMaxWidth
-            Log.d(TAG, "onLayout: lineHeight=$lineHeight , h=$h")
-
-            if (isOverSize) {
-                //统计行数
-                flexLineCount++
-                //添加行高
-                mLineHeight.add(lineHeight)
-                //存储行高
-                mAllViews.add(lineViews)
-                //重置行宽度, 为下一行准备
-                lineWidth = 0
-                //下一行的高度
-                lineHeight = childHeight + lp.topMargin + lp.bottomMargin
-                //重新初始化行子 view 的集合
-                lineViews = ArrayList()
-            }
-            //如果是第二行, 在累加的时候, 就开始判断是否 + 折叠item, 是否会超过当前maxWidth
-            //如果超过了, 那么就不加当前View 了, 而是替换成 折叠 View, 特殊处理: 如果当前行只有一个 View 的时候, 缩短 View 的宽度
-            //如果没有超过 按旧的逻辑处理
-            lineWidth += childWidth + lp.leftMargin + lp.rightMargin
-            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin + lp.bottomMargin)
-            lineViews.add(child)
-        }
-        mLineHeight.add(lineHeight)
-        mAllViews.add(lineViews)
-        var left = paddingLeft
-        var top = paddingTop
-        //遍历每行, 开始进行布局
-        val lineNum = mAllViews.size
-        for (i in 0 until lineNum) {
-
-//            if (fold && isAddFoldView && flexLineCount>=2){
-
-            //取出高度和子view
-            lineViews = mAllViews[i]
-//            Log.d(TAG, "onLayout: lineViews = ${lineViews.size}")
-            lineHeight = mLineHeight[i]
-
-            if (fold && top >= 2 * lineHeight) {
-                continue
-            }
-
-            left = paddingLeft
-            //行的宽度
-            var lineContainerWidth = 0
-            for (j in lineViews.indices) {
-                val child = lineViews[j]
-                val lp = child.layoutParams as MarginLayoutParams
-                val lc = left + lp.leftMargin
-                val tc = top + lp.topMargin
-                val rc = lc + child.measuredWidth
-                val bc = tc + child.measuredHeight
-                val aChildWidth = child.measuredWidth + lp.leftMargin + lp.rightMargin
-                lineContainerWidth += aChildWidth
-                child.layout(lc, tc, rc, bc)
-                left += (child.measuredWidth + lp.leftMargin + lp.rightMargin)
-            }
-            top += lineHeight
-        }
-    }
-
-    override fun generateLayoutParams(attrs: AttributeSet?): LayoutParams {
-        return MarginLayoutParams(context, attrs)
-    }
-
-    override fun generateDefaultLayoutParams(): LayoutParams {
-        return MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-    }
-
-    override fun generateLayoutParams(p: LayoutParams?): LayoutParams {
-        return MarginLayoutParams(p)
-    }
-
-    companion object {
-        const val TAG = "FlowLayout"
-        const val LEFT = -1
+    fun setItemClickListener(listener: ItemClickListener) {
+        this.itemClickListener = listener
     }
 
     fun setList(data: List<String>) {
-//        fold=true
+        fold = true
         isAddFoldView = false
         removeAllViews()
         viewInfoList.clear()
+
         data.forEachIndexed { index, item ->
-            val info = ViewInfo(index, 0, 0, item)
+            val info = ViewInfo(index, 0, item)
             viewInfoList.add(info)
             val itemView = View.inflate(context, R.layout.house_item_history_tag, null)
+            itemView.setOnClickListener {
+                itemClickListener?.onItemClick(item, index)
+            }
             val tv = itemView.findViewById<TextView>(R.id.tv_title)
             tv.text = item
-            val lp = neededLp()
+            val lp = itemLayoutParams()
             addView(itemView, lp)
         }
 
     }
 
-    protected fun neededLp(): MarginLayoutParams {
+    interface ItemClickListener {
+        fun onItemClick(condition: String, index: Int)
+    }
+
+    private fun itemLayoutParams(): MarginLayoutParams {
         val lp = MarginLayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT)
@@ -207,8 +105,236 @@ open class SearchHistoryFlowLayout @JvmOverloads constructor(context: Context, a
         return lp
     }
 
-    open fun dip2px(context: Context, dpValue: Float): Int {
+    private fun dip2px(context: Context, dpValue: Float): Int {
         val scale = context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
+    }
+
+    //获取行宽
+    private fun getLineTotalWidth(list: List<ViewInfo>): Int {
+        var lineTotalWidth = 0
+        list.forEach {
+            lineTotalWidth += it.childWidth
+        }
+        return lineTotalWidth
+    }
+
+    //第一个item的高度
+    private var dependencyHeight = 0
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        measureFlexLines.clear()
+
+        val sizeWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val modeWidth = MeasureSpec.getMode(widthMeasureSpec)
+        val sizeHeight = MeasureSpec.getSize(heightMeasureSpec)
+        val modeHeight = MeasureSpec.getMode(heightMeasureSpec)
+
+        // wrap_content
+        var width = 0
+        var height = 0
+        var lineHeight = 0
+        val cCount = childCount
+
+        //行统计
+        var tempLine = 0
+        var tempLineWidth = 0
+
+        for (i in 0 until cCount) {
+            //子 View 数据获取
+            val child = getChildAt(i)
+            measureChild(child, widthMeasureSpec, heightMeasureSpec)
+            val lp = child.layoutParams as MarginLayoutParams
+            var childWidth = (child.measuredWidth + lp.leftMargin + lp.rightMargin)
+            val childHeight = (child.measuredHeight + lp.topMargin + lp.bottomMargin)
+
+            if (dependencyHeight == 0) {
+                dependencyHeight = childHeight
+            }
+
+            val maxWidth = sizeWidth - paddingLeft - paddingRight
+            val currentViewInfo = viewInfoList[i]
+
+            //如果测量结果大于 最大宽度, 那么宽度设置为最大宽度
+            if (childWidth > maxWidth) {
+                childWidth = maxWidth
+            }
+
+            currentViewInfo.childWidth = childWidth
+
+            //开始统计行数
+            if (tempLineWidth + childWidth > maxWidth) {
+                if (tempLineWidth != 0) {
+                    tempLine++
+                }
+                var list = measureFlexLines[tempLine] as ArrayList?
+                if (list == null) {
+                    list = arrayListOf<ViewInfo>()
+                    measureFlexLines.put(tempLine, list)
+                }
+                list.add(currentViewInfo)
+                tempLineWidth = childWidth
+                width = Math.max(width, tempLineWidth)
+                height += lineHeight
+                lineHeight = childHeight
+
+            } else {
+                var list = measureFlexLines[tempLine] as ArrayList?
+                if (list == null) {
+                    list = arrayListOf()
+                    measureFlexLines.put(tempLine, list)
+                }
+                list.add(currentViewInfo)
+                tempLineWidth += childWidth
+                lineHeight = Math.max(lineHeight, childHeight)
+            }
+
+            //折叠逻辑
+            if (fold && isAddFoldView.not() && measureFlexLines.size() > foldMaxLine) {
+                val lineViewInfoListFlag = measureFlexLines[foldMaxLine - 1]
+                Log.d(TAG, "onMeasure: 操作行宽度${
+                    lineViewInfoListFlag.joinToString(separator = ",", transform = {
+                        "${it.childWidth}, maxSize: ${maxWidth} sizeWidth= ${sizeWidth}"
+                    })
+                }")
+                val foldViewLp = itemLayoutParams()
+                val foldView = createFoldView()
+                foldView.layoutParams = foldViewLp
+                measureChild(foldView, widthMeasureSpec, heightMeasureSpec)
+                //计算累加宽度
+                val lineTotalWidth = getLineTotalWidth(lineViewInfoListFlag)
+                //这一行中还剩余的大小
+                val deltaWidth = abs(maxWidth - lineTotalWidth)
+                //插队View的宽度
+                val foldWidth = foldView.measuredWidth + foldViewLp.leftMargin + foldViewLp.rightMargin
+                var insertIndex = -1
+                if (foldWidth < deltaWidth) {
+                    //直接+在当前行的最后一个 item 后面
+                    insertIndex = lineViewInfoListFlag.last().index + 1
+                } else {
+                    //寻找插队位置
+                    var decreaseFactor = 0
+                    for (j in (lineViewInfoListFlag.size - 1) downTo 0) {
+                        val data = lineViewInfoListFlag[j]
+                        decreaseFactor += data.childWidth
+                        val tempWidth = lineTotalWidth - decreaseFactor + foldWidth + deltaWidth
+                        if (tempWidth <= maxWidth) {
+                            insertIndex = data.index
+                            //如果被插队的 View 的宽度比较长, 可以减少它宽度然后加在后面, 而不是插队
+                            if (data.childWidth > updateWidthFactor * foldWidth) {
+                                val tempView = getChildAt(data.index)
+                                //存储改变宽度的 view
+                                updateViewWidthCache[tempView] = tempView.measuredWidth
+                                val debugWidth = tempView.measuredWidth
+                                val tempLp = tempView.layoutParams as MarginLayoutParams
+                                //更新后的宽度 = 总宽度 - (除当前 View 之外的Line 宽度) - 行留空宽度 - 插队View宽度 - 前View的 margin
+                                tempView.layoutParams.width = maxWidth - (lineTotalWidth - data.childWidth) - deltaWidth - foldWidth - tempLp.leftMargin - tempLp.rightMargin
+                                insertIndex++ //+在后面
+                                Log.d(TAG, "onMeasure: 改变了宽度...$debugWidth --to-->${tempView.layoutParams.width} 其他信息: lineTotalWidth=${lineTotalWidth} data.childWidth = ${data.childWidth} 剩余宽度=$deltaWidth , 折叠view宽度=$foldWidth ")
+                            }
+                            break
+                        }
+                    }
+
+                    //如果cutIndex的 item 宽度 < deltaWidth,那么cutIndex的View 会放在插队 View 的方面, 所以设置 deltaWidthmargin, 将cutIndex的View挤掉
+                    val beCutView = viewInfoList[insertIndex]
+                    if (beCutView.childWidth < deltaWidth) {
+                        Log.d(TAG, "onMeasure: 改变了折叠 view 的 rightmargin = $deltaWidth")
+                        foldViewLp.rightMargin = deltaWidth
+                    } else {
+                        Log.d(TAG, "onMeasure: 不需要 改变折叠 view 的 rightmargin")
+                    }
+                }
+                //viewInfoList 添加-- 以防 index 错误
+                targetItemViewInfo.index = insertIndex
+                targetItemViewInfo.childWidth = foldWidth
+                viewInfoList.add(insertIndex, targetItemViewInfo)
+                //添加 view
+                addView(foldView, insertIndex, foldViewLp)
+            }
+            if (i == cCount - 1) {
+                width = Math.max(tempLineWidth, width)
+                height += lineHeight
+            }
+
+        }
+
+        if (fold) {
+            height = foldMaxLine * dependencyHeight
+        }
+
+        setMeasuredDimension(
+                if (modeWidth == MeasureSpec.EXACTLY) sizeWidth else width + paddingLeft + paddingRight,
+                if (modeHeight == MeasureSpec.EXACTLY) sizeHeight else height + paddingTop + paddingBottom
+        )
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        mAllViews.clear()
+        mLineHeight.clear()
+        mLineWidth.clear()
+        lineViews.clear()
+        val width = width
+        var lineWidth = 0
+        var lineHeight = 0
+        var finalLineHeight = 0
+        val cCount = childCount
+        for (i in 0 until cCount) {
+            val child = getChildAt(i)
+            if (child.visibility == GONE) continue
+            val lp = child
+                    .layoutParams as MarginLayoutParams
+            val childWidth = child.measuredWidth
+            val childHeight = child.measuredHeight
+            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin > width - paddingLeft - paddingRight) {
+                mLineHeight.add(lineHeight)
+                mAllViews.add(lineViews)
+                mLineWidth.add(lineWidth)
+                lineWidth = 0
+                lineHeight = childHeight + lp.topMargin + lp.bottomMargin
+                lineViews = ArrayList()
+            }
+            lineWidth += childWidth + lp.leftMargin + lp.rightMargin
+            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
+                    + lp.bottomMargin)
+            lineViews.add(child)
+        }
+        mLineHeight.add(lineHeight)
+        mLineWidth.add(lineWidth)
+        mAllViews.add(lineViews)
+        var left = paddingLeft
+        var top = paddingTop
+        val lineNum = mAllViews.size
+
+
+        for (i in 0 until lineNum) {
+            lineViews = mAllViews[i]
+            lineHeight = mLineHeight[i]
+
+            // set gravity
+            val currentLineWidth = mLineWidth[i]
+            left = paddingLeft
+            for (j in lineViews.indices) {
+                val child = lineViews[j]
+                if (child.visibility == GONE) {
+                    continue
+                }
+                val lp = child
+                        .layoutParams as MarginLayoutParams
+                val lc = left + lp.leftMargin
+                val tc = top + lp.topMargin
+                val rc = lc + child.measuredWidth
+                val bc = tc + child.measuredHeight
+                child.layout(lc, tc, rc, bc)
+                left += (child.measuredWidth + lp.leftMargin
+                        + lp.rightMargin)
+            }
+            top += lineHeight
+        }
+    }
+
+    fun clear() {
+        removeAllViews()
+        fold = true
+        isAddFoldView = false
     }
 }
