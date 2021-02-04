@@ -7,15 +7,23 @@ plugins {
     id  'kotlin-android-extensions'
 }
 
+
+ext {
+    myLibraryVersion= "1.0.1"
+    myBintrayName= "utils"
+    myArtifactId= "utils"
+    myLibraryName= "utils for android base develop"
+    myLibraryDescription= "utils for android base develop"
+}
+
 android {
     compileSdkVersion Deps.compileSdkVersion
     buildToolsVersion Deps.buildToolsVersion
     defaultConfig {
         minSdkVersion Deps.minSdkVersion
-        targetSdkVersion Deps.targetSdkVersion
+        targetSdkVersion  Deps.targetSdkVersion
         versionCode Deps.versionCode
         versionName Deps.versionName
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -24,10 +32,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    androidExtensions {
-        experimental = true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,19 +39,19 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
+
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation Deps.kotlin_stdlib
-    implementation Deps.constraintlayout
-    implementation Deps.ktx
-    implementation Deps.appcompat
-    implementation Deps.lifecycle
-
-    implementation Deps.recyclerview_animators
-    implementation Deps.BaseRecyclerViewAdapterHelper
-
-    implementation project(':utils')
-    implementation project(':common')
+    implementation(Deps.kotlin_stdlib)
+    implementation(Deps.appcompat)
+    implementation(Deps.ktx)
+    implementation(Deps.coroutines)
+    implementation(Deps.lifecycle)
 }
+
+//apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")
+//apply(from="https://raw.githubusercontent.com/caldremch/gradle-maven-kotlin-dsl/master/bintray-with-maven-publish.gradle")

@@ -21,7 +21,7 @@ import com.caldremch.laboratory.util.FragmentUtil
 open class LaboratoryFragment : BaseFragment<Any>() {
 
     override fun getTitleView(): View {
-        val view = TitleBar(context!!)
+        val view = TitleBar(requireContext())
         view.setTitle(getTitle())
         view.listener = object : TitleBar.Listener {
             override fun leftClick() {
