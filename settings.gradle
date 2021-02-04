@@ -1,6 +1,6 @@
 include ":image-core"
 include ":data-core"
-include ":caldremchx"
+//include ":caldremchx"
 include ":utils"
 include ":common"
 include ":widget"
@@ -9,4 +9,4 @@ rootProject.name = "Laboratory"
 include ":app"
 include ":PickerView"
 includeBuild './version-plugin'
-include ':native-logger'
+//include ':native-logger'

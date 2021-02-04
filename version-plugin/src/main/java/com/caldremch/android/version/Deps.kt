@@ -56,6 +56,7 @@ object Deps {
     const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
     const val design = "com.google.android.material:material:1.1.0"
+    const val gson = "com.google.code.gson:gson:2.6.2"
 
     //android dep
     const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
@@ -91,6 +92,10 @@ object Deps {
 
     const val entry = "com.caldremch.android:entry:1.5.0"
     const val entry_compiler = "com.caldremch.android:entry-compiler:1.5.1"
+
+    //支持result register
+    const val activity = "androidx.activity:activity-ktx:1.2.0-rc01"
+    const val fragment = "androidx.fragment:fragment-ktx:1.3.0-rc01"
 
     /**
      * 添加默认的maven url

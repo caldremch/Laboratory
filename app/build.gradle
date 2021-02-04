@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'com.tencent.matrix-plugin'
 //    id 'kotlin-parcelize'
 }
 
@@ -38,6 +39,15 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+//matrix {
+//    trace {
+//        enable = true	//if you don't want to use trace canary, set false
+//        baseMethodMapFile = "${project.buildDir}/matrix_output/Debug.methodmap"
+//        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+//    }
+//}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation(Deps.kotlin_stdlib)
@@ -59,6 +69,16 @@ dependencies {
     implementation(project(":image-core"))
 //    implementation(project(":native-logger"))
     implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1'
+    debugImplementation "com.github.silencedut.fpsviewer:fpsviewer:0.8.2"
     implementation(Deps.entry)
     kapt(Deps.entry_compiler)
+
+    //matrix
+    implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
+    implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
 }

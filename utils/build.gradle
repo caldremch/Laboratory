@@ -51,6 +51,10 @@ dependencies {
     implementation(Deps.ktx)
     implementation(Deps.coroutines)
     implementation(Deps.lifecycle)
+    implementation(Deps.gson)
+    implementation(Deps.activity)
+    implementation(Deps.fragment)
+
 }
 
 //apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")
