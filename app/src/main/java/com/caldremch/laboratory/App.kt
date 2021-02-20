@@ -6,6 +6,7 @@ import com.caldremch.common.util.DefaultLogger
 import com.caldremch.laboratory.register.AppRegister
 import com.caldremch.utils.ActivityDelegate
 import com.caldremch.utils.FileUtils
+import com.caldremch.utils.ToastUtils
 import com.caldremch.utils.Utils
 
 /**
@@ -23,6 +24,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        ToastUtils.init(this)
 //        CrashHandler.instance.init(this)
         FileUtils.init(this)
         Utils.init(this)

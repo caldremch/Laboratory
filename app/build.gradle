@@ -72,7 +72,7 @@ dependencies {
     debugImplementation "com.github.silencedut.fpsviewer:fpsviewer:0.8.2"
     implementation(Deps.entry)
     kapt(Deps.entry_compiler)
-
+    implementation 'pub.devrel:easypermissions:3.0.0'
     //matrix
     implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
     implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
@@ -82,3 +82,24 @@ dependencies {
     implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
     implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
 }
+
+ext.unusedResourcesSet = new HashSet<String>();
+matrix {
+    trace {
+        enable = true
+        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+    }
+//    removeUnusedResources {
+//        enable true
+//        variant = "debug"
+//        needSign false
+//        shrinkArsc true
+//        //Notice: You need to modify the  value of $apksignerPath on different platform. the value below only suitable for Mac Platform,
+//        //if on Windows, you may have to  replace apksigner with apksigner.bat.
+//        apksignerPath = "${android.getSdkDirectory().getAbsolutePath()}/build-tools/${android.getBuildToolsVersion()}/apksigner"
+//        unusedResources = project.ext.unusedResourcesSet
+//        ignoreResources = ["R.id.*", "R.bool.*"]
+//    }
+}
+

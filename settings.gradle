@@ -1,3 +1,4 @@
+include ':looker'
 include ":image-core"
 include ":data-core"
 //include ":caldremchx"
