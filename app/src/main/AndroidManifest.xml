@@ -39,6 +39,15 @@
                 android:resource="@xml/cache_provider" />
 
         </provider>
+        <service android:name=".LaboratoryService"
+            android:enabled="true"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="com.caldremch.laboratory.LaboratoryService"/>
+            </intent-filter>
+
+        </service>
     </application>
 
 </manifest>

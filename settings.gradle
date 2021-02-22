@@ -1,7 +1,7 @@
 include ':looker'
 include ":image-core"
 include ":data-core"
-//include ":caldremchx"
+include ":caldremchx"
 include ":utils"
 include ":common"
 include ":widget"

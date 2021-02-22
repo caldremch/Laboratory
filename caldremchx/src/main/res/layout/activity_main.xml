@@ -5,4 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:text="sayHello"
+        android:onClick="sayHello"
+        android:layout_height="wrap_content"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

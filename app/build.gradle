@@ -84,12 +84,12 @@ dependencies {
 }
 
 ext.unusedResourcesSet = new HashSet<String>();
-matrix {
-    trace {
-        enable = true
-        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
-        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
-    }
+//matrix {
+//    trace {
+//        enable = true
+//        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+//        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+//    }
 //    removeUnusedResources {
 //        enable true
 //        variant = "debug"
@@ -101,5 +101,5 @@ matrix {
 //        unusedResources = project.ext.unusedResourcesSet
 //        ignoreResources = ["R.id.*", "R.bool.*"]
 //    }
-}
+//}
 
