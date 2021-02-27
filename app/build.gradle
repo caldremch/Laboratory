@@ -50,6 +50,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    implementation 'com.yanzhenjie:permission:2.0.3'
+
+
     implementation(Deps.kotlin_stdlib)
     implementation(Deps.appcompat)
     implementation(Deps.ktx)

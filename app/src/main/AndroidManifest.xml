@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -41,12 +42,11 @@
         </provider>
         <service android:name=".LaboratoryService"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:permission="com.caldremch.REMOTE_SERVICE"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.caldremch.laboratory.LaboratoryService"/>
             </intent-filter>
-
         </service>
     </application>
 

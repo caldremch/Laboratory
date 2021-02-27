@@ -10,6 +10,8 @@ import android.view.View
 import com.caldremch.caldremchx.R
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.ILaboratoryInterface
+import java.util.*
+import kotlin.concurrent.timer
 
 class MainActivity : BaseActivity<Any>() {
     private val TAG = "MainActivity"
@@ -23,7 +25,7 @@ class MainActivity : BaseActivity<Any>() {
     override fun initView() {
         val intent = Intent("com.caldremch.laboratory.LaboratoryService")
         intent.setPackage("com.caldremch.android.laboratory")
-        bindService(intent, conn, Service.BIND_AUTO_CREATE)
+        applicationContext.bindService(intent, conn, Service.BIND_AUTO_CREATE)
     }
 
     fun sayHel(view: View) {
@@ -32,7 +34,7 @@ class MainActivity : BaseActivity<Any>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unbindService(conn)
+        applicationContext.unbindService(conn)
     }
 
     private val conn = LaboratoryServiceConnection()

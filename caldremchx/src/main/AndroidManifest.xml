@@ -3,6 +3,7 @@
     package="com.caldremch.caldremchx">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.caldremch.REMOTE_SERVICE"/>
 
     <application
         android:name=".App"
