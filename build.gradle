@@ -39,3 +39,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+ext{
+    GROUP = 'com.tencent.matrix'
+    VERSION_NAME = "1.0.0"
+}
+
