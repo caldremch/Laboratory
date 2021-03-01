@@ -8,7 +8,7 @@ group rootProject.ext.GROUP
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'commons-io:commons-io:2.6'
-    implementation project(':matrix-commons')
+    implementation 'com.tencent.matrix:matrix-commons:0.6.6'
 }
 //
 //if("External" == rootProject.ext.PUBLISH_CHANNEL) {
@@ -21,3 +21,4 @@ dependencies {
 //        artifactId = POM_ARTIFACT_ID
 //    }
 //}
+apply from: rootProject.file('upload_aar.gradle')
