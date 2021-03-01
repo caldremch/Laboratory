@@ -21,7 +21,6 @@ object Plugin {
     const val kotlin_kapt = "kotlin-kapt"
     const val kotlin = "kotlin"
     const val java = "java"
-    const val kotlin_android_extensions = "kotlin-android-extensions"
 }
 
 object BintrayConst {
@@ -77,6 +76,7 @@ object Deps {
     const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
     const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.4"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    const val viewbinding = "com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1"
 
 
     //maven url

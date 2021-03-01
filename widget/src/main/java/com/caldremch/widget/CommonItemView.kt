@@ -10,7 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import kotlinx.android.synthetic.main.common_item_view.view.*
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.caldremch.widget.databinding.CommonItemViewBinding
 
 /**
  *
@@ -38,14 +39,16 @@ class CommonItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    private  val binding by viewBinding(CommonItemViewBinding::bind)
+
     var title: String? = null
         set(value) {
             field = value
-            tv_title.text = value
+            binding.tvTitle.text = value
             if (isExist(R.id.civ_iv_left)) {
                 val set = ConstraintSet()
                 set.clone(this)
-                set.connect(tv_title.id, ConstraintSet.START, R.id.civ_iv_left, ConstraintSet.END)
+                set.connect(binding.tvTitle.id, ConstraintSet.START, R.id.civ_iv_left, ConstraintSet.END)
                 set.applyTo(this)
             }
         }
@@ -71,19 +74,19 @@ class CommonItemView @JvmOverloads constructor(
                 set.connect(
                     tv.id,
                     ConstraintSet.START,
-                    tv_title.id,
+                        binding.tvTitle.id,
                     ConstraintSet.END
                 )
                 set.connect(
                     tv.id,
                     ConstraintSet.TOP,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.TOP
                 )
                 set.connect(
                     tv.id,
                     ConstraintSet.BOTTOM,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.BOTTOM
                 )
                 set.setMargin(tv.id, 6, 15)
@@ -128,13 +131,13 @@ class CommonItemView @JvmOverloads constructor(
                 set.connect(
                     rightTv.id,
                     ConstraintSet.TOP,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.TOP
                 )
                 set.connect(
                     rightTv.id,
                     ConstraintSet.BOTTOM,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.BOTTOM
                 )
                 set.applyTo(this)
@@ -154,7 +157,7 @@ class CommonItemView @JvmOverloads constructor(
                 lineView.id = R.id.civ_v_bottom_line
                 set.constrainWidth(lineView.id, 0)
                 set.constrainHeight(lineView.id, 1)
-                set.connect(lineView.id, ConstraintSet.LEFT, tv_title.id, ConstraintSet.LEFT)
+                set.connect(lineView.id, ConstraintSet.LEFT, binding.tvTitle.id, ConstraintSet.LEFT)
                 set.connect(
                     lineView.id,
                     ConstraintSet.BOTTOM,
@@ -187,13 +190,13 @@ class CommonItemView @JvmOverloads constructor(
                 set.connect(
                     view.id,
                     ConstraintSet.TOP,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.TOP
                 )
                 set.connect(
                     view.id,
                     ConstraintSet.BOTTOM,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.BOTTOM
                 )
 
@@ -230,13 +233,13 @@ class CommonItemView @JvmOverloads constructor(
                 set.connect(
                     view.id,
                     ConstraintSet.TOP,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.TOP
                 )
                 set.connect(
                     view.id,
                     ConstraintSet.BOTTOM,
-                    tv_title.id,
+                    binding.tvTitle.id,
                     ConstraintSet.BOTTOM
                 )
                 set.setMargin(view.id, 7, 20)
@@ -313,5 +316,6 @@ class CommonItemView @JvmOverloads constructor(
         val scale = context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
+
 
 }

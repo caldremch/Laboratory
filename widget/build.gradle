@@ -4,7 +4,7 @@ plugins {
     id 'com.caldremch.android.version'
     id 'com.android.library'
     id  'kotlin-android'
-    id  'kotlin-android-extensions'
+    
 }
 
 ext {
@@ -38,8 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 
@@ -58,6 +59,7 @@ dependencies {
     api(Deps.refresh_footer_classics)
     api(Deps.refresh_header_falsify)
     implementation(Deps.MagicIndicator)
+    implementation Deps.viewbinding
 }
 
 //apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")

@@ -6,8 +6,9 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.common.R
-import kotlinx.android.synthetic.main.cm_view_title_bar.view.*
+import com.caldremch.common.databinding.CmViewTitleBarBinding
 
 /**
  *
@@ -23,6 +24,8 @@ import kotlinx.android.synthetic.main.cm_view_title_bar.view.*
 class TitleBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
+    private val binding by viewBinding(CmViewTitleBarBinding::bind)
 
     interface Listener {
 
@@ -53,12 +56,12 @@ class TitleBar @JvmOverloads constructor(
         View.inflate(context, R.layout.cm_view_title_bar, this)
         setBackgroundColor(Color.WHITE)
         id = R.id.cm_android_common_title_view_id
-        tv_left.setOnClickListener { listener?.leftClick() }
-        tv_right.setOnClickListener { listener?.rightClick() }
-        tv_title.setOnClickListener { listener?.titleClick() }
+        binding.tvLeft.setOnClickListener { listener?.leftClick() }
+        binding.tvRight.setOnClickListener { listener?.rightClick() }
+        binding.tvTitle.setOnClickListener { listener?.titleClick() }
     }
 
     fun setTitle(title: String?) {
-        tv_title?.text = title
+        binding.tvTitle.text = title
     }
 }

@@ -6,11 +6,12 @@ import android.graphics.drawable.Drawable
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
+import com.caldremch.laboratory.databinding.FragmentBannerBinding
 import com.youth.banner.adapter.BannerAdapter
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.android.synthetic.main.fragment_banner.*
 
 /**
  * @author Caldremch
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.fragment_banner.*
  *
  **/
 class BannerFragment : LaboratoryFragment() {
+
+    private val binding by viewBinding(FragmentBannerBinding::bind)
 
     override fun getTitle(): String {
         return "banner demo"
@@ -34,7 +37,7 @@ class BannerFragment : LaboratoryFragment() {
         datas.add(ColorDrawable(Color.RED))
         datas.add(ColorDrawable(Color.YELLOW))
         datas.add(ColorDrawable(Color.BLACK))
-        banner.addBannerLifecycleObserver(this)
+        binding.banner.addBannerLifecycleObserver(this)
             .setAdapter(object : BannerAdapter<Drawable, BannerViewHolder>(datas) {
                 override fun onCreateHolder(parent: ViewGroup?, viewType: Int): BannerViewHolder {
                     val imageView = ImageView(parent!!.context)

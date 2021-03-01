@@ -1,13 +1,14 @@
 package com.caldremch.laboratory.fragment
 
 import android.util.Log
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
+import com.caldremch.laboratory.databinding.FragmentWatchDogBinding
 import com.caldremch.utils.networklistener.ConnectInfo
 import com.caldremch.utils.networklistener.ListenerType
 import com.caldremch.utils.networklistener.NetListener
 import com.caldremch.utils.networklistener.NetWatchDog
-import kotlinx.android.synthetic.main.fragment_watch_dog.*
 
 /**
  *
@@ -22,6 +23,8 @@ import kotlinx.android.synthetic.main.fragment_watch_dog.*
  **/
 class NetWatchDogFragment() : LaboratoryFragment() {
 
+    private val binding by viewBinding(FragmentWatchDogBinding::bind)
+
     override fun getTitle(): String {
         return "网络监听"
     }
@@ -32,7 +35,7 @@ class NetWatchDogFragment() : LaboratoryFragment() {
             ListenerType.WIFI,
             object : NetListener {
                 override fun onStatus(info: ConnectInfo) {
-                    tv.text = "type:${info.typeName} status: ${info.state.name}"
+                    binding.tv.text = "type:${info.typeName} status: ${info.state.name}"
                     Log.d(
                         "NetWatchDog",
                         "onStatus: type:${info.typeName} status: ${info.state.name} "
@@ -53,7 +56,7 @@ class NetWatchDogFragment() : LaboratoryFragment() {
     }
 
     override fun initEvent() {
-        sc.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.sc.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 netWatchDog.register()
             } else {

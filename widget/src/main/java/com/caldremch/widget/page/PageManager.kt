@@ -46,7 +46,7 @@ class PageManager<T> private constructor(
                 throw RuntimeException("fragment must be implement IPageDelegate")
             }
             this.fragment = fragment
-            context = fragment.context!!
+            context = fragment.requireContext()
             pageDelegate = fragment as IPageDelegate<T>
         }
 

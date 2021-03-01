@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.bean.TestData
+import com.caldremch.laboratory.databinding.ActivityPageListBinding
 import com.caldremch.widget.page.PageManager
 import com.caldremch.widget.page.protocol.IPageDelegate
 import com.caldremch.widget.page.protocol.IPageOperator
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import kotlinx.android.synthetic.main.activity_page_list.*
 
 /**
  * @author Caldremch
@@ -25,6 +26,8 @@ import kotlinx.android.synthetic.main.activity_page_list.*
  **/
 class PageListAdapterActivity : BaseActivity<Any>(),
     IPageDelegate<TestData> {
+
+    private val binding by viewBinding(ActivityPageListBinding::bind)
 
     private lateinit var pageManager: IPageOperator<TestData>
 
@@ -38,7 +41,7 @@ class PageListAdapterActivity : BaseActivity<Any>(),
             .setLoadEnable(true)
             .build()
 
-        rootView.addView(
+        binding.rootView.addView(
             pageManager.getPageView(),
             FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
