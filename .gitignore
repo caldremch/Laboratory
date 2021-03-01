@@ -15,3 +15,6 @@
 buildSrc/build
 .idea
 upload_aar.gradle
+/matrix/matrix-arscutil/build/
+/matrix/matrix-commons/build/
+/version-plugin/build/
