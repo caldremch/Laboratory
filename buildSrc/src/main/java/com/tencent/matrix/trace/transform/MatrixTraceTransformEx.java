@@ -1,6 +1,7 @@
 package com.tencent.matrix.trace.transform;
 
 import com.android.build.api.transform.DirectoryInput;
+import com.android.build.api.transform.Format;
 import com.android.build.api.transform.JarInput;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.Status;
@@ -8,6 +9,7 @@ import com.android.build.api.transform.Transform;
 import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
+import com.android.build.api.transform.TransformOutputProvider;
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.ApplicationVariant;
 import com.android.build.gradle.internal.api.ApplicationVariantImpl;
@@ -131,6 +133,8 @@ public class MatrixTraceTransformEx  extends Transform {
             doTransform(transformInvocation); // hack
         } catch (ExecutionException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         long cost = System.currentTimeMillis() - start;
         Log.i("Matrix." + getName(), "[transform] MatrixTraceTransform:%sms", cost);
@@ -156,7 +160,7 @@ public class MatrixTraceTransformEx  extends Transform {
         return true;
     }
 
-    private void doTransform(TransformInvocation transformInvocation) throws ExecutionException, InterruptedException {
+    private void doTransform(TransformInvocation transformInvocation) throws ExecutionException, InterruptedException, IOException {
         final boolean isIncremental = transformInvocation.isIncremental() && this.isIncremental();
 
         /**
@@ -175,15 +179,24 @@ public class MatrixTraceTransformEx  extends Transform {
         Map<File, File> dirInputOutMap = new ConcurrentHashMap<>();
         Map<File, File> jarInputOutMap = new ConcurrentHashMap<>();
         Collection<TransformInput> inputs = transformInvocation.getInputs();
+        TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
 
         for (TransformInput input : inputs) {
 
             for (DirectoryInput directoryInput : input.getDirectoryInputs()) {
                 futures.add(executor.submit(new CollectDirectoryInputTask(dirInputOutMap, directoryInput, isIncremental)));
+                if (outputProvider != null){
+                    File dest= outputProvider.getContentLocation(directoryInput.getName(), directoryInput.getContentTypes(), directoryInput.getScopes(), Format.DIRECTORY);
+                    org.apache.commons.io.FileUtils.copyDirectory(directoryInput.getFile(), dest);
+                }
             }
 
             for (JarInput inputJar : input.getJarInputs()) {
                 futures.add(executor.submit(new CollectJarInputTask(inputJar, isIncremental, jarInputOutMap, dirInputOutMap)));
+                if (outputProvider != null){
+                    File dest= outputProvider.getContentLocation(inputJar.getName(), inputJar.getContentTypes(), inputJar.getScopes(), Format.JAR);
+                    org.apache.commons.io.FileUtils.copyFile(inputJar.getFile(), dest);
+                }
             }
         }
 
