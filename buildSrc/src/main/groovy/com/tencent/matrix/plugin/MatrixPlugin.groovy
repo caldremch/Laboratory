@@ -16,14 +16,7 @@
 
 package com.tencent.matrix.plugin
 
-
 import com.tencent.matrix.javalib.util.Log
-import com.tencent.matrix.javalib.util.Util
-import com.tencent.matrix.plugin.extension.MatrixDelUnusedResConfiguration
-import com.tencent.matrix.plugin.extension.MatrixExtension
-import com.tencent.matrix.plugin.task.RemoveUnusedResourcesTask
-import com.tencent.matrix.trace.extension.MatrixTraceExtension
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -36,35 +29,54 @@ class MatrixPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         Log.i(TAG, "MatrixPlugin %s", "start......")
-        project.extensions.create("matrix", MatrixExtension)
-        project.matrix.extensions.create("trace", MatrixTraceExtension)
-        project.matrix.extensions.create("removeUnusedResources", MatrixDelUnusedResConfiguration)
-        if (!project.plugins.hasPlugin('com.android.application')) {
-            throw new GradleException('Matrix Plugin, Android Application plugin required')
-        }
+//        project.extensions.create("matrix", MatrixExtension)
+//        project.matrix.extensions.create("trace", MatrixTraceExtension)
+//        project.matrix.extensions.create("removeUnusedResources", MatrixDelUnusedResConfiguration)
+//        if (!project.plugins.hasPlugin('com.android.application')) {
+//            throw new GradleException('Matrix Plugin, Android Application plugin required')
+//        }
 
-        project.afterEvaluate {
-            def android = project.extensions.android
-            def configuration = project.matrix
-            android.applicationVariants.all { variant ->
-                Log.i(TAG, "MatrixPlugin:"+ configuration.trace.enable)
 
-                if (configuration.trace.enable) {
-                    com.tencent.matrix.trace.transform.MatrixTraceTransform.inject(project, configuration.trace, variant)
-                }
-////
-//                if (configuration.removeUnusedResources.enable) {
-//                    if (Util.isNullOrNil(configuration.removeUnusedResources.variant) || variant.name.equalsIgnoreCase(configuration.removeUnusedResources.variant)) {
-//                        Log.i(TAG, "removeUnusedResources %s", configuration.removeUnusedResources)
-//                        RemoveUnusedResourcesTask removeUnusedResourcesTask = project.tasks.create("remove" + variant.name.capitalize() + "UnusedResources", RemoveUnusedResourcesTask)
-//                        removeUnusedResourcesTask.inputs.property(RemoveUnusedResourcesTask.BUILD_VARIANT, variant.name)
-//                        project.tasks.add(removeUnusedResourcesTask)
-//                        removeUnusedResourcesTask.dependsOn variant.packageApplication
-//                        variant.assemble.dependsOn removeUnusedResourcesTask
-//                    }
+//        Log.i(TAG, "MatrixPlugin %s", variantScope)
+
+//        project.android.registerTransform(new MatrixTraceTransformEx())
+//
+//        project.afterEvaluate {
+//            def android = project.extensions.android
+//            def configuration = project.matrix
+//            android.applicationVariants.all { variant ->
+//                Log.i(TAG, "MatrixPlugin:" + configuration.trace.enable)
+//                if (configuration.trace.enable) {
+//                    Log.i(TAG, "MatrixPlugin: start collecting info")
+//
 //                }
+//            }
+//        }
 
-            }
-        }
+//        project.afterEvaluate {
+//            def android = project.extensions.android
+//            def configuration = project.matrix
+//            android.applicationVariants.all { variant ->
+//                Log.i(TAG, "MatrixPlugin:"+ configuration.trace.enable)
+//
+//                if (configuration.trace.enable) {
+//                    Log.i(TAG, "MatrixPlugin: start registerTransform....")
+////                    project.android.registerTransform(new MatrixTraceTransformEx())
+//                    com.tencent.matrix.trace.transform.MatrixTraceTransform.inject(project, configuration.trace, variant)
+//                }
+//////
+////                if (configuration.removeUnusedResources.enable) {
+////                    if (Util.isNullOrNil(configuration.removeUnusedResources.variant) || variant.name.equalsIgnoreCase(configuration.removeUnusedResources.variant)) {
+////                        Log.i(TAG, "removeUnusedResources %s", configuration.removeUnusedResources)
+////                        RemoveUnusedResourcesTask removeUnusedResourcesTask = project.tasks.create("remove" + variant.name.capitalize() + "UnusedResources", RemoveUnusedResourcesTask)
+////                        removeUnusedResourcesTask.inputs.property(RemoveUnusedResourcesTask.BUILD_VARIANT, variant.name)
+////                        project.tasks.add(removeUnusedResourcesTask)
+////                        removeUnusedResourcesTask.dependsOn variant.packageApplication
+////                        variant.assemble.dependsOn removeUnusedResourcesTask
+////                    }
+////                }
+//
+//            }
+//        }
     }
 }

@@ -17,6 +17,9 @@ public class Configuration {
     public String traceClassOut;
     public HashSet<String> blackSet = new HashSet<>();
 
+    public Configuration() {
+    }
+
     Configuration(String packageName, String mappingDir, String baseMethodMapPath, String methodMapFilePath,
                   String ignoreMethodMapFilePath, String blackListFilePath, String traceClassOut) {
         this.packageName = packageName;

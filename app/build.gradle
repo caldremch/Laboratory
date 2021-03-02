@@ -81,7 +81,7 @@ dependencies {
 
 ext.unusedResourcesSet = new HashSet<String>();
 
-apply plugin: com.tencent.matrix.plugin.MatrixPlugin
+apply plugin: com.tencent.matrix.trace.MatrixPluginEx
 
 matrix {
     trace {

@@ -10,11 +10,9 @@ import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.ApplicationVariant;
+import com.android.build.gradle.internal.api.ApplicationVariantImpl;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.pipeline.TransformTask;
-import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.utils.FileUtils;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -34,7 +32,7 @@ import com.tencent.matrix.trace.retrace.MappingReader;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import com.android.build.gradle.internal.api.ApplicationVariantImpl;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,7 +43,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -62,17 +59,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.android.builder.model.AndroidProject.FD_OUTPUTS;
 
+
 /**
- * 适配新gradle版本  https://github.com/ibaozi-cn/matrix/commit/750621a729722bf19fcccae86e30221d38dc2708
+ * @auther Caldremch
+ * @email finishmo@qq.com
+ * @date 3/2/21 09:42
+ * @description
  */
-public class MatrixTraceTransform extends Transform {
+public class MatrixTraceTransformEx  extends Transform {
 
-    private static final String TAG = "MatrixTraceTransform";
-    private Configuration config;
-    private Transform origTransform;
-    private ExecutorService executor = Executors.newFixedThreadPool(16);
+    private final ExecutorService executor = Executors.newFixedThreadPool(16);
+    private final Configuration config;
 
-    public static void inject(Project project, MatrixTraceExtension extension, ApplicationVariant variant) {
+    private static final String TAG = "MatrixTraceTransformEx";
+
+    public MatrixTraceTransformEx(Configuration config) {
+        this.config = config;
+    }
+
+    public static void inject(Project project, MatrixTraceExtension extension, ApplicationVariant variant, Configuration config) {
 
         String name = variant.getName();
         String appId = variant.getApplicationId();
@@ -95,67 +100,42 @@ public class MatrixTraceTransform extends Transform {
 
         Log.i(TAG, "mappingOut=%s, traceClassOut=%s", mappingOut, traceClassOut);
 
-        Configuration config = new Configuration.Builder()
-                .setPackageName(appId)
-                .setBaseMethodMap(extension.getBaseMethodMapFile())
-                .setBlackListFile(extension.getBlackListFile())
-                .setMethodMapFilePath(mappingOut + "/methodMapping.txt")
-                .setIgnoreMethodMapFilePath(mappingOut + "/ignoreMethodMapping.txt")
-                .setMappingPath(mappingOut)
-                .setTraceClassOut(traceClassOut)
-                .build();
+        config.packageName = appId;
+        config.baseMethodMapPath = extension.getBaseMethodMapFile();
+        config.blackListFilePath = extension.getBlackListFile();
+        config.methodMapFilePath = mappingOut + "/methodMapping.txt";
+        config.ignoreMethodMapFilePath = mappingOut + "/ignoreMethodMapping.txt";
+        config.mappingDir = mappingOut;
+        config.traceClassOut = traceClassOut;
+
+//        Configuration config = new Configuration.Builder()
+//                .setPackageName(appId)
+//                .setBaseMethodMap(extension.getBaseMethodMapFile())
+//                .setBlackListFile(extension.getBlackListFile())
+//                .setMethodMapFilePath(mappingOut + "/methodMapping.txt")
+//                .setIgnoreMethodMapFilePath(mappingOut + "/ignoreMethodMapping.txt")
+//                .setMappingPath(mappingOut)
+//                .setTraceClassOut(traceClassOut)
+//                .build();
+
+    }
 
 
-//        project.getExtensions().getByType(AppExtension.class).registerTransform(new MatrixTraceTransform(config, null));
-
+    @Override
+    public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        long start = System.currentTimeMillis();
         try {
-            //找到 transform 任务, bind
-            /**
-             *   "transformClassesWithDexBuilderFor" + buildTypeSuffix,
-             *   "transformClassesWithDexFor" + buildTypeSuffix,
-             *   这两个任务是执行 dex
-             */
-            String[] hardTask = getTransformTaskName(extension.getCustomDexTransformName(), name);
-            //[:transformClassesWithDexBuilderForrelease, :transformClassesWithDexForrelease]
-//            Log.i(TAG, " task -->:" + Arrays.toString(hardTask));
-            for (Task task : project.getTasks()) {
-                for (String str : hardTask) {
-                    if (task.getName().equalsIgnoreCase(str) && task instanceof TransformTask) {
-                        TransformTask transformTask = (TransformTask) task;
-                        Log.i(TAG, "successfully inject task:" + transformTask.getName());
-                        Field field = TransformTask.class.getDeclaredField("transform");
-                        field.setAccessible(true);
-                        field.set(task, new MatrixTraceTransform(config, transformTask.getTransform()));
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            doTransform(transformInvocation); // hack
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
-
-    }
-
-
-    private static String[] getTransformTaskName(String customDexTransformName, String buildTypeSuffix) {
-        if (!Util.isNullOrNil(customDexTransformName)) {
-            return new String[]{customDexTransformName + "For" + buildTypeSuffix};
-        } else {
-            return new String[]{
-                    ":app:transformClassesWithDexBuilderFor" + buildTypeSuffix,
-                    ":app:transformClassesWithDexFor" + buildTypeSuffix,
-            };
-        }
-    }
-
-    public MatrixTraceTransform(Configuration config, Transform origTransform) {
-        this.config = config;
-        this.origTransform = origTransform;
+        long cost = System.currentTimeMillis() - start;
+        Log.i("Matrix." + getName(), "[transform] MatrixTraceTransform:%sms", cost);
     }
 
     @Override
     public String getName() {
-        return TAG;
+        return "matrix-ex";
     }
 
     @Override
@@ -171,27 +151,6 @@ public class MatrixTraceTransform extends Transform {
     @Override
     public boolean isIncremental() {
         return true;
-    }
-
-    @Override
-    public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        super.transform(transformInvocation);
-        long start = System.currentTimeMillis();
-        try {
-            doTransform(transformInvocation); // hack
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        long cost = System.currentTimeMillis() - start;
-        long begin = System.currentTimeMillis();
-        if (origTransform != null){
-            origTransform.transform(transformInvocation);
-            long origTransformCost = System.currentTimeMillis() - begin;
-            Log.i("Matrix." + getName(), "[transform] cost time: %dms %s:%sms MatrixTraceTransform:%sms", System.currentTimeMillis() - start, origTransform.getClass().getSimpleName(), origTransformCost, cost);
-        }else{
-            Log.i("Matrix." + getName(), "[transform] MatrixTraceTransform:%sms", cost);
-        }
-
     }
 
     private void doTransform(TransformInvocation transformInvocation) throws ExecutionException, InterruptedException {
@@ -533,5 +492,7 @@ public class MatrixTraceTransform extends Transform {
         final Field changedFilesField = ReflectUtil.getDeclaredFieldRecursive(dirInput.getClass(), "changedFiles");
         changedFilesField.set(dirInput, changedFiles);
     }
+
+
 
 }
