@@ -23,7 +23,7 @@
         android:id="@+id/tv_history_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="16dp"
         android:text="清除"
         android:textColor="#767E85"

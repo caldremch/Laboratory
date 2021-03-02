@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -69,9 +70,7 @@ public class MatrixTraceTransform extends Transform {
     private Transform origTransform;
     private ExecutorService executor = Executors.newFixedThreadPool(16);
 
-    public static void inject(Project project, MatrixTraceExtension extension, VariantScope variantScope) {
-
-//        BaseVariantData variant = variantScope.getVariantData();
+    public static void inject(Project project, MatrixTraceExtension extension, ApplicationVariantImpl variantScope) {
 
         ApplicationVariantImpl variant = (ApplicationVariantImpl) variantScope;
         String name = variant.getName();
@@ -99,7 +98,7 @@ public class MatrixTraceTransform extends Transform {
                 .setMappingPath(mappingOut)
                 .setTraceClassOut(traceClassOut)
                 .build();
-
+//
         try {
             //找到 transform 任务, bind
             /**
@@ -108,9 +107,14 @@ public class MatrixTraceTransform extends Transform {
              *
              *   这两个任务是执行 dex
              */
-            String[] hardTask = getTransformTaskName(extension.getCustomDexTransformName(), variant.getName());
+            String[] hardTask = getTransformTaskName(extension.getCustomDexTransformName(), name);
+            //[:transformClassesWithDexBuilderForrelease, :transformClassesWithDexForrelease]
+            Log.i(TAG, " task -->:" + Arrays.toString(hardTask));
             for (Task task : project.getTasks()) {
                 for (String str : hardTask) {
+
+                    boolean isEquals = task.getName().equalsIgnoreCase(str);
+//                    Log.i(TAG, "isEquals = "+isEquals+","+task.getName()+","+str);
                     if (task.getName().equalsIgnoreCase(str) && task instanceof TransformTask) {
                         TransformTask transformTask = (TransformTask) task;
                         Log.i(TAG, "successfully inject task:" + transformTask.getName());
@@ -132,11 +136,10 @@ public class MatrixTraceTransform extends Transform {
         if (!Util.isNullOrNil(customDexTransformName)) {
             return new String[]{customDexTransformName + "For" + buildTypeSuffix};
         } else {
-            String[] names = new String[]{
-                    "transformClassesWithDexBuilderFor" + buildTypeSuffix,
-                    "transformClassesWithDexFor" + buildTypeSuffix,
+            return new String[]{
+                    ":app:transformClassesWithDexBuilderFor" + buildTypeSuffix,
+                    ":app:transformClassesWithDexFor" + buildTypeSuffix,
             };
-            return names;
         }
     }
 

@@ -10,8 +10,6 @@ import android.os.Looper
 import android.provider.Settings
 import com.caldremch.utils.ActivityDelegate
 import com.tencent.matrix.Matrix
-import com.tencent.matrix.iocanary.IOCanaryPlugin
-import com.tencent.matrix.iocanary.config.IOConfig
 import com.tencent.matrix.trace.TracePlugin
 import com.tencent.matrix.trace.config.TraceConfig
 import com.tencent.matrix.trace.constants.Constants
@@ -84,19 +82,10 @@ object AppRegister {
             .isDevEnv(false)
             .build()
 
-        // init plugin
-        val ioCanaryPlugin = IOCanaryPlugin(
-            IOConfig.Builder()
-                .dynamicConfig(dynamicConfig)
-                .build()
-        )
-
         val trancePlugin = TracePlugin(traceConfig)
 
 
         //add to matrix
-        //add to matrix
-        builder.plugin(ioCanaryPlugin)
         builder.plugin(trancePlugin)
 
         //init matrix
@@ -105,9 +94,6 @@ object AppRegister {
         Matrix.init(builder.build())
 
         // start plugin
-
-        // start plugin
-        ioCanaryPlugin.start()
 
         startFpsDetector()
 
