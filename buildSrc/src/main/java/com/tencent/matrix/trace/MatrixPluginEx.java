@@ -38,6 +38,19 @@ public class MatrixPluginEx implements Plugin<Project> {
                 Log.i(TAG, "MatrixPluginEx:----->");
                 MatrixTraceTransformEx.inject(project, trace, applicationVariant, config);
             });
+
+
+////                if (configuration.removeUnusedResources.enable) {
+////                    if (Util.isNullOrNil(configuration.removeUnusedResources.variant) || variant.name.equalsIgnoreCase(configuration.removeUnusedResources.variant)) {
+////                        Log.i(TAG, "removeUnusedResources %s", configuration.removeUnusedResources)
+////                        RemoveUnusedResourcesTask removeUnusedResourcesTask = project.tasks.create("remove" + variant.name.capitalize() + "UnusedResources", RemoveUnusedResourcesTask)
+////                        removeUnusedResourcesTask.inputs.property(RemoveUnusedResourcesTask.BUILD_VARIANT, variant.name)
+////                        project.tasks.add(removeUnusedResourcesTask)
+////                        removeUnusedResourcesTask.dependsOn variant.packageApplication
+////                        variant.assemble.dependsOn removeUnusedResourcesTask
+////                    }
+////                }
+
         });
     }
 }

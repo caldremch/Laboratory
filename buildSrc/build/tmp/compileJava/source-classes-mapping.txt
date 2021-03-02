@@ -39,6 +39,11 @@ com/tencent/matrix/trace/MethodCollector.java
  com.tencent.matrix.trace.MethodCollector$CollectMethodNode
  com.tencent.matrix.trace.MethodCollector$CollectSrcTask
  com.tencent.matrix.trace.MethodCollector$TraceClassAdapter
+com/tencent/matrix/trace/transform/MatrixTraceTransform.java
+ com.tencent.matrix.trace.transform.MatrixTraceTransform
+ com.tencent.matrix.trace.transform.MatrixTraceTransform$CollectDirectoryInputTask
+ com.tencent.matrix.trace.transform.MatrixTraceTransform$CollectJarInputTask
+ com.tencent.matrix.trace.transform.MatrixTraceTransform$ParseMappingTask
 com/tencent/matrix/trace/MatrixPluginEx.java
  com.tencent.matrix.trace.MatrixPluginEx
 com/tencent/matrix/trace/transform/MatrixTraceTransformEx.java
@@ -46,8 +51,3 @@ com/tencent/matrix/trace/transform/MatrixTraceTransformEx.java
  com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectDirectoryInputTask
  com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectJarInputTask
  com.tencent.matrix.trace.transform.MatrixTraceTransformEx$ParseMappingTask
-com/tencent/matrix/trace/transform/MatrixTraceTransform.java
- com.tencent.matrix.trace.transform.MatrixTraceTransform
- com.tencent.matrix.trace.transform.MatrixTraceTransform$CollectDirectoryInputTask
- com.tencent.matrix.trace.transform.MatrixTraceTransform$CollectJarInputTask
- com.tencent.matrix.trace.transform.MatrixTraceTransform$ParseMappingTask

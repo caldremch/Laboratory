@@ -125,6 +125,9 @@ public class MatrixTraceTransformEx  extends Transform {
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         long start = System.currentTimeMillis();
         try {
+
+            Log.i(TAG, "config=%s", config.toString());
+
             doTransform(transformInvocation); // hack
         } catch (ExecutionException e) {
             e.printStackTrace();
