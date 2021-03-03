@@ -59,6 +59,7 @@ dependencies {
     implementation(Deps.coroutines)
 //    implementation(project(":PickerView"))
     implementation(project(":dialog"))
+    implementation(project(":matrix-android-lib"))
     implementation(project(":matrix-trace-canary"))
     implementation(project(":widget"))
     implementation(project(":utils"))
@@ -69,15 +70,6 @@ dependencies {
     debugImplementation "com.github.silencedut.fpsviewer:fpsviewer:0.8.2"
     implementation(Deps.entry)
     kapt(Deps.entry_compiler)
-//    implementation 'pub.devrel:easypermissions:3.0.0'
-    //matrix
-    implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
-//    implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: MATRIX_VERSION, changing: true
 }
 
 ext.unusedResourcesSet = new HashSet<String>();

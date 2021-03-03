@@ -147,7 +147,8 @@ object AppRegister {
     }
 
     private fun startFpsDetector() {
-        Matrix.with().getPluginByClass(TracePlugin::class.java).frameTracer.onStartTrace()
+//        Matrix.with().getPluginByClass(TracePlugin::class.java).frameTracer.onStartTrace()
+        Matrix.with().startAllPlugins()
 //        Matrix.with().getPluginByClass(TracePlugin::class.java).frameTracer.addListener(mDoFrameListener)
     }
 }
