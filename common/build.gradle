@@ -55,7 +55,7 @@ dependencies {
     implementation(Deps.eventbus)
     implementation(Deps.lifecycle)
     implementation(Deps.viewbinding)
-    implementation('android.arch.lifecycle:extensions:1.1.1')
+    implementation('androidx.lifecycle:lifecycle-extensions:2.0.0')
 }
 
 //apply(from = "https://gitee.com/caldrem/gradle-maven-kotlin-dsl/raw/master/bintray-with-maven-publish.gradle")

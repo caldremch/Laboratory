@@ -2,12 +2,15 @@ com/tencent/matrix/trace/transform/TransforRunner.java
  com.tencent.matrix.trace.transform.TransforRunner
 com/tencent/matrix/trace/retrace/MappingProcessor.java
  com.tencent.matrix.trace.retrace.MappingProcessor
-com/tencent/matrix/trace/retrace/MappingReader.java
- com.tencent.matrix.trace.retrace.MappingReader
+com/tencent/matrix/trace/MatrixPluginEx.java
+ com.tencent.matrix.trace.MatrixPluginEx
 com/tencent/matrix/trace/item/TraceMethod.java
  com.tencent.matrix.trace.item.TraceMethod
-com/tencent/matrix/trace/extension/MatrixTraceExtension.java
- com.tencent.matrix.trace.extension.MatrixTraceExtension
+com/tencent/matrix/trace/transform/MatrixTraceTransformEx.java
+ com.tencent.matrix.trace.transform.MatrixTraceTransformEx
+ com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectDirectoryInputTask
+ com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectJarInputTask
+ com.tencent.matrix.trace.transform.MatrixTraceTransformEx$ParseMappingTask
 com/tencent/matrix/trace/extension/MatrixExtension.java
  com.tencent.matrix.trace.extension.MatrixExtension
 com/tencent/matrix/trace/transform/MatrixTraceTransform.java
@@ -44,10 +47,7 @@ com/tencent/matrix/trace/retrace/MappingCollector.java
  com.tencent.matrix.trace.retrace.MappingCollector
  com.tencent.matrix.trace.retrace.MappingCollector$1
  com.tencent.matrix.trace.retrace.MappingCollector$DescInfo
-com/tencent/matrix/trace/MatrixPluginEx.java
- com.tencent.matrix.trace.MatrixPluginEx
-com/tencent/matrix/trace/transform/MatrixTraceTransformEx.java
- com.tencent.matrix.trace.transform.MatrixTraceTransformEx
- com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectDirectoryInputTask
- com.tencent.matrix.trace.transform.MatrixTraceTransformEx$CollectJarInputTask
- com.tencent.matrix.trace.transform.MatrixTraceTransformEx$ParseMappingTask
+com/tencent/matrix/trace/extension/MatrixTraceExtension.java
+ com.tencent.matrix.trace.extension.MatrixTraceExtension
+com/tencent/matrix/trace/retrace/MappingReader.java
+ com.tencent.matrix.trace.retrace.MappingReader

@@ -59,6 +59,7 @@ dependencies {
     implementation(Deps.coroutines)
 //    implementation(project(":PickerView"))
     implementation(project(":dialog"))
+    implementation(project(":matrix-trace-canary"))
     implementation(project(":widget"))
     implementation(project(":utils"))
     implementation(project(":common"))
@@ -72,7 +73,7 @@ dependencies {
     //matrix
     implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true
-    implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
+//    implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: MATRIX_VERSION, changing: true
@@ -81,13 +82,13 @@ dependencies {
 
 ext.unusedResourcesSet = new HashSet<String>();
 
-apply plugin: com.tencent.matrix.trace.MatrixPluginEx
-
-matrix {
-    trace {
-        enable = true
-        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
-        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
-    }
-}
+//apply plugin: com.tencent.matrix.trace.MatrixPluginEx
+//
+//matrix {
+//    trace {
+//        enable = true
+//        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+//        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+//    }
+//}
 
