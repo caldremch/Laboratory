@@ -55,7 +55,7 @@ public class MappingReader {
                     break;
                 }
                 line = line.trim();
-                if (!line.startsWith("#")) {
+                if (!line.startsWith("#") && !line.startsWith("$$")) {
                     // a class mapping
                     if (line.endsWith(SPLIT)) {
                         className = parseClassMapping(line, mappingProcessor);
@@ -83,7 +83,9 @@ public class MappingReader {
      * @return
      */
     private String parseClassMapping(String line, MappingProcessor mappingProcessor) {
-
+        //32:32:boolean access$canDrawOverlays(com.caldremch.laboratory.register.AppRegister,android.content.Context) -> a
+        //38:39:boolean canDrawOverlays(android.content.Context) -> e
+        //com.caldremch.laboratory.register.AppRegister$mDoFrameListener$1 -> d.b.e.e.a$a:
         int leftIndex = line.indexOf(ARROW);
         if (leftIndex < 0) {
             return null;

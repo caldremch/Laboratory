@@ -19,7 +19,7 @@ import java.util.HashSet;
 public class UIThreadMonitor implements BeatLifecycle, Runnable {
 
     private static final String TAG = "Matrix.UIThreadMonitor";
-    private static final String ADD_CALLBACK = "addCallbackLocked";
+    public static final String ADD_CALLBACK = "addCallbackLocked";
     private volatile boolean isAlive = false;
     private long[] dispatchTimeMs = new long[4];
     private final HashSet<LooperObserver> observers = new HashSet<>();

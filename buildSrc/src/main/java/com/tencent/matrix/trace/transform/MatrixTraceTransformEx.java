@@ -10,11 +10,8 @@ import com.android.build.api.transform.TransformException;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
-import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.ApplicationVariant;
-import com.android.build.gradle.internal.api.ApplicationVariantImpl;
 import com.android.build.gradle.internal.pipeline.TransformManager;
-import com.android.build.gradle.internal.pipeline.TransformTask;
 import com.android.utils.FileUtils;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -33,7 +30,6 @@ import com.tencent.matrix.trace.retrace.MappingCollector;
 import com.tencent.matrix.trace.retrace.MappingReader;
 
 import org.gradle.api.Project;
-import org.gradle.api.Task;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -68,20 +64,23 @@ import static com.android.builder.model.AndroidProject.FD_OUTPUTS;
  * @date 3/2/21 09:42
  * @description
  */
-public class MatrixTraceTransformEx  extends Transform {
+public class MatrixTraceTransformEx extends Transform {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(16);
-    private final Configuration config;
 
     private static final String TAG = "MatrixTraceTransformEx";
+    private static HashMap<String, Configuration> buildVariantsMap = new HashMap();
+    private Configuration config;
 
-    public MatrixTraceTransformEx(Configuration config) {
-        this.config = config;
+    public MatrixTraceTransformEx() {
     }
 
-    public static void inject(Project project, MatrixTraceExtension extension, ApplicationVariant variant, Configuration config) {
+    public static void inject(Project project, MatrixTraceExtension extension, ApplicationVariant variant) {
 
         String name = variant.getName();
+        if (name.equals("release")) {
+            return;
+        }
         String appId = variant.getApplicationId();
         File buildDir = project.getBuildDir();
         String dirName = variant.getDirName();
@@ -101,7 +100,7 @@ public class MatrixTraceTransformEx  extends Transform {
                 dirName);
 
         Log.i(TAG, "mappingOut=%s, traceClassOut=%s", mappingOut, traceClassOut);
-
+        Configuration config = new Configuration();
         config.packageName = appId;
         config.baseMethodMapPath = extension.getBaseMethodMapFile();
         config.blackListFilePath = extension.getBlackListFile();
@@ -109,7 +108,16 @@ public class MatrixTraceTransformEx  extends Transform {
         config.ignoreMethodMapFilePath = mappingOut + "/ignoreMethodMapping.txt";
         config.mappingDir = mappingOut;
         config.traceClassOut = traceClassOut;
+        buildVariantsMap.put(name, config);
+        Log.i(TAG, "config=%s", config.toString());
 
+//        for (Task task : project.getTasks()){
+//            if (task instanceof TransformTask){
+//                Log.i(TAG, "transform task=%s", task.toString());
+//            }else{
+//                Log.i(TAG, " task=%s", task.toString());
+//            }
+//        }
 //        Configuration config = new Configuration.Builder()
 //                .setPackageName(appId)
 //                .setBaseMethodMap(extension.getBaseMethodMapFile())
@@ -127,13 +135,9 @@ public class MatrixTraceTransformEx  extends Transform {
     public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         long start = System.currentTimeMillis();
         try {
-
-            Log.i(TAG, "config=%s", config.toString());
-
+            config = buildVariantsMap.get("debug");
             doTransform(transformInvocation); // hack
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         long cost = System.currentTimeMillis() - start;
@@ -173,9 +177,10 @@ public class MatrixTraceTransformEx  extends Transform {
         final MappingCollector mappingCollector = new MappingCollector();
         final AtomicInteger methodId = new AtomicInteger(0);
         final ConcurrentHashMap<String, TraceMethod> collectedMethodMap = new ConcurrentHashMap<>();
-
+        //解析 Mapping 文件, 获取方法签名
+        Log.i("Matrix." + getName(), "[transform] ParseMappingTask 开始");
         futures.add(executor.submit(new ParseMappingTask(mappingCollector, collectedMethodMap, methodId)));
-
+        Log.i("Matrix." + getName(), "[transform] ParseMappingTask 结束");
         Map<File, File> dirInputOutMap = new ConcurrentHashMap<>();
         Map<File, File> jarInputOutMap = new ConcurrentHashMap<>();
         Collection<TransformInput> inputs = transformInvocation.getInputs();
@@ -185,16 +190,16 @@ public class MatrixTraceTransformEx  extends Transform {
 
             for (DirectoryInput directoryInput : input.getDirectoryInputs()) {
                 futures.add(executor.submit(new CollectDirectoryInputTask(dirInputOutMap, directoryInput, isIncremental)));
-                if (outputProvider != null){
-                    File dest= outputProvider.getContentLocation(directoryInput.getName(), directoryInput.getContentTypes(), directoryInput.getScopes(), Format.DIRECTORY);
+                if (outputProvider != null) {
+                    File dest = outputProvider.getContentLocation(directoryInput.getName(), directoryInput.getContentTypes(), directoryInput.getScopes(), Format.DIRECTORY);
                     org.apache.commons.io.FileUtils.copyDirectory(directoryInput.getFile(), dest);
                 }
             }
 
             for (JarInput inputJar : input.getJarInputs()) {
                 futures.add(executor.submit(new CollectJarInputTask(inputJar, isIncremental, jarInputOutMap, dirInputOutMap)));
-                if (outputProvider != null){
-                    File dest= outputProvider.getContentLocation(inputJar.getName(), inputJar.getContentTypes(), inputJar.getScopes(), Format.JAR);
+                if (outputProvider != null) {
+                    File dest = outputProvider.getContentLocation(inputJar.getName(), inputJar.getContentTypes(), inputJar.getScopes(), Format.JAR);
                     org.apache.commons.io.FileUtils.copyFile(inputJar.getFile(), dest);
                 }
             }
@@ -245,6 +250,9 @@ public class MatrixTraceTransformEx  extends Transform {
                 long start = System.currentTimeMillis();
 
                 File mappingFile = new File(config.mappingDir, "mapping.txt");
+
+                Log.i(TAG, "mappingFile = %s,exist =%s", mappingFile.getAbsolutePath(), mappingFile.exists());
+
                 if (mappingFile.exists() && mappingFile.isFile()) {
                     //读取 mapping 文件, 解析出
                     MappingReader mappingReader = new MappingReader(mappingFile);
@@ -253,6 +261,9 @@ public class MatrixTraceTransformEx  extends Transform {
                 int size = config.parseBlackFile(mappingCollector);
 
                 File baseMethodMapFile = new File(config.baseMethodMapPath);
+
+                Log.i(TAG, "baseMethodMapFile = %s,exist =%s", baseMethodMapFile.getAbsolutePath(), baseMethodMapFile.exists());
+
                 getMethodFromBaseMethod(baseMethodMapFile, collectedMethodMap);
                 retraceMethodMap(mappingCollector, collectedMethodMap);
 
@@ -508,7 +519,6 @@ public class MatrixTraceTransformEx  extends Transform {
         final Field changedFilesField = ReflectUtil.getDeclaredFieldRecursive(dirInput.getClass(), "changedFiles");
         changedFilesField.set(dirInput, changedFiles);
     }
-
 
 
 }

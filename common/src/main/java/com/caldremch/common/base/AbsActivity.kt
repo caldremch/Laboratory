@@ -31,11 +31,14 @@ open class AbsActivity : LifeCycleLogActivity(), BaseInit, IStatusView {
         if (isUseStatusBar()) {
             statusBarManager = StatusBarManager(this)
         }
-        contentViewDelegate = DecorViewProxy.Builder(this)
-            .isUseLoading(isUseLoading()).setContentViewId(layoutId).setTitleViewId(titleViewId)
-            .build()
-        mContentView = contentViewDelegate.proxySetContentView()
-        setContentView(mContentView)
+
+        if (layoutId != 0) {
+            contentViewDelegate = DecorViewProxy.Builder(this)
+                .isUseLoading(isUseLoading()).setContentViewId(layoutId).setTitleViewId(titleViewId)
+                .build()
+            mContentView = contentViewDelegate.proxySetContentView()
+            setContentView(mContentView)
+        }
         initView()
         initData()
         initEvent()

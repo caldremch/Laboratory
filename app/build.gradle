@@ -18,12 +18,34 @@ android {
         versionCode Deps.versionCode
         versionName Deps.versionName
         applicationId Deps.applicationId
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    signingConfigs {
+        config {
+            keyAlias 'laboratory'
+            keyPassword '123456'
+            storeFile file('../key.jks')
+            storePassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+
+        }
+
+        debug{
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 
@@ -55,7 +77,7 @@ dependencies {
     implementation(Deps.cardview)
     implementation(Deps.design)
     implementation(Deps.glide)
-    debugImplementation(Deps.leakcanary)
+    implementation(Deps.leakcanary)
     implementation(Deps.coroutines)
 //    implementation(project(":PickerView"))
     implementation(project(":dialog"))
@@ -69,18 +91,24 @@ dependencies {
     implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1'
     debugImplementation "com.github.silencedut.fpsviewer:fpsviewer:0.8.2"
     implementation(Deps.entry)
+    implementation(Deps.eventbus)
     kapt(Deps.entry_compiler)
+
+
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
 ext.unusedResourcesSet = new HashSet<String>();
 
-//apply plugin: com.tencent.matrix.trace.MatrixPluginEx
-//
-//matrix {
-//    trace {
-//        enable = true
-//        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
-//        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
-//    }
-//}
+apply plugin: com.tencent.matrix.trace.MatrixPluginEx
+
+matrix {
+    trace {
+        enable = true
+        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+    }
+}
 

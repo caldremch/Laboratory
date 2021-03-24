@@ -16,6 +16,8 @@
 
 package com.tencent.matrix.trace.retrace;
 
+import com.tencent.matrix.javalib.util.Log;
+
 import org.objectweb.asm.Type;
 
 import java.util.HashMap;
@@ -40,6 +42,7 @@ public class MappingCollector implements MappingProcessor {
     public boolean processClassMapping(String className, String newClassName) {
         this.mObfuscatedRawClassMap.put(newClassName, className);
         this.mRawObfuscatedClassMap.put(className, newClassName);
+        Log.i(TAG, "[MethodCollector] processClassMapping  ... :%s ,%s ", className, newClassName);
         this.mRawObfuscatedPackageMap.put(className.substring(0, className.lastIndexOf('.')), newClassName.substring(0, newClassName.lastIndexOf('.')));
         return true;
     }

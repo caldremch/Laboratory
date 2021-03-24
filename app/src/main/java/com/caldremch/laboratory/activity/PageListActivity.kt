@@ -1,19 +1,25 @@
 package com.caldremch.laboratory.activity
 
+import android.app.ActivityManager
+import android.content.Context
 import android.graphics.Rect
+import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.common.base.BaseActivity
+import com.caldremch.common.helper.EventManager
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.bean.TestData
 import com.caldremch.laboratory.databinding.ActivityPageListBinding
 import com.caldremch.widget.page.PageManager
 import com.caldremch.widget.page.protocol.IPageDelegate
 import com.caldremch.widget.page.protocol.IPageOperator
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 /**
@@ -26,12 +32,23 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 class PageListActivity : BaseActivity<Any>(),
     IPageDelegate<TestData> {
 
+    private val TAG = "PageListActivity"
+
     private lateinit var pageManager: IPageOperator<TestData>
 
     private val binding by viewBinding(ActivityPageListBinding::bind)
 
     override fun getLayoutId(): Int {
         return R.layout.activity_page_list
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        Log.d(TAG, "onCreate: ${activityManager.appTasks.size}")
+        activityManager.appTasks.forEach {
+            Log.d(TAG, "onCreate: ${it.taskInfo.taskId}")
+        }
     }
 
     override fun initView() {
@@ -51,6 +68,7 @@ class PageListActivity : BaseActivity<Any>(),
         //获取第一页数据
         setError()
     }
+
 
     override fun getData(pageIndex: Int) {
         //模拟网路请求
@@ -94,6 +112,15 @@ class PageListActivity : BaseActivity<Any>(),
 
     override fun setItemView(holder: BaseViewHolder, item: TestData) {
         holder.setText(R.id.tv, item.title)
+    }
+
+    override fun handleItemClick(
+        item: TestData,
+        view: View,
+        adapter: BaseQuickAdapter<*, *>,
+        position: Int
+    ) {
+        EventManager.post(OpenActEvent())
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? {

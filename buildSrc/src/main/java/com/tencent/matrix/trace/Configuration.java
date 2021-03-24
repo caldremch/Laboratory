@@ -9,9 +9,9 @@ import java.util.HashSet;
 public class Configuration {
 
     public String packageName;
-    public String mappingDir;
-    public String baseMethodMapPath;
-    public String methodMapFilePath;
+    public String mappingDir; //app/build/outputs/mapping/release(mappingout)
+    public String baseMethodMapPath; //扩展配置的baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+    public String methodMapFilePath;//app/build/outputs/mapping/release "/methodMapping.txt"(mappingout);
     public String ignoreMethodMapFilePath;
     public String blackListFilePath;
     public String traceClassOut;

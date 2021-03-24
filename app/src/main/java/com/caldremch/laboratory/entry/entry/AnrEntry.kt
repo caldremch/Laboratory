@@ -20,7 +20,7 @@ import com.caldremch.android.annotation.entry.IEntry
 class AnrEntry : IEntry {
 
     override fun getTitle(): String {
-        return "ANR"
+        return "ANR22"
     }
 
     override fun onClick(context: Context) {

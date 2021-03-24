@@ -458,6 +458,7 @@ public class MethodCollector {
                 }
             }
         } else {
+            Log.i(TAG, "[MethodCollector]  ... 不处理文件:%s", fileName);
             return false;
         }
         return true;

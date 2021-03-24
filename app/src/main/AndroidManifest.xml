@@ -27,9 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PageListActivity" />
+        <activity
+            android:name=".activity.PageListActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activity.PageListAdapterActivity" />
         <activity android:name=".entry.entry.ActTest" />
+        <activity android:name=".activity.MainActivity" />
+
         <provider
             android:authorities="${applicationId}.provider"
             android:name=".CustomFileProvider"

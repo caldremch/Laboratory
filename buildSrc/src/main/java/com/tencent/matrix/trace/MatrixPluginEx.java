@@ -28,7 +28,9 @@ public class MatrixPluginEx implements Plugin<Project> {
         container.getExtensions().create("trace", MatrixTraceExtension.class);
 //        container.getExtensions().create("removeUnusedResources", MatrixDelUnusedResConfiguration.class);
         Configuration config = new Configuration();
-        project.getExtensions().getByType(AppExtension.class).registerTransform(new MatrixTraceTransformEx(config));
+
+        MatrixTraceTransformEx matrixTraceTransformEx = new MatrixTraceTransformEx();
+        project.getExtensions().getByType(AppExtension.class).registerTransform(matrixTraceTransformEx);
 
         project.afterEvaluate(a -> {
             AppExtension android = (AppExtension) a.getExtensions().findByName("android");
@@ -36,7 +38,7 @@ public class MatrixPluginEx implements Plugin<Project> {
             if (android == null) return;
             android.getApplicationVariants().all(applicationVariant -> {
                 Log.i(TAG, "MatrixPluginEx:----->");
-                MatrixTraceTransformEx.inject(project, trace, applicationVariant, config);
+                MatrixTraceTransformEx.inject(project, trace, applicationVariant);
             });
 
 
