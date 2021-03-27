@@ -44,7 +44,7 @@ object Deps {
     const val versionName = "1.0"
     const val applicationId = "com.caldremch.android.laboratory"
     const val buildToolsVersion = "30.0.2"
-    const val kotlin_version = "1.4.21"
+    const val kotlin_version = "1.4.31"
     const val bintray_plugin_version = "1.8.5"
 
     //support

@@ -15,12 +15,23 @@ include ":matrix-arscutil"
 include ":matrix-android-lib"
 include ":matrix-trace-canary"
 //include ':matrix-gradle-plugin'
-project(':matrix-commons').projectDir=file('./matrix/matrix-commons')
-project(':matrix-arscutil').projectDir=file('./matrix/matrix-arscutil')
-project(':matrix-android-lib').projectDir=file('./matrix/matrix-android-lib')
-project(':matrix-trace-canary').projectDir=file('./matrix/matrix-trace-canary')
+project(':matrix-commons').projectDir = file('./matrix/matrix-commons')
+project(':matrix-arscutil').projectDir = file('./matrix/matrix-arscutil')
+project(':matrix-android-lib').projectDir = file('./matrix/matrix-android-lib')
+project(':matrix-trace-canary').projectDir = file('./matrix/matrix-trace-canary')
 //project(':matrix-gradle-plugin').projectDir=file('./matrix/matrix-gradle-plugin')
 //include ':native-logger'
 include ':app-host'
 include ':app-plugin-a'
 include ':app-plugin-b'
+include ':app-plugin-loader'
+include ':app-plugin-runtime'
+include ':app-plugin-manager'
+include ':app-plugin-manager'
+
+project(':app-host').projectDir = file('./shadow-project/app-host')
+project(':app-plugin-a').projectDir = file('./shadow-project/app-plugin-a')
+project(':app-plugin-b').projectDir = file('./shadow-project/app-plugin-b')
+project(':app-plugin-loader').projectDir = file('./shadow-project/app-plugin-loader')
+project(':app-plugin-runtime').projectDir = file('./shadow-project/app-plugin-runtime')
+project(':app-plugin-manager').projectDir = file('./shadow-project/app-plugin-manager')

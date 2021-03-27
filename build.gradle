@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        kotlin_version = '1.4.21'
+        kotlin_version = '1.4.31'
+        shadow_version = '2.1.0'
     }
     repositories {
         mavenLocal()
@@ -16,7 +17,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.2")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
 //        classpath ("com.tencent.matrix:matrix-gradle-plugin:${MATRIX_VERSION}") { changing = true }
     }
 }
