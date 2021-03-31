@@ -17,6 +17,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+
+        /***********shadow 使用的 classpath*************/
+        classpath "com.tencent.shadow.core:gradle-plugin:${shadow_version}"
+        classpath "com.tencent.shadow.core:activity-container:${shadow_version}"
+        classpath "com.tencent.shadow.core:runtime:$shadow_version"
+        classpath 'org.javassist:javassist:3.22.0-GA'
+        /***********shadow 使用的 classpath*************/
+
+
         classpath "com.android.tools.build:gradle:$build_gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }

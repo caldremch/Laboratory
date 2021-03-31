@@ -10,6 +10,7 @@ rootProject.name = "Laboratory"
 include ":app"
 include ":PickerView"
 includeBuild './version-plugin'
+//includeBuild './shadow-version-plugin'
 include ":matrix-commons"
 include ":matrix-arscutil"
 include ":matrix-android-lib"

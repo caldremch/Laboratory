@@ -102,13 +102,13 @@ dependencies {
 
 ext.unusedResourcesSet = new HashSet<String>();
 
-apply plugin: com.tencent.matrix.trace.MatrixPluginEx
-
-matrix {
-    trace {
-        enable = true
-        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
-        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
-    }
-}
+//apply plugin: com.tencent.matrix.trace.MatrixPluginEx
+//
+//matrix {
+//    trace {
+//        enable = true
+//        baseMethodMapFile = "${project.projectDir}/matrixTrace/methodMapping.txt"
+//        blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
+//    }
+//}
 

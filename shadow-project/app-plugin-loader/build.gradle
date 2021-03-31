@@ -1,4 +1,8 @@
+//import  com.caldremch.android.plugin.version.Shadow
+import  com.caldremch.android.version.Shadow
 plugins {
+//    id 'com.caldremch.android.plugin.version'
+    id 'com.caldremch.android.version'
     id 'com.android.application'
     id 'kotlin-android'
 }
@@ -33,17 +37,15 @@ android {
 }
 
 dependencies {
+    implementation Shadow.core_loader
+    implementation Shadow.dynamic_loader
+    implementation Shadow.dynamic_loader_impl
+    implementation project(path: ':app-host-lib')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.1'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    implementation 'com.tencent.shadow.core:loader'
-    implementation 'com.tencent.shadow.dynamic:dynamic-loader'
-    implementation 'com.tencent.shadow.dynamic:dynamic-loader-impl'
+    compileOnly Shadow.core_runtime
+    compileOnly Shadow.core_activity_container
+    compileOnly Shadow.core_common
+    compileOnly Shadow.dynamic_host
 }
+
+preBuild.dependsOn(":app-host-lib:jarDebugPackage")

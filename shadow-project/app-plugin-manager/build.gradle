@@ -1,6 +1,8 @@
+import  com.caldremch.android.version.Shadow
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.caldremch.android.version'
 }
 
 android {
@@ -8,7 +10,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.caldremch.android.app.manager"
+        applicationId Shadow.applicationId
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -42,4 +44,12 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //shadow
+    implementation "com.tencent.shadow.dynamic:manager:${shadow_version}"
+    implementation "com.tencent.shadow.core:manager:${shadow_version}"
+    implementation "com.tencent.shadow.dynamic:loader:${shadow_version}"
+//    implementation project(":sample-constant")
+    compileOnly "com.tencent.shadow.core:common:${shadow_version}"
+    compileOnly "com.tencent.shadow.dynamic:host:${shadow_version}"
 }

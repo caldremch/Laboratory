@@ -1,0 +1,29 @@
+{
+  "compact_version": [
+    1,
+    2,
+    3
+  ],
+  "pluginLoader": {
+    "apkName": "app-plugin-loader-debug.apk",
+    "hash": "271D56A5E0C164B967858CF578CCA6E9"
+  },
+  "plugins": [
+    {
+      "partKey": "app-plugin-a",
+      "apkName": "app-plugin-a-debug.apk",
+      "businessName": "app-plugin-a",
+      "hostWhiteList": [
+        "com.caldremch.android.host.lib"
+      ],
+      "hash": "1E3C7C13B4A2B9A10F8CA74AF12559FF"
+    }
+  ],
+  "runtime": {
+    "apkName": "app-plugin-runtime-debug.apk",
+    "hash": "CE996FC2124A5489EA48253016C44E55"
+  },
+  "UUID": "685BAAFF-8EBB-4E01-886C-9DE0CBFF7F06",
+  "version": 4,
+  "UUID_NickName": "1.1.5"
+}

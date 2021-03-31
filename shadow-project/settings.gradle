@@ -1,3 +1,4 @@
+includeBuild '../version-plugin'
 include ':app-host'
 include ':app-host-lib'
 include ':app-plugin-a'
