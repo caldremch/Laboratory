@@ -71,7 +71,8 @@ public class SamplePluginManager extends FastPluginManager {
 //            throw new IllegalArgumentException("unexpected plugin load request: " + partKey);
 //        }
 
-        return "com.tencent.shadow.sample.host.PluginProcessPPS";
+        //plugin-manager可以动态改, 所以这里怎么写都不用担心
+        return "com.caldremch.android.dynamic.host.PluginProcessPPS";
     }
 
     @Override

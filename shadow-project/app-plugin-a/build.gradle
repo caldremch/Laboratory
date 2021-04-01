@@ -1,6 +1,9 @@
+import com.caldremch.android.version.Shadow
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.caldremch.android.version'
 }
 
 android {
@@ -8,7 +11,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.caldremch.android.dynamic.a"
+        applicationId Shadow.applicationId
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

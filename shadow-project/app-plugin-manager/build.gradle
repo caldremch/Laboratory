@@ -1,4 +1,5 @@
-import  com.caldremch.android.version.Shadow
+import com.caldremch.android.version.Shadow
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -33,6 +34,32 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+def createDuplicateApkTask(buildType) {
+    //输入目录
+    def apkDir = file("${getBuildDir()}/outputs/apk/$buildType")
+    //创建爱你一个复制的任务
+    return tasks.create("duplicate${buildType.capitalize()}ApkTask", Copy) {
+        group = 'build' //在 gradle 中属于哪个模块, 如 build install other 等
+        description = "复制一个app-plugin-manager-${buildType}.apk用于测试目的"
+        from(apkDir) {
+            include("app-plugin-manager-${buildType}.apk")
+            rename { "app-plugin-manager.apk" }
+        }
+        into(apkDir)
+    }
+}
+
+//todo 创建复制到指定目录的任务
+
+tasks.whenTaskAdded { task ->
+    if (task.name == "assembleDebug") {
+        def createTask = createDuplicateApkTask("debug")
+        task.finalizedBy(createTask)
+    }
+}
+
+
 
 dependencies {
 

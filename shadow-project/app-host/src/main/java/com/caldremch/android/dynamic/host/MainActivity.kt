@@ -35,10 +35,10 @@ class MainActivity : AppCompatActivity() {
                 Constant.KEY_PLUGIN_ZIP_PATH,
                 LoadPluginHelper.pluginZipFile.absolutePath
             )
-            //传入 part key 标识是哪个插件
+            //传入 part key 标识是要启动的是哪个插件
             bundle.putString(
                 Constant.KEY_PLUGIN_PART_KEY,
-                "app-host"
+                "app-plugin-a"
             )
             //传入Activity 的 全限定名
             bundle.putString(
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 "com.caldremch.android.dynamic.a.APluginActivity"
             )
 
-            HostApp.getApp().loadPluginManager(LoadPluginHelper.pluginZipFile)
+            HostApp.getApp().loadPluginManager(LoadPluginHelper.pluginManagerFile)
             HostApp.getApp().getPluginManager().enter(this, 1002, bundle, object : EnterCallback {
 
                 override fun onShowLoadingView(p0: View?) {
