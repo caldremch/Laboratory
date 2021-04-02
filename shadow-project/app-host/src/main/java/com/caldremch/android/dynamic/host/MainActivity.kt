@@ -45,23 +45,27 @@ class MainActivity : AppCompatActivity() {
                 Constant.KEY_ACTIVITY_CLASSNAME,
                 "com.caldremch.android.dynamic.a.APluginActivity"
             )
+            try {
+                HostApp.getApp().loadPluginManager(LoadPluginHelper.pluginManagerFile)
+                HostApp.getApp().getPluginManager().enter(this, 1002, bundle, object : EnterCallback {
 
-            HostApp.getApp().loadPluginManager(LoadPluginHelper.pluginManagerFile)
-            HostApp.getApp().getPluginManager().enter(this, 1002, bundle, object : EnterCallback {
+                    override fun onShowLoadingView(p0: View?) {
+                        logger.debug("onShowLoadingView")
+                    }
 
-                override fun onShowLoadingView(p0: View?) {
-                    logger.debug("onShowLoadingView")
-                }
+                    override fun onCloseLoadingView() {
+                        logger.debug("onCloseLoadingView")
+                    }
 
-                override fun onCloseLoadingView() {
-                    logger.debug("onCloseLoadingView")
-                }
+                    override fun onEnterComplete() {
+                        logger.debug("onEnterComplete")
+                    }
 
-                override fun onEnterComplete() {
-                    logger.debug("onEnterComplete")
-                }
+                })
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
 
-            })
         }
     }
 

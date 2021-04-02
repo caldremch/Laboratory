@@ -1,0 +1,9 @@
+src/main/resources
+../matrix-gradle-plugin/src/main/resources
+src/main/java
+../matrix-gradle-plugin/src/main/java
+src/main/groovy
+../matrix-gradle-plugin/src/main/groovy
+src/test/resources
+src/test/java
+src/test/groovy

@@ -7,6 +7,9 @@ include ':app-plugin-loader'
 include ':app-plugin-runtime'
 include ':app-plugin-manager'
 
+
+
+
 //project(':app-host').projectDir = file('./shadow-project/app-host')
 //project(':app-plugin-a').projectDir = file('./shadow-project/app-plugin-a')
 //project(':app-plugin-b').projectDir = file('./shadow-project/app-plugin-b')
