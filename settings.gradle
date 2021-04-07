@@ -22,8 +22,4 @@ project(':matrix-android-lib').projectDir = file('./matrix/matrix-android-lib')
 project(':matrix-trace-canary').projectDir = file('./matrix/matrix-trace-canary')
 //project(':matrix-gradle-plugin').projectDir=file('./matrix/matrix-gradle-plugin')
 //include ':native-logger'
-includeBuild 'shadow-project'
-includeBuild 'shadow-project/shadow-sdk'
-includeBuild 'shadow-project/shadow-sdk/coding'
-includeBuild 'shadow-project/shadow-sdk/core'
-includeBuild 'shadow-project/shadow-sdk/dynamic'
+
