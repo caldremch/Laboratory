@@ -2,10 +2,8 @@ package com.caldremch.laboratory.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.caldremch.common.base.BaseActivity
-import com.caldremch.laboratory.startActivity
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  *
@@ -25,19 +23,25 @@ class OpenActEvent {
 
 class MainActivity : BaseActivity<Any>() {
 
-    override fun isUseEvent(): Boolean {
-        return true
-    }
+//    override fun isUseEvent(): Boolean {
+//        return true
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity<PageListActivity>()
+        val intent = Intent(this, PageListActivity::class.java)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun openNew(event: OpenActEvent) {
-        val intent = Intent(this, PageListActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        applicationContext.startActivity(intent)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("onActivityResult", "onActivityResult=$requestCode $resultCode")
+        finish()
     }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    fun openNew(event: OpenActEvent) {
+//        val intent = Intent(this, PageListActivity::class.java)
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//        applicationContext.startActivity(intent)
+//    }
 }

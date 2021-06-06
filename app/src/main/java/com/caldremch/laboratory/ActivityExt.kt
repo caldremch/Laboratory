@@ -24,3 +24,7 @@ inline fun <reified T> Activity.startActivity() {
 inline fun <reified T> Context.startActivity() {
     startActivity(Intent(this, T::class.java))
 }
+
+inline fun <reified T> Activity.startActivity(req: Int) {
+    startActivityForResult(Intent(this, T::class.java), req)
+}

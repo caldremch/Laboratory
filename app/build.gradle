@@ -92,12 +92,14 @@ dependencies {
     debugImplementation "com.github.silencedut.fpsviewer:fpsviewer:0.8.2"
     implementation(Deps.entry)
     implementation(Deps.eventbus)
+    implementation("com.caldremch.android:http:1.0.0")
     kapt(Deps.entry_compiler)
-
+    implementation Deps.coroutines
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
 }
 
 ext.unusedResourcesSet = new HashSet<String>();

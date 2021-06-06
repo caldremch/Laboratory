@@ -20,6 +20,11 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="test" />
+
         <activity android:name="com.caldremch.android.entry.EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

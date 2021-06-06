@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -44,12 +43,14 @@ class MainActivity : AppCompatActivity() {
                 holder.itemView.post {
                     val tv = holder.getViewOrNull<TextView>(R.id.tv)
                     val tv2 = holder.getViewOrNull<TextView>(R.id.tv2)
-                    tv?.text = "item宽度:${holder.itemView.measuredWidth}"
-                    tv2?.text = "均分宽度:${item.avgWidth.toString()}"
+                    tv?.text = "Anr 模拟"
+//                    tv?.text = "item宽度:${holder.itemView.measuredWidth}"
+//                    tv2?.text = "均分宽度:${item.avgWidth.toString()}"
                 }
             }
 
         }
+
 
         val spanCount = 3
         val margin = (15f).dp2px().toInt()
@@ -73,21 +74,8 @@ class MainActivity : AppCompatActivity() {
                 val index = data.index
                 val lp = view.layoutParams
                 val gridManagerGap = ((sw - 3 * data.avgWidth) / 3)
-                val designGap = 3f.dp2px().toInt()
+                val gridManagerGapL = gridManagerGap - itemGap * 2
 
-                //继续平摊宽度
-                val avgGain = (gridManagerGap * 3 - margin * 2 - designGap * 2) / 3
-                val settleWidth = avgGain + data.avgWidth
-                val leftGap = getScreenWidth() - 3 * settleWidth
-                val perLeftGap = leftGap / 3
-
-                //还可以继续平摊的宽度
-                val canGainW = leftGap - margin * 2 - designGap * 2
-
-                Log.d(
-                    TAG,
-                    "sw=$sw avgWidth=$avgWidth canGainW =$canGainW leftGap=$leftGap $gridManagerGap dp15=${margin} dp3=$designGap"
-                )
                 when (index) {
                     0 -> {
                         if (imageTotalCount == 2) {
@@ -96,7 +84,8 @@ class MainActivity : AppCompatActivity() {
                         } else if (imageTotalCount == 1) {
                             //1张图片的时候
                         } else {
-                            lp.width = screenWidthBySpan - gridManagerGap
+
+//                            lp.width = screenWidthBySpan - gridManagerGap
                             outRect.left = gridManagerGap
 
                         }
@@ -104,18 +93,23 @@ class MainActivity : AppCompatActivity() {
                     }
                     1 -> {
                         outRect.left = gridManagerGap / 2
-                        lp.width = screenWidthBySpan - gridManagerGap
+                        outRect.right = gridManagerGap / 2
+//                        lp.width = screenWidthBySpan - gridManagerGap
                     }
 
                     2 -> {
                         outRect.right = gridManagerGap
-                        lp.width = screenWidthBySpan - gridManagerGap
+//                        lp.width = screenWidthBySpan - gridManagerGap
                     }
                 }
-                view.layoutParams = lp
+//                view.layoutParams = lp
 
             }
         })
+
+        adapter.setOnItemClickListener { adapter, view, position ->
+            Thread.sleep(100)
+        }
 
         adapter.setList(arrayListOf(Item(0, avgWidth), Item(1, avgWidth), Item(2, avgWidth)))
     }

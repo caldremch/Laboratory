@@ -1,9 +1,10 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
-import android.os.SystemClock
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
+import com.caldremch.laboratory.activity.MainActivity
+import com.caldremch.laboratory.startActivity
 
 /**
  *
@@ -17,14 +18,14 @@ import com.caldremch.android.annotation.entry.IEntry
  *
  **/
 @Entry
-class AnrEntry : IEntry {
+class StartForResultEntry : IEntry {
 
     override fun getTitle(): String {
-        return "ANR22"
+        return "StartForResultEntry"
     }
 
     override fun onClick(context: Context) {
-        SystemClock.sleep(10000)
+        context.startActivity<MainActivity>()
     }
 
 }
