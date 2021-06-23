@@ -23,7 +23,7 @@ import com.caldremch.common.widget.status.StatusView
 abstract class BaseFragment<T> : LifeCycleLogFragment(), BaseContract.BaseView, BaseInit,
     IStatusView {
 
-    private val TAG = "BaseFragment"
+    protected val TAG = "BaseFragment"
     protected var mPresenter: T? = null
     protected var mIsVisible = false
     private var mIsPrepare = false
