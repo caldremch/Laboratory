@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
-import com.caldremch.laboratory.R
 
 /**
  *
@@ -29,17 +27,17 @@ class CameraDemoView @JvmOverloads constructor(
 
     init {
         //R.mipmap.ic_launche是一个 drawable , 不是 bitmap, 所以BitmapFactory.decodeResourc返回 null
-        val drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)!!
-        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
+//        val drawable = ContextCompat.getDrawable(context, R.mipmap.ic_launcher)!!
+//        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+//        bitmap = Bitmap.createBitmap(
+//            drawable.intrinsicWidth,
+//            drawable.intrinsicHeight,
+//            Bitmap.Config.ARGB_8888
+//        )
+//
+//        val canvas = Canvas(bitmap)
+//        drawable.setBounds(0, 0, canvas.width, canvas.height)
+//        drawable.draw(canvas)
 
     }
 
