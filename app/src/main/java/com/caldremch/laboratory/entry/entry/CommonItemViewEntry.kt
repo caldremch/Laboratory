@@ -1,6 +1,7 @@
 package com.caldremch.laboratory.entry.entry
 
 import android.content.Context
+import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.laboratory.fragment.CommonItemViewFragment
 import com.caldremch.laboratory.util.FragmentUtil
@@ -16,7 +17,7 @@ import com.caldremch.laboratory.util.FragmentUtil
  * @describe
  *
  **/
-//@Entry
+@Entry
 class CommonItemViewEntry : IEntry {
     override fun getTitle(): String {
         return "CommonItemView Demo"

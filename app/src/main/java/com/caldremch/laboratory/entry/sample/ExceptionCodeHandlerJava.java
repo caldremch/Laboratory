@@ -16,22 +16,9 @@ public class ExceptionCodeHandlerJava {
 
     public static boolean isLogin = true;
 
-    public  synchronized static void handleMulti(Context context) {
-
-//        String sb = "thread=" + Thread.currentThread().getId() +
-//                ", isLogin =" + isLogin;
-//        Log.d(
-//                "MultiEntry",
-//                sb
-//        );
-
+    public static void handleMulti(Context context) {
         if (isLogin) {
-            String sb2 = "thread=" + Thread.currentThread().getId() +
-                    ", isLogin =" + isLogin;
-            Log.d(
-                    "MultiEntry",
-                    sb2
-            );
+            isLogin = false;
             Log.d("MultiEntry", "handleMulti: 执行次数");
             new TipDialog.Builder(context).setDescText("202弹窗")
                     .setLeftText("好的")
@@ -39,7 +26,6 @@ public class ExceptionCodeHandlerJava {
                     .setOnLeftBtnListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            isLogin = false;
                         }
                     })
                     .build()
