@@ -21,4 +21,4 @@ dependencies {
 //        artifactId = POM_ARTIFACT_ID
 //    }
 //}
-apply from: rootProject.file('upload_aar.gradle')
+//apply from: rootProject.file('upload_aar.gradle')
