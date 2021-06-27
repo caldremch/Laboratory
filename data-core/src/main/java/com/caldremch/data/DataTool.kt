@@ -1,9 +1,8 @@
 package com.caldremch.data
 
-import android.app.Application
+import android.annotation.SuppressLint
 import android.content.Context
 import com.tencent.mmkv.MMKV
-import java.lang.RuntimeException
 
 
 /**
@@ -21,6 +20,7 @@ class DataTool private constructor(var context: Context) : IData {
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak")
         private var sContext: Context? = null
 
         val instance: DataTool by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -29,7 +29,7 @@ class DataTool private constructor(var context: Context) : IData {
         }
 
         fun init(context: Context) {
-            sContext = context
+            sContext = context.applicationContext
         }
     }
 

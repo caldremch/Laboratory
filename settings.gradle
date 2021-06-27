@@ -8,7 +8,7 @@ include ":widget"
 include ":dialog"
 rootProject.name = "Laboratory"
 include ":app"
-include ":PickerView"
+include ":picker-view"
 includeBuild './version-plugin'
 //includeBuild './shadow-version-plugin'
 include ":matrix-commons"
