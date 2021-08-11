@@ -21,7 +21,7 @@ class SplashActivity : BaseActivity<Any>() {
 //            override fun onAnimationEnd(animation: Animator?) {
 //
 //                if (UserManager.isLogin()){
-//                    startActivity(Intent(mContext, MainActivity::class.java))
+//                    startActivity(Intent(mContext, MultiProcessCommunicationActivity::class.java))
 //                }else{
 //                    startActivity(Intent(mContext, LoginActivity::class.java))
 //                }

@@ -1,16 +1,10 @@
 package com.caldremch.caldremchx.entry
 
-import android.app.Service
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import android.util.Log
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
-import com.caldremch.caldremchx.activity.MainActivity
-import com.caldremch.laboratory.ILaboratoryInterface
+import com.caldremch.caldremchx.activity.MultiProcessCommunicationActivity
 
 /**
  *
@@ -37,7 +31,7 @@ class SayHelloEntry : IEntry {
 
     override fun onClick(context: Context) {
 
-        context.startActivity(Intent(context, MainActivity::class.java))
+        context.startActivity(Intent(context, MultiProcessCommunicationActivity::class.java))
     }
 
 }

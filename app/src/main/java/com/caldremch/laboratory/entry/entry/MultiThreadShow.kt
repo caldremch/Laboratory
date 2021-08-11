@@ -6,7 +6,7 @@ import android.view.View
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.dialog.TipDialog
-import com.caldremch.laboratory.entry.sample.ExceptionCodeHandlerJava
+import com.caldremch.laboratory.draft.ExceptionCodeHandlerJava
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean

@@ -8,13 +8,15 @@ import android.os.IBinder
 import android.util.Log
 import android.view.View
 import com.caldremch.caldremchx.R
+import com.caldremch.caldremchx.constant.MultiProcessConstant
 import com.caldremch.common.base.BaseActivity
 import com.caldremch.laboratory.ILaboratoryInterface
 import java.util.*
 import kotlin.concurrent.timer
 
-class MainActivity : BaseActivity<Any>() {
-    private val TAG = "MainActivity"
+class MultiProcessCommunicationActivity : BaseActivity<Any>() {
+
+    private val TAG = "MultiProcessCommunicationActivity"
 
     private var laboratoryService: ILaboratoryInterface? = null
 
@@ -23,8 +25,8 @@ class MainActivity : BaseActivity<Any>() {
     }
 
     override fun initView() {
-        val intent = Intent("com.caldremch.laboratory.LaboratoryService")
-        intent.setPackage("com.caldremch.android.laboratory")
+        val intent = Intent(MultiProcessConstant.LABORATORY_SERVICE)
+        intent.setPackage(MultiProcessConstant.LABORATORY_SERVICE_PACKAGE)
         applicationContext.bindService(intent, conn, Service.BIND_AUTO_CREATE)
     }
 
@@ -52,5 +54,10 @@ class MainActivity : BaseActivity<Any>() {
         override fun onNullBinding(name: ComponentName?) {
             Log.d(TAG, "onNullBinding: ")
         }
+
+        override fun onBindingDied(name: ComponentName?) {
+            Log.d(TAG, "onBindingDied: ")
+        }
+
     }
 }

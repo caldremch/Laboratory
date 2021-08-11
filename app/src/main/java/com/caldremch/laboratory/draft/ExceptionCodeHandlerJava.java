@@ -1,4 +1,4 @@
-package com.caldremch.laboratory.entry.sample;
+package com.caldremch.laboratory.draft;
 
 import android.content.Context;
 import android.util.Log;

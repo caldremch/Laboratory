@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
-import com.caldremch.laboratory.entry.RetryWithDelay
+import com.caldremch.laboratory.draft.RetryWithDelay
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer

@@ -1,4 +1,4 @@
-package com.caldremch.laboratory.entry
+package com.caldremch.laboratory.draft
 
 import android.util.Log
 import io.reactivex.rxjava3.core.Observable
