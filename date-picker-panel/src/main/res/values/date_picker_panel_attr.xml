@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="DatePickerPanelView">
+        <attr name="combine">
+            <enum name="hm" value="1" />
+            <enum name="apm" value="2" />
+        </attr>
+    </declare-styleable>
+
+</resources>

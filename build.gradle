@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.5.10'
+        kotlin_version = '1.5.20'
     }
     repositories {
         mavenLocal()
@@ -12,7 +12,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:4.2.1')
+        classpath('com.android.tools.build:gradle:4.2.2')
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
 //        classpath ("com.tencent.matrix:matrix-gradle-plugin:${MATRIX_VERSION}") { changing = true }

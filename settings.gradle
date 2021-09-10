@@ -24,3 +24,5 @@ project(':matrix-trace-canary').projectDir = file('./matrix/matrix-trace-canary'
 //include ':native-logger'
 
 include ':demo'
+include ':date-picker-panel'
+include ':seven-seconds'
