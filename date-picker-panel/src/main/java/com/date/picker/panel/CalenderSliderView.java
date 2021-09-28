@@ -122,6 +122,7 @@ public class CalenderSliderView extends FrameLayout {
                 DatePanelData datePanelData = calenderSliderAdapter.getData(position);
                 if (onItemClickListener != null) {
                     DayData dayData = new DayData(datePanelData.year, datePanelData.showMonth, datePanelData.panelSelectedDay);
+                    dayData.mills = DatePickerPanelUtils.trans2Mills(dayData);
                     //取出当前选中的
                     onItemClickListener.onItemClick(calenderSliderAdapter, dayData);
 

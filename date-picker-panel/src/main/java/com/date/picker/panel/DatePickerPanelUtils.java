@@ -269,4 +269,12 @@ public class DatePickerPanelUtils {
         return x == 1 ? 7 : (x - 1);
     }
 
+    public static long trans2Mills(DayData dayData) {
+        Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        clearHMS(calendar);
+        calendar.set(Calendar.YEAR, dayData.year);
+        calendar.set(Calendar.MONTH, dayData.month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, dayData.day);
+        return calendar.getTimeInMillis();
+    }
 }

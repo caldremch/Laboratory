@@ -27,9 +27,10 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorT
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Caldremch
@@ -78,6 +79,25 @@ public class DatePickerPanelView extends ConstraintLayout {
         params.height = calculateVp2Height();
         vp.setLayoutParams(params);
         initView();
+
+        tvConfirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onConfirm(currentSelectedTimeStamp);
+                }
+            }
+        });
+    }
+
+    private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public interface Callback {
+        void onConfirm(long timeStamp);
     }
 
 
@@ -122,11 +142,17 @@ public class DatePickerPanelView extends ConstraintLayout {
         vpAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull @NotNull RecyclerView.Adapter adapter, DayData dayData) {
-                calendarPage.title = String.format(Locale.CHINA, "%d日%d月%d日", dayData.year, dayData.month, dayData.day);
+                currentSelectedTimeStamp = dayData.mills;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+                String title = dateFormat.format(currentSelectedTimeStamp);
+//                calendarPage.title = String.format(Locale.CHINA, "%d日%d月%d日", dayData.year, dayData.month, dayData.day);
+                calendarPage.title = title;
                 commonNavigator.notifyDataSetChanged();
             }
         });
     }
+
+    private long currentSelectedTimeStamp = new Date().getTime();
 
     private CommonNavigator commonNavigator;
 
