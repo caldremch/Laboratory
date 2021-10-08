@@ -21,13 +21,11 @@ public class DatePickerPanelVpAdapter extends RecyclerView.Adapter<BaseHolder> {
     private List<IVpPage> pages = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     private int calendarItemHeight;
-    private long selectedDate = -1;
 
-
-    public void setSelectedDate(long timeStamp) {
-        this.selectedDate = timeStamp;
-        notifyDataSetChanged();
+    public static class InnerData {
+        public static long selectedDate = -1;
     }
+
 
     public DatePickerPanelVpAdapter(int calendarItemHeight) {
         this.calendarItemHeight = calendarItemHeight;
@@ -61,7 +59,7 @@ public class DatePickerPanelVpAdapter extends RecyclerView.Adapter<BaseHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull BaseHolder holder, int position) {
         if (holder.itemView instanceof CalenderSliderView) {
-            ((CalenderSliderView) holder.itemView).setSelectedDate(this.selectedDate);
+            ((CalenderSliderView) holder.itemView).setSelectedDate();
         }
     }
 

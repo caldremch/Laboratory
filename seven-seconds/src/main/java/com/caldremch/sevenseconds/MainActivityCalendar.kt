@@ -18,7 +18,7 @@ class MainActivityCalendar : AppCompatActivity() {
         calendar.set(Calendar.MONTH, 8)
         calendar.set(Calendar.DAY_OF_MONTH, 21)
         DatePickerPanelUtils.clearHMS(calendar)
-        panel.setSelectedDate(calendar.timeInMillis)
+//        panel.setSelectedDate(calendar.timeInMillis)
         val format = SimpleDateFormat("yyyy年MM月dd日")
         Log.d("MainActivityCalendar", "onCreate: ${format.format(calendar.timeInMillis)}")
         panel.setCallback {

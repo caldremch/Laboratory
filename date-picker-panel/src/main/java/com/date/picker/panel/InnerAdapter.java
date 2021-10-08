@@ -37,16 +37,11 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
     private long cMills;
     private int selectedPos = -1;
     private RecyclerView rv;
-    private long selectedDate = -1;
 
     private OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
-    }
-
-    public void setSelectedDate(long timeStamp) {
-        this.selectedDate = timeStamp;
     }
 
     public InnerAdapter(Context context, RecyclerView rv) {
@@ -70,13 +65,12 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void setData(List<DayData> data, long selectedDate) {
-        this.selectedDate = selectedDate;
+    public void setData(List<DayData> data) {
         this.data.clear();
         this.data.addAll(data);
         for (int i = 0; i < data.size(); i++) {
             DayData d = data.get(i);
-            if (d.mills == selectedDate && !d.isNotCurrentMonth) {
+            if (d.mills == DatePickerPanelVpAdapter.InnerData.selectedDate && !d.isNotCurrentMonth) {
                 selectedPos = i;
             }
         }
@@ -116,7 +110,7 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
             public void onClick(View v) {
                 int pos = holder.getAdapterPosition();
                 DayData dayData = data.get(pos);
-                selectedDate = dayData.mills;
+                DatePickerPanelVpAdapter.InnerData.selectedDate = dayData.mills;
                 //设置当前选中的day
                 cD = dayData.day;
 
@@ -153,7 +147,7 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
     private void handleTitleStyle(@NotNull ViewHolder holder, DayData dayData) {
 
 
-        if (selectedDate == dayData.mills && !dayData.isNotCurrentMonth) {
+        if (DatePickerPanelVpAdapter.InnerData.selectedDate == dayData.mills && !dayData.isNotCurrentMonth) {
             //选中的颜色
             holder.vBg.setVisibility(View.VISIBLE);
             holder.tvTitle.setTextColor(Color.WHITE);

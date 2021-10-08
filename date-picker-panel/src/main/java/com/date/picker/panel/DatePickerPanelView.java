@@ -161,9 +161,7 @@ public class DatePickerPanelView extends ConstraintLayout {
     private CommonNavigator commonNavigator;
 
     public void setSelectedDate(long timeStamp) {
-        if (vpAdapter != null) {
-            vpAdapter.setSelectedDate(timeStamp);
-        }
+        DatePickerPanelVpAdapter.InnerData.selectedDate = timeStamp;
         updateTitle(timeStamp);
     }
 

@@ -20,7 +20,6 @@ import com.date.picker.panel.entity.DayData;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -64,10 +63,8 @@ public class CalenderSliderView extends FrameLayout {
                         }
                     });
 
-                    if (!dayData.isNotCurrentMonth) {
-                        if (onItemClickListener != null) {
-                            onItemClickListener.onItemClick(adapter, dayData);
-                        }
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(adapter, dayData);
                     }
                 }
             });
@@ -144,18 +141,25 @@ public class CalenderSliderView extends FrameLayout {
         calenderSliderAdapter.setData(datePanelDataList);
         //初始页面
         rvCalendar.setCurrentItem(datePanelDataList.size() / 2, false);
+        //初始化数据为
         Log.d("CalenderSliderView", "initDays: " + datePanelDataList.size());
     }
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-
     /**
      * 设置当前选中的数据
-     *
-     * @param timeStamp 目标时间戳  [注意:无时分秒]
-     *                  对比年月即可
+     * <p>
+     * [注意:无时分秒]
+     * 对比年月即可
      */
-    public void setSelectedDate(long timeStamp) {
+    public void setSelectedDate() {
+
+        if (DatePickerPanelVpAdapter.InnerData.selectedDate == -1) {
+            Calendar calendar = Calendar.getInstance();
+            DatePickerPanelUtils.clearHMS(calendar);
+            DatePickerPanelVpAdapter.InnerData.selectedDate = calendar.getTimeInMillis();
+        }
+
+        long timeStamp = DatePickerPanelVpAdapter.InnerData.selectedDate;
         //计算出面板指定位置
         if (datePanelDataList != null && timeStamp > 0) {
             Calendar calendar = Calendar.getInstance();
@@ -178,7 +182,6 @@ public class CalenderSliderView extends FrameLayout {
                     }
                 }
             }
-            calenderSliderAdapter.setSelectedDate(timeStamp);
         }
     }
 
