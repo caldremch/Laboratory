@@ -70,6 +70,9 @@ public class DatePickerPanelView extends ConstraintLayout {
 
 
     private void inflateView() {
+        //初始话先重置
+        DatePickerPanelVpAdapter.InnerData.selectedDate = -1;
+
         LayoutInflater.from(getContext()).inflate(R.layout.date_picker_panel_view, this, true);
         magicIndicator = findViewById(R.id.indicator);
         tvConfirm = findViewById(R.id.tv_confirm);
@@ -161,7 +164,7 @@ public class DatePickerPanelView extends ConstraintLayout {
     private CommonNavigator commonNavigator;
 
     public void setSelectedDate(long timeStamp) {
-        DatePickerPanelVpAdapter.InnerData.selectedDate = timeStamp;
+        DatePickerPanelVpAdapter.InnerData.selectedDate = DatePickerPanelUtils.clearHMS(timeStamp);
         updateTitle(timeStamp);
     }
 
