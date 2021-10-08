@@ -166,6 +166,9 @@ public class DatePickerPanelView extends ConstraintLayout {
     public void setSelectedDate(long timeStamp) {
         DatePickerPanelVpAdapter.InnerData.selectedDate = DatePickerPanelUtils.clearHMS(timeStamp);
         updateTitle(timeStamp);
+        if (vpAdapter != null) {
+            vpAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initIndicator() {
