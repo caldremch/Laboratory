@@ -2,7 +2,9 @@ package com.date.picker.panel;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -18,6 +20,7 @@ import com.date.picker.panel.entity.DayData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class CalenderSliderView extends FrameLayout {
     private ViewPager2 rvCalendar;
     private CalenderSliderAdapter calenderSliderAdapter;
     private OnItemClickListener onItemClickListener;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -44,21 +48,18 @@ public class CalenderSliderView extends FrameLayout {
                     lastSelectedDay = dayData.day;
 
                     //滑动操作
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (dayData.front) {
-                                //下滑
-                                int cIndex = rvCalendar.getCurrentItem();
-                                if (cIndex > 0) {
-                                    rvCalendar.setCurrentItem(cIndex - 1);
-                                }
-                            } else if (dayData.behind) {
-                                //上划
-                                int cIndex = rvCalendar.getCurrentItem();
-                                if (cIndex < calenderSliderAdapter.getItemCount()) {
-                                    rvCalendar.setCurrentItem(cIndex + 1);
-                                }
+                    mHandler.post(() -> {
+                        if (dayData.front) {
+                            //下滑
+                            int cIndex = rvCalendar.getCurrentItem();
+                            if (cIndex > 0) {
+                                rvCalendar.setCurrentItem(cIndex - 1);
+                            }
+                        } else if (dayData.behind) {
+                            //上划
+                            int cIndex = rvCalendar.getCurrentItem();
+                            if (cIndex < calenderSliderAdapter.getItemCount()) {
+                                rvCalendar.setCurrentItem(cIndex + 1);
                             }
                         }
                     });
@@ -116,31 +117,69 @@ public class CalenderSliderView extends FrameLayout {
     private int lastSelectedDay; //如果不一样, 则需要更新
 
     private void initEvent() {
-        rvCalendar.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                DatePanelData datePanelData = calenderSliderAdapter.getData(position);
-                if (onItemClickListener != null) {
-                    DayData dayData = new DayData(datePanelData.year, datePanelData.showMonth, datePanelData.panelSelectedDay);
-                    dayData.mills = DatePickerPanelUtils.trans2Mills(dayData);
-                    //取出当前选中的
-                    onItemClickListener.onItemClick(calenderSliderAdapter, dayData);
-
-                }
-            }
-        });
+        //不做自动选中
+//        rvCalendar.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                DatePanelData datePanelData = calenderSliderAdapter.getData(position);
+//                if (onItemClickListener != null) {
+//                    DayData dayData = new DayData(datePanelData.year, datePanelData.showMonth, datePanelData.panelSelectedDay);
+//                    dayData.mills = DatePickerPanelUtils.trans2Mills(dayData);
+//                    //取出当前选中的
+//                    onItemClickListener.onItemClick(calenderSliderAdapter, dayData);
+//                }
+//            }
+//        });
     }
 
     private void setInfiniteLoop() {
 
     }
 
+    private List<DatePanelData> datePanelDataList;
 
+    //初始化面板数据
     private void initDays() {
-        List<DatePanelData> datePanelDataList = DatePickerPanelUtils.generateRecent12YearsData();
+        datePanelDataList = DatePickerPanelUtils.generateRecent12YearsData();
         calenderSliderAdapter.setData(datePanelDataList);
         //初始页面
         rvCalendar.setCurrentItem(datePanelDataList.size() / 2, false);
+        Log.d("CalenderSliderView", "initDays: " + datePanelDataList.size());
+    }
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+
+    /**
+     * 设置当前选中的数据
+     *
+     * @param timeStamp 目标时间戳  [注意:无时分秒]
+     *                  对比年月即可
+     */
+    public void setSelectedDate(long timeStamp) {
+        //计算出面板指定位置
+        if (datePanelDataList != null && timeStamp > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeStamp);
+            int y = calendar.get(Calendar.YEAR);
+            int m = calendar.get(Calendar.MONTH);
+
+            Calendar elementCalendar = Calendar.getInstance();
+            //6*7 = 42 12*11
+            for (int i = 0; i < datePanelDataList.size(); i++) {
+                DatePanelData datePanelData = datePanelDataList.get(i);
+                if (datePanelData.dayDataList.size() > datePanelData.frontOffset) {
+                    DayData dayData = datePanelData.dayDataList.get(datePanelData.frontOffset);
+                    elementCalendar.setTimeInMillis(dayData.mills);
+                    int y1 = elementCalendar.get(Calendar.YEAR);
+                    int m1 = elementCalendar.get(Calendar.MONTH);
+                    if (y == y1 && m == m1) {
+                        rvCalendar.setCurrentItem(i, false);
+                        break;
+                    }
+                }
+            }
+            calenderSliderAdapter.setSelectedDate(timeStamp);
+        }
     }
 
 

@@ -17,6 +17,7 @@
         android:id="@+id/tv_confirm"
         android:layout_width="wrap_content"
         android:text="确定"
+        android:textColor="#257BF4"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="@+id/indicator"
         app:layout_constraintBottom_toBottomOf="@+id/indicator"

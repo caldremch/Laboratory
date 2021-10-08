@@ -24,7 +24,7 @@ import java.util.List;
 public class CalenderSliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private String TAG = "CalenderSliderAdapter";
-
+    private long selectedDate = -1;
     private List<DatePanelData> data = new ArrayList<>();
     private int rvHeight;
     private OnItemClickListener onItemClickListener;
@@ -41,6 +41,11 @@ public class CalenderSliderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+
+    public void setSelectedDate(long timeStamp) {
+        this.selectedDate = timeStamp;
     }
 
 
@@ -90,7 +95,7 @@ public class CalenderSliderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         InnerAdapter adapter = (InnerAdapter) recyclerView.getAdapter();
         DatePanelData datePanelData = data.get(position);
         Log.d(TAG, "onBindViewHolder: " + datePanelData.panelSelectedDay);
-        adapter.setData(datePanelData.dayDataList, datePanelData.panelSelectedDay);
+        adapter.setData(datePanelData.dayDataList, this.selectedDate);
     }
 
     @Override

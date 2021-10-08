@@ -17,10 +17,11 @@ public class DatePanelData {
     //面板展示的日期 共36个数
     public List<DayData> dayDataList = new ArrayList<>(DATE_PANEL_MAX_COUNT);
     public int index;
-    public int panelSelectedDay;
+    public int panelSelectedDay;//当前面板选中的哪一天
     public int monthMaxDays;
     public int year;
     public int showMonth;
+    public int frontOffset = 0; //面板每月1号的偏移
 
     public long getPanelMills() {
         Calendar calendar = Calendar.getInstance();

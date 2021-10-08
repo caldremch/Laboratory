@@ -145,6 +145,7 @@ public class DatePickerPanelUtils {
                 DayData dayData = new DayData(itemC, front || behind);
                 dayData.front = front;
                 dayData.behind = behind;
+                datePanelData.frontOffset = lastMonthAddCount;
                 datePanelData.dayDataList.add(dayData);
                 datePanelData.monthMaxDays = maxMonthDays;
                 itemC.add(Calendar.DATE, 1); //+1
@@ -155,19 +156,20 @@ public class DatePickerPanelUtils {
             calendar.add(Calendar.MONTH, 1);
         }
 
+        //当前选中的日期
         setCurrentSelectedDay(datePanelDataList, cD);
 
         return datePanelDataList;
     }
 
     public static void setCurrentSelectedDay(List<DatePanelData> datePanelDataList, int cD) {
-        for (DatePanelData datePanelData : datePanelDataList) {
-            if (cD > datePanelData.monthMaxDays) {
-                datePanelData.panelSelectedDay = datePanelData.monthMaxDays;
-            } else {
-                datePanelData.panelSelectedDay = cD;
-            }
-        }
+//        for (DatePanelData datePanelData : datePanelDataList) {
+//            if (cD > datePanelData.monthMaxDays) {
+//                datePanelData.panelSelectedDay = datePanelData.monthMaxDays;
+//            } else {
+//                datePanelData.panelSelectedDay = cD;
+//            }
+//        }
     }
 
 
@@ -221,6 +223,16 @@ public class DatePickerPanelUtils {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    public static long clearHMS(long timeStamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 
     private static int getLastMonth(int month) {

@@ -37,7 +37,6 @@ import java.util.List;
  * @email finishmo@qq.com
  * @date 2021/9/8 10:49
  * @description
- * todo 新增一个外部暴露的回调即可
  */
 public class DatePickerPanelView extends ConstraintLayout {
 
@@ -49,6 +48,7 @@ public class DatePickerPanelView extends ConstraintLayout {
     private DatePickerPanelVpAdapter vpAdapter;
     private final int row = 7;//日期面板显示6行 + 星期几 1
     private int calendarItemHeight = 0;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
 
 
     public DatePickerPanelView(Context context) {
@@ -143,18 +143,29 @@ public class DatePickerPanelView extends ConstraintLayout {
             @Override
             public void onItemClick(@NonNull @NotNull RecyclerView.Adapter adapter, DayData dayData) {
                 currentSelectedTimeStamp = dayData.mills;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-                String title = dateFormat.format(currentSelectedTimeStamp);
-//                calendarPage.title = String.format(Locale.CHINA, "%d日%d月%d日", dayData.year, dayData.month, dayData.day);
-                calendarPage.title = title;
-                commonNavigator.notifyDataSetChanged();
+                updateTitle(currentSelectedTimeStamp);
             }
         });
+
+
+    }
+
+    private void updateTitle(long timeStamp) {
+        String title = dateFormat.format(timeStamp);
+        calendarPage.title = title;
+        commonNavigator.notifyDataSetChanged();
     }
 
     private long currentSelectedTimeStamp = new Date().getTime();
 
     private CommonNavigator commonNavigator;
+
+    public void setSelectedDate(long timeStamp) {
+        if (vpAdapter != null) {
+            vpAdapter.setSelectedDate(timeStamp);
+        }
+        updateTitle(timeStamp);
+    }
 
     private void initIndicator() {
 
