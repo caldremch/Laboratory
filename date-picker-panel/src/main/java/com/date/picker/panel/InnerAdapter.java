@@ -35,6 +35,7 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
     private final int cDayColor = Color.parseColor("#257BF4");
     private Drawable selectedBg;
     private long cMills;
+    private long cMillsUtil00;
     private int selectedPos = -1;
     private RecyclerView rv;
 
@@ -48,6 +49,9 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
         Calendar calendar = Calendar.getInstance();
         DatePickerPanelUtils.clearHMS(calendar);
         cMills = calendar.getTimeInMillis();
+        calendar.add(Calendar.DATE, 1);
+        cMillsUtil00 = calendar.getTimeInMillis();
+
         selectedBg = ContextCompat.getDrawable(context, R.drawable.dpp_day_selected);
         this.rv = rv;
     }
@@ -110,6 +114,9 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
             public void onClick(View v) {
                 int pos = holder.getAdapterPosition();
                 DayData dayData = data.get(pos);
+                if (DatePickerPanelVpAdapter.InnerData.limitType == 1 && dayData.mills >= cMillsUtil00) {
+                    return;
+                }
                 DatePickerPanelVpAdapter.InnerData.selectedDate = dayData.mills;
                 //设置当前选中的day
                 cD = dayData.day;
@@ -157,7 +164,7 @@ class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.ViewHolder> {
             holder.tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
             holder.tvTitle.setTextColor(cDayColor);
             holder.vBg.setVisibility(View.GONE);
-        } else if (dayData.isNotCurrentMonth) {
+        } else if (dayData.isNotCurrentMonth || (DatePickerPanelVpAdapter.InnerData.limitType == 1 && dayData.mills >= cMillsUtil00)) {
             //非当月颜色
             holder.tvTitle.setTypeface(Typeface.DEFAULT);
             holder.tvTitle.setTextColor(notCurrentMonthColor);

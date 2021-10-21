@@ -50,7 +50,6 @@ public class DatePickerPanelView extends ConstraintLayout {
     private int calendarItemHeight = 0;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
 
-
     public DatePickerPanelView(Context context) {
         this(context, null);
     }
@@ -72,6 +71,7 @@ public class DatePickerPanelView extends ConstraintLayout {
     private void inflateView() {
         //初始话先重置
         DatePickerPanelVpAdapter.InnerData.selectedDate = -1;
+        DatePickerPanelVpAdapter.InnerData.limitType = 0;
 
         LayoutInflater.from(getContext()).inflate(R.layout.date_picker_panel_view, this, true);
         magicIndicator = findViewById(R.id.indicator);
@@ -117,6 +117,18 @@ public class DatePickerPanelView extends ConstraintLayout {
     private void initView() {
         initPage();
         initIndicator();
+    }
+
+    /**
+     * 日历初始化后执行
+     *
+     * @param type
+     */
+    public void setLimitType(int type) {
+        DatePickerPanelVpAdapter.InnerData.limitType = type;
+        if (vpAdapter != null) {
+            vpAdapter.notifyDataSetChanged();
+        }
     }
 
     private int calIndex = -1;

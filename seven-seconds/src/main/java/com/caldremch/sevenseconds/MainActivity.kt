@@ -10,7 +10,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<View>(R.id.btn).setOnClickListener {
-            startActivity(Intent(this, MainActivityCalendar::class.java))
+
         }
+    }
+
+    fun click1(view: View) {
+        startActivity(Intent(this, MainActivityCalendar::class.java))
+    }
+
+    fun click2(view: View) {
+        startActivity(Intent(this, MainActivityCalendar::class.java))
     }
 }

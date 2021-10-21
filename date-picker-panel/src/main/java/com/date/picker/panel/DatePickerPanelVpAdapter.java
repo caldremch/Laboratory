@@ -24,6 +24,7 @@ public class DatePickerPanelVpAdapter extends RecyclerView.Adapter<BaseHolder> {
 
     public static class InnerData {
         public static long selectedDate = -1;
+        public static long limitType = 0;
     }
 
 
