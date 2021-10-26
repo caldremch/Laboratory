@@ -1,4 +1,3 @@
-//include ':looker'
 include ":image-core"
 include ":data-core"
 include ":caldremchx"
@@ -10,19 +9,11 @@ rootProject.name = "Laboratory"
 include ":app"
 include ":picker-view"
 includeBuild './version-plugin'
-//includeBuild './shadow-version-plugin'
 include ":matrix-commons"
 include ":matrix-arscutil"
 include ":matrix-android-lib"
 include ":matrix-trace-canary"
-//include ':matrix-gradle-plugin'
 project(':matrix-commons').projectDir = file('./matrix/matrix-commons')
 project(':matrix-arscutil').projectDir = file('./matrix/matrix-arscutil')
 project(':matrix-android-lib').projectDir = file('./matrix/matrix-android-lib')
 project(':matrix-trace-canary').projectDir = file('./matrix/matrix-trace-canary')
-//project(':matrix-gradle-plugin').projectDir=file('./matrix/matrix-gradle-plugin')
-//include ':native-logger'
-
-include ':demo'
-include ':date-picker-panel'
-include ':seven-seconds'
