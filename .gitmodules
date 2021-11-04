@@ -1,0 +1,6 @@
+[submodule "dialog"]
+	path = dialog
+	url = git@github.com:android-module/dialog.git
+[submodule "common"]
+	path = common
+	url = git@github.com:android-module/common.git
