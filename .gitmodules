@@ -1,0 +1,24 @@
+[submodule "version-plugin"]
+	path = version-plugin
+	url = git@github.com:android-module/version-plugin.git
+[submodule "common"]
+	path = common
+	url = git@github.com:android-module/common.git
+[submodule "dialog"]
+	path = dialog
+	url = git@github.com:android-module/dialog.git
+[submodule "utils"]
+	path = utils
+	url = git@github.com:android-module/utils.git
+[submodule "image-core"]
+	path = image-core
+	url = git@github.com:android-module/image-core.git
+[submodule "widget"]
+	path = widget
+	url = git@github.com:android-module/widget.git
+[submodule "picker-view"]
+	path = picker-view
+	url = git@github.com:android-module/picker-view.git
+[submodule "data-core"]
+	path = data-core
+	url = git@github.com:android-module/data-core.git

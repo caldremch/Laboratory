@@ -17,12 +17,12 @@ dependencyResolutionManagement {
     }
 }
 //rootProject.name = "Laboratory"
-//include(":widget")
-//include(":app")
-//include(":dialog")
-//include(":image-core")
-//include(":data-core")
-//include(":common")
-//include(":utils")
-//include(":picker-view")
+include(":app")
+include(":widget")
+include(":dialog")
+include(":image-core")
+include(":data-core")
+include(":common")
+include(":utils")
+include(":picker-view")
 includeBuild("./version-plugin")
