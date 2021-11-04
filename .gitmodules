@@ -11,3 +11,19 @@
 [submodule "data-core"]
 	path = data-core
 	url = git@github.com:android-module/data-core.git
+
+[submodule "picker-view"]
+	path = picker-view
+	url = git@github.com:android-module/picker-view.git
+
+[submodule "utils"]
+    	path = utils
+    	url = git@github.com:android-module/utils.git
+
+[submodule "widget"]
+	path = widget
+	url = git@github.com:android-module/widget.git
+
+[submodule "image-core"]
+    	path = image-core
+    	url = git@github.com:android-module/image-core.git
