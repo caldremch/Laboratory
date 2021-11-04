@@ -7,16 +7,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-//plugins {
-//    id 'com.caldremch.android.version'
-//    id 'kotlin-kapt'
-////    id 'com.tencent.matrix-plugin'
-//    id 'kotlin-parcelize'
-//}
-//id 'com.caldremch.android.version'
-//id 'org.jetbrains.kotlin.android'
-//id 'kotlin-kapt'
-////    id 'com.tencent.matrix-plugin'
 android {
     compileSdk = Deps.compileSdk
     defaultConfig {
