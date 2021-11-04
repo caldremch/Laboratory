@@ -5,6 +5,16 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+buildscript{
+    extra.apply {
+//        set("myPublishedGroupId", "io.github.caldremch")
+//        set("myPublishedGroupId1", "io.github.caldremch1")
+    }
+}
+
+
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
