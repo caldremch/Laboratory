@@ -7,3 +7,7 @@
 [submodule "version-plugin"]
 	path = version-plugin
 	url = git@github.com:android-module/version-plugin.git
+
+[submodule "data-core"]
+	path = data-core
+	url = git@github.com:android-module/data-core.git
