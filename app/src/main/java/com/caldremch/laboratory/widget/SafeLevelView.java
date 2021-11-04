@@ -1,4 +1,4 @@
-/*
+package com.caldremch.laboratory.widget;/*
 package com.caldremch.widget;
 
 import android.content.Context;

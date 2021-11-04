@@ -1,6 +1,6 @@
 //package com.caldremch.android.version
 //
-//import com.android.build.gradle.internal.dsl.SigningConfig
+//import com.android.build.gradle.kts.internal.dsl.SigningConfig
 //import java.io.File
 //
 ///**

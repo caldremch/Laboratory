@@ -19,7 +19,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *
  **/
 
-class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context),
+class WrapRefreshLayout(context: Context?) : ViewGroup(context),
     IRefresh {
 
     private var onLoadMoreListenerEx: OnLoadMoreListenerEx? = null
@@ -31,13 +31,13 @@ class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context),
     }
 
     private fun initView() {
-        setRefreshHeader(ClassicsHeader(context))
-        setRefreshFooter(ClassicsFooter(context))
+//        setRefreshHeader(ClassicsHeader(context))
+//        setRefreshFooter(ClassicsFooter(context))
     }
 
     private fun initEvent() {
-        setOnLoadMoreListener { layout -> onLoadMoreListenerEx?.onLoadMore(layout) }
-        setOnRefreshListener { layout -> onRefreshListenerEx?.onRefresh(layout) }
+//        setOnLoadMoreListener { layout -> onLoadMoreListenerEx?.onLoadMore(layout) }
+//        setOnRefreshListener { layout -> onRefreshListenerEx?.onRefresh(layout) }
     }
 
     override fun setOnLoadMoreListenerEx(listenerEx: OnLoadMoreListenerEx) {
@@ -53,12 +53,16 @@ class WrapRefreshLayout(context: Context?) : SmartRefreshLayout(context),
     }
 
     override fun onFinishRefreshAndLoadMore() {
-        finishRefresh(0)
-        finishLoadMore(0)
+//        finishRefresh(0)
+//        finishLoadMore(0)
     }
 
     override fun setEnableLoadMoreEx(enable: Boolean) {
-        setEnableLoadMore(enable)
+//        setEnableLoadMore(enable)
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+
     }
 
 }

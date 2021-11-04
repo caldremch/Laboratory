@@ -37,25 +37,26 @@ object Deps {
     const val a_name_whatever_you_want = "a_name_whatever_you_want"
 
     //version
-    const val minSdkVersion = 21
-    const val compileSdkVersion = 30
-    const val targetSdkVersion = 30
+    const val minSdk = 21
+    const val compileSdk = 31
+    const val targetSdk = 31
     const val versionCode = 1
     const val versionName = "1.0"
     const val applicationId = "com.caldremch.android.laboratory"
-    const val buildToolsVersion = "30.0.2"
-    const val kotlin_version = "1.5.10"
-    const val bintray_plugin_version = "1.8.5"
+    const val kotlin_version = "1.5.31"
 
     //support
-    const val appcompat = "androidx.appcompat:appcompat:1.1.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.3.1"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
     const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val ktx = "androidx.core:core-ktx:1.3.0"
+    const val ktx = "androidx.core:core-ktx:1.6.0"
     const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-    const val design = "com.google.android.material:material:1.1.0"
+    const val design = "com.google.android.material:material:1.4.0"
     const val gson = "com.google.code.gson:gson:2.6.2"
+    const val junit = "junit:junit:4.13.2"
+    const val junit_ext = "androidx.test.ext:junit:1.1.3"
+    const val espresso_core = "androidx.test.espresso:espresso-core:3.4.0"
 
     //android dep
     const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
@@ -73,8 +74,8 @@ object Deps {
     const val refresh_footer_classics = "com.scwang.smart:refresh-footer-classics:2.0.1"
     const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
     const val banner = "com.youth.banner:banner:2.0.12"
-    const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"
-    const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.4"
+    const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.7.0"
+    const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.7"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     const val viewbinding = "com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1"
 
@@ -118,11 +119,11 @@ object Deps {
     /**
      * find properties in local.properties
      */
-    fun findInLocalProperties(project: Project, key: String): String? {
-        val properties = java.util.Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-        return properties.getProperty(key)
-    }
+//    fun findInLocalProperties(project: Project, key: String): String? {
+//        val properties = java.util.Properties()
+//        properties.load(project.rootProject.file("local.properties").inputStream())
+//        return properties.getProperty(key)
+//    }
 
     fun addUsualDep() {
 

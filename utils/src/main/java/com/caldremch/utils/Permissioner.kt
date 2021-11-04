@@ -112,7 +112,7 @@ class Permissioner : FragmentActivity() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
             var opsManager: AppOpsManager? = null
             for (permission in permissions) {
-                var result = context.checkPermission(permission!!, Process.myPid(), Process.myUid())
+                var result = context.checkPermission(permission, Process.myPid(), Process.myUid())
                 if (result == PackageManager.PERMISSION_DENIED) {
                     return false
                 }
@@ -146,11 +146,9 @@ class Permissioner : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.statusBarColor = Color.TRANSPARENT
-        }
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.statusBarColor = Color.TRANSPARENT
         val hideView = View(this).apply { visibility = View.INVISIBLE }
         setContentView(hideView)
         val params = window.attributes

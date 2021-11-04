@@ -1,8 +1,8 @@
 //package com.caldremch.android.version
 //
-//import com.android.build.gradle.AppExtension
-//import com.android.build.gradle.internal.dsl.BuildType
-//import com.android.build.gradle.internal.dsl.SigningConfig
+//import com.android.build.gradle.kts.AppExtension
+//import com.android.build.gradle.kts.internal.dsl.BuildType
+//import com.android.build.gradle.kts.internal.dsl.SigningConfig
 //import com.android.builder.core.BuilderConstants
 //import com.android.ide.common.signing.KeystoreHelper
 //import org.gradle.api.NamedDomainObjectContainer

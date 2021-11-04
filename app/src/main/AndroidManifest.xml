@@ -24,7 +24,7 @@
             android:name="UMENG_CHANNEL"
             android:value="test" />
 
-        <activity android:name="com.caldremch.android.entry.EntryActivity">
+        <activity android:name="com.caldremch.android.entry.EntryActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,14 +33,15 @@
         </activity>
         <activity
             android:name=".activity.PageListActivity"
+            android:exported="true"
             android:launchMode="singleTask" />
         <activity android:name=".activity.PageListAdapterActivity" />
         <activity android:name=".activity.MainActivity" />
 
         <provider
+            android:exported="true"
             android:authorities="${applicationId}.provider"
             android:name=".CustomFileProvider"
-            android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"

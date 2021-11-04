@@ -78,9 +78,9 @@ abstract class BaseDialog private constructor() : LifeDialogFragment() {
     //设置弹窗样式
     override fun getTheme(): Int {
         var themeId = super.getTheme()
-        when (anim) {
-            DialogAnim.BOTTOM_IN_BOTTOM_OUT -> themeId = R.style.cm_dialog_bottom_style
-        }
+//        when (anim) {
+//            DialogAnim.BOTTOM_IN_BOTTOM_OUT -> themeId = R.style.cm_dialog_bottom_style
+//        }
         return themeId
     }
 

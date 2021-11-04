@@ -1,42 +1,10 @@
-buildscript {
-    ext {
-        kotlin_version = '1.5.31'
-    }
-    repositories {
-        mavenLocal()
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath('com.android.tools.build:gradle:4.2.2')
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-//        classpath ("com.tencent.matrix:matrix-gradle-plugin:${MATRIX_VERSION}") { changing = true }
-    }
-}
-allprojects {
-    repositories {
-        mavenLocal()
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-        mavenCentral()
-        google()
-        maven { url "https://www.jitpack.io" }
-    }
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '7.2.0-alpha02' apply false
+    id 'com.android.library' version '7.2.0-alpha02' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-ext{
-    GROUP = 'com.tencent.matrix'
-    VERSION_NAME = "1.0.0"
-}
-
