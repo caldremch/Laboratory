@@ -22,3 +22,6 @@
 [submodule "data-core"]
 	path = data-core
 	url = git@github.com:android-module/data-core.git
+[submodule "gradle-maven-kotlin-dsl"]
+	path = gradle-maven-kotlin-dsl
+	url = git@github.com:caldremch/gradle-maven-kotlin-dsl.git
