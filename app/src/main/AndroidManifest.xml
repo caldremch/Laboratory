@@ -34,12 +34,13 @@
         <activity
             android:name=".activity.PageListActivity"
             android:exported="true"
+            android:taskAffinity=""
             android:launchMode="singleTask" />
         <activity android:name=".activity.PageListAdapterActivity" />
         <activity android:name=".activity.MainActivity" />
 
         <provider
-            android:exported="true"
+            android:exported="false"
             android:authorities="${applicationId}.provider"
             android:name=".CustomFileProvider"
             android:grantUriPermissions="true">
@@ -48,6 +49,7 @@
                 android:resource="@xml/cache_provider" />
 
         </provider>
+
         <service android:name=".LaboratoryService"
             android:enabled="true"
             android:permission="com.caldremch.REMOTE_SERVICE"
