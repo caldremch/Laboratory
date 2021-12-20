@@ -21,16 +21,16 @@ import com.caldremch.utils.FileUtils
  **/
 @Entry
 class FileUtilsEntry : IEntry {
+
     override fun getTitle(): String {
         return "FileUtils"
     }
 
-    override fun onClick(context: Context?) {
+    override fun onClick(context: Context) {
         val bitmap = Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.RED)
         FileUtils.savePublicPicture(bitmap, "androidQ")
     }
-
 
 }
