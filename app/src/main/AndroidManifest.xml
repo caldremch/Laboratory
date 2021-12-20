@@ -38,6 +38,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".activity.PageListAdapterActivity" />
         <activity android:name=".activity.MainActivity" />
+        <activity android:name=".BrowserActivity" />
 
         <provider
             android:exported="false"
