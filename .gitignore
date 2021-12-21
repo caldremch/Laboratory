@@ -18,3 +18,5 @@ upload_aar.gradle
 /matrix/matrix-arscutil/build/
 /matrix/matrix-commons/build/
 /version-plugin/build/
+/native-laboratory/Core/cmake-build-debug/
+/native-laboratory/Core-Client/cmake-build-debug/
