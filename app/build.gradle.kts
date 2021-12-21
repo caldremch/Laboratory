@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":utils"))
     implementation(project(":common"))
     implementation(project(":image-core"))
+    implementation(project(":native-laboratory"))
 //    implementation(project(":native-logger"))
     implementation(Deps.entry)
     implementation(Deps.eventbus)
