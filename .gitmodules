@@ -1,0 +1,24 @@
+[submodule "Laboratory/common"]
+	path = Laboratory/common
+	url = git@github.com:android-module/common.git
+[submodule "Laboratory/dialog"]
+	path = Laboratory/dialog
+	url = git@github.com:android-module/dialog.git
+[submodule "Laboratory/utils"]
+	path = Laboratory/utils
+	url = git@github.com:android-module/utils.git
+[submodule "Laboratory/image-core"]
+	path = Laboratory/image-core
+	url = git@github.com:android-module/image-core.git
+[submodule "Laboratory/widget"]
+	path = Laboratory/widget
+	url = git@github.com:android-module/widget.git
+[submodule "Laboratory/picker-view"]
+	path = Laboratory/picker-view
+	url = git@github.com:android-module/picker-view.git
+[submodule "Laboratory/data-core"]
+	path = Laboratory/data-core
+	url = git@github.com:android-module/data-core.git
+[submodule "Laboratory/gradle-maven-kotlin-dsl"]
+	path = Laboratory/gradle-maven-kotlin-dsl
+	url = git@github.com:caldremch/gradle-maven-kotlin-dsl.git

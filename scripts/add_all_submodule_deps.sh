@@ -2,14 +2,14 @@
  # @Author: Caldrech
  # @Date: 2021-12-25 00:11:03
  # @LastEditors: Caldrech
- # @LastEditTime: 2021-12-25 00:36:24
+ # @LastEditTime: 2021-12-25 00:46:04
  # @Description: 
 ### 
 pushd ../
 pwd
 
 
-git  submodule add git@github.com:caldrech/gradle-maven-kotlin-dsl.git Laboratory/gradle-maven-kotlin-dsl
+git  submodule add git@github.com:caldremch/gradle-maven-kotlin-dsl.git Laboratory/gradle-maven-kotlin-dsl
 git  submodule add git@github.com:android-module/common.git Laboratory/common
 git  submodule add git@github.com:android-module/dialog.git  Laboratory/dialog
 git  submodule add git@github.com:android-module/utils.git Laboratory/utils
