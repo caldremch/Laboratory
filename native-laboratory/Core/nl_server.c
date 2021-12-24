@@ -22,7 +22,7 @@ int nl_server_start() {
     struct sockaddr_in local_address;
 
     unsigned int nl_server_port, listener_sum;
-    nl_server_port = 1990;
+    nl_server_port = 7777;
     listener_sum = 10;
     serverfd = socket(AF_INET, SOCK_STREAM, 0);
     if (serverfd == -1) {
@@ -48,6 +48,14 @@ int nl_server_start() {
 
     printf("bind ok\n");
 
+
+    if (listen(serverfd, listener_sum) == -1) {
+        perror("listener_error:\n");
+        return -3;
+    }
+
+    printf("listen ok\n");
+
 // 监控文件描述符集合(可以理解为一个列表, 用于存储fd)
     fd_set client_fd_set;
 
@@ -64,35 +72,34 @@ int nl_server_start() {
 
     //用来记录链接数量
     int conn_count = 0;
-
     max_sock = serverfd;
-
     char buffer[1024];
 
     int ret = 0;
 
     while (1) {
-        // 初始化文件描述符到集合, 将数组清理
+        // 初始化文件描述符到集合, 将数组清理,每次循环都要清空集合，否则不能检测描述符变化
         FD_ZERO(&client_fd_set);
 
         // 加入服务器描述符 serverfd是socket执行后返回的文件描述符
         FD_SET(serverfd, &client_fd_set);
 
-
         //设置超时时间
         tv.tv_sec = 30;//30秒
         tv.tv_usec = 0;
 
-        // 把活动的句柄加入到文件描述符中
+        // 把活动的句柄加入到文件描述符中, 下面新建连接时会加入
         for (int i = 0; i < 5; ++i) {
             if (client_sock_fd[i] != 0) {
-                FD_SET(client_sock_fd, &client_fd_set);
+                FD_SET(client_sock_fd[i], &client_fd_set);
             }
         }
 
-        //select 监听client_fd_set
-        printf("max_sock=%d\n", max_sock);
+//https://baike.baidu.com/item/select/12504672 select
+//max_sock为什么要+1, 第一个参数是指集合中所有文件描述符的范围, 即所有文件描述符的最大值加1，不能错！
         ret = select(max_sock + 1, &client_fd_set, NULL, NULL, &tv);
+
+        printf("文件描述符发生变化:%d\n", ret);
 
         if (ret < 0) {
             perror("select error\n");
@@ -123,40 +130,43 @@ int nl_server_start() {
                 }
             }
 
-            // 检查是否有新的连接，如果有，接收连接，加入到client_sockfd
-            if (FD_ISSET(serverfd, &client_fd_set)) {
-                struct sockaddr_in client_addr;
-                size_t size = sizeof(struct sockaddr_in);
-                int sock_client = accept(serverfd, (struct sockaddr *) (&client_addr), (unsigned int *) &size);
-                if (sock_client < 0) {
-                    perror("accept error\n");
-                    continue;
+        }
+
+
+        //FD_ISSET 判断serverfd socket是否可读, 可以读的话, 就发挥非0, 所以如果在上面读取完数据后, 这里就返回0
+        int fd_isset = FD_ISSET(serverfd, &client_fd_set);
+        if (fd_isset) { //判断描述符fd是否在给定的描述符集fdset中,当描述符fd在描述符集fdset中返回非零值，否则，返回零。
+            struct sockaddr_in client_addr;
+            size_t size = sizeof(struct sockaddr_in);
+            int sock_client = accept(serverfd, (struct sockaddr *) (&client_addr), (unsigned int *) &size);
+            if (sock_client < 0) {
+                perror("accept error\n");
+                continue;
+            }
+
+
+            if (conn_count < 5) {
+                client_sock_fd[conn_count++] = sock_client;
+                bzero(buffer, 0);
+                strcpy(buffer, "this is server! welcome\n");
+                send(sock_client, buffer, sizeof(buffer), 0);
+                printf("\nnew connection client[%d] %s:%d\n", conn_count - 1, inet_ntoa(client_addr.sin_addr),
+                       ntohs(client_addr.sin_port));
+                bzero(buffer, sizeof(buffer));
+                ret = recv(sock_client, buffer, sizeof(buffer), 0);
+                if (ret < 0) {
+                    perror("recv error\n");
+                    close(serverfd);
+                    return -1;
                 }
 
-
-                if (conn_count < 5) {
-                    client_sock_fd[conn_count++] = sock_client;
-                    bzero(buffer, 0);
-                    strcpy(buffer, "this is server! welcome\n");
-                    send(sock_client, buffer, sizeof(buffer), 0);
-                    printf("\nnew connection client[%d] %s:%d\n", conn_count - 1, inet_ntoa(client_addr.sin_addr),
-                           ntohs(client_addr.sin_port));
-                    bzero(buffer, sizeof(buffer));
-                    ret = recv(sock_client, buffer, sizeof(buffer), 0);
-                    if (ret < 0) {
-                        perror("recv error\n");
-                        close(serverfd);
-                        return -1;
-                    }
-
-                    printf("recv: %s\n", buffer);
-                    if (sock_client > max_sock) {
-                        max_sock = sock_client;
-                    }
-                } else {
-                    printf("max conn, quit!\n");
-                    break;
+                printf("recv: %s\n", buffer);
+                if (sock_client > max_sock) {
+                    max_sock = sock_client;
                 }
+            } else {
+                printf("max conn, quit!\n");
+                break;
             }
         }
     }
@@ -168,7 +178,7 @@ int nl_server_start() {
         }
     }
 
-    close(serverfd);
+//    close(serverfd);
     return 0;
 }
 

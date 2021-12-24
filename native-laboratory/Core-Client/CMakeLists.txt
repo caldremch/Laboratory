@@ -3,4 +3,4 @@ project(Core C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Core main.c nl_server.c nl_server.h nl_client.c nl_client.h)
+add_executable(Core main.c nl_client.c nl_client.h)

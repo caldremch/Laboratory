@@ -16,11 +16,12 @@
 int nl_client() {
     int conn_fd = 0;
     struct sockaddr_in client;
-    char*server_ip_addr = "192.168.101.8";
+    char*server_ip_addr = "127.0.0.1";
 
     client.sin_family = AF_INET;
-    client.sin_port = htons(1990);
+    client.sin_port = htons(7777);
     client.sin_addr.s_addr = inet_addr(server_ip_addr);
+    //socket函数介绍https://blog.csdn.net/xc_tsao/article/details/44123331
     conn_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if(conn_fd <0){
