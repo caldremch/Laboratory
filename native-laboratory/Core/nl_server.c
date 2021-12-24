@@ -178,7 +178,7 @@ int nl_server_start() {
         }
     }
 
-//    close(serverfd);
+    close(serverfd);
     return 0;
 }
 
