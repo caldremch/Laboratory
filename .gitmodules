@@ -1,27 +1,27 @@
 [submodule "version-plugin"]
 	path = version-plugin
 	url = git@github.com:android-module/version-plugin.git
-[submodule "common"]
-	path = common
+[submodule "Laboratory/common"]
+	path = Laboratory/common
 	url = git@github.com:android-module/common.git
-[submodule "dialog"]
-	path = dialog
+[submodule "Laboratory/dialog"]
+	path = Laboratory/dialog
 	url = git@github.com:android-module/dialog.git
-[submodule "utils"]
-	path = utils
+[submodule "Laboratory/utils"]
+	path = Laboratory/utils
 	url = git@github.com:android-module/utils.git
-[submodule "image-core"]
-	path = image-core
+[submodule "Laboratory/image-core"]
+	path = Laboratory/image-core
 	url = git@github.com:android-module/image-core.git
-[submodule "widget"]
-	path = widget
+[submodule "Laboratory/widget"]
+	path = Laboratory/widget
 	url = git@github.com:android-module/widget.git
-[submodule "picker-view"]
-	path = picker-view
+[submodule "Laboratory/picker-view"]
+	path = Laboratory/picker-view
 	url = git@github.com:android-module/picker-view.git
-[submodule "data-core"]
-	path = data-core
+[submodule "Laboratory/data-core"]
+	path = Laboratory/data-core
 	url = git@github.com:android-module/data-core.git
-[submodule "gradle-maven-kotlin-dsl"]
-	path = gradle-maven-kotlin-dsl
+[submodule "Laboratory/gradle-maven-kotlin-dsl"]
+	path = Laboratory/gradle-maven-kotlin-dsl
 	url = git@github.com:caldremch/gradle-maven-kotlin-dsl.git

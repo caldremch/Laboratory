@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cm_ok">OK</string>
+    <string name="cm__net_error">网络错误</string>
+    <string name="cm_retry">重试</string>
+</resources>

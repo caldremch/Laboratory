@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--item View id-->
+    <item name="civ_v_bottom_line" type="id" /> <!--底部线段-->
+    <item name="civ_tv_right_title" type="id" /><!--右边标题-->
+    <item name="civ_tv_left_title" type="id" /> <!--左边标标题-->
+    <item name="civ_iv_right" type="id" /> <!--右边图片-->
+    <item name="civ_iv_left" type="id" /> <!--左边图片-->
+    <!--item View id-->
+</resources>

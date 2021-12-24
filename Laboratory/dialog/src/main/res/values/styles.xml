@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="owner_edit_style">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:background">@drawable/owner_edit_focus_selector</item>
+        <item name="android:textColorHint">@android:color/holo_red_dark</item>
+        <item name="android:textSize">14sp</item>
+        <!--        <item name="android:digits"></item>-->
+    </style>
+</resources>

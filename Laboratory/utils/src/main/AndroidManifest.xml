@@ -1,0 +1,29 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.caldremch.utils">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application>
+
+        <provider
+            android:name=".UtilsProvider"
+            android:authorities="${applicationId}.UtilsProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider" />
+        </provider>
+
+        <activity
+            android:name=".Permissioner"
+            android:theme="@style/NoTitleTranslucentTheme" />
+
+        <activity
+            android:name=".ActivityDelegate$ActivityDelegateInner"
+            android:theme="@style/NoTitleTranslucentTheme" />
+
+    </application>
+</manifest>

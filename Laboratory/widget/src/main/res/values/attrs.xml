@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--CommItemBar-->
+    <declare-styleable name="CommonItemView">
+        <!--        <attr name="bar_type">-->
+        <!--            <enum name="TYPE_TEXT" value="0" />-->
+        <!--            <enum name="TYPE_TEXT_IMG" value="1" />-->
+        <!--            <enum name="TYPE_TEXT_PURE" value="2" />-->
+        <!--            <enum name="TYPE_TEXT_IMG_PURE" value="3" />-->
+        <!--        </attr>-->
+        <attr name="civ_title" format="string" />
+        <attr name="civ_right_title" format="string" />
+        <attr name="civ_left_title" format="string" />
+        <attr name="civ_show_bottom_line" format="boolean" />
+        <attr name="civ_show_right_arrow" format="boolean" />
+        <attr name="civ_left_image" format="reference" />
+        <!--        <attr name="left_title_bold" format="boolean" />-->
+        <!--        <attr name="right_title" format="string" />-->
+        <!--        <attr name="red_count" format="string" />-->
+        <!--        <attr name="left_title_color" format="color|reference" />-->
+        <!--        <attr name="right_title_color" format="color|reference" />-->
+        <!--        <attr name="show_red_dot" format="boolean" />-->
+        <!--        <attr name="show_bottom_line" format="boolean" />-->
+        <!--        <attr name="show_left_image" format="boolean" />-->
+        <!--        <attr name="bottom_line_full" format="boolean" />-->
+        <!--        <attr name="bottom_line_color" format="color|reference" />-->
+        <!--        <attr name="bottom_line_height" format="dimension" />-->
+        <!--        <attr name="left_image" format="reference" />-->
+    </declare-styleable>
+
+</resources>
