@@ -1,17 +1,12 @@
 package com.caldremch.laboratory.fragment
 
-import android.content.Context
-import android.util.Log
-import by.kirich1409.viewbindingdelegate.viewBinding
-import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
 import com.caldremch.android.entry.EntryRecyclerView
-import com.caldremch.laboratory.BrowserActivity
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
-import com.caldremch.laboratory.databinding.FragmentBrowserBinding
-import com.caldremch.laboratory.databinding.FragmentHandlerBinding
-import com.caldremch.laboratory.util.FragmentUtil
+import com.caldremch.laboratory.basic.GenericityL
+import com.caldremch.laboratory.ktx.entry
+import com.caldremch.laboratory.ktx.html
 
 /**
  *
@@ -32,14 +27,10 @@ class BrowserFragment : LaboratoryFragment() {
 
     override fun initView() {
         val list = arrayListOf<IEntry>()
-        list.add(object : IEntry {
-            override fun getTitle(): String {
-                return "ThreadLocal"
-            }
-
-            override fun onClick(context: Context) {
-                BrowserActivity.open(context, "https://www.cnblogs.com/fengzheng/p/8690253.html")
-            }
+        list.add(html("ThreadLocal", "https://www.cnblogs.com/fengzheng/p/8690253.html"))
+        list.add(html("Generics", "file:android_asset/Genericity.html"))
+        list.add(entry(GenericityL()){
+            it.a()
         })
         val rv = findViewById<EntryRecyclerView>(R.id.rv)
         rv.apply {
