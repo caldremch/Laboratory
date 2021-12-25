@@ -36,3 +36,13 @@ inline fun <reified T> entry(t: T, crossinline c:((t:T)->Unit)):IEntry{
         }
     }
 }
+inline fun <reified T> entry(crossinline c:((t:T)->Unit)):IEntry{
+    return object : IEntry {
+        override fun getTitle(): String {
+            return T::class.java.name
+        }
+        override fun onClick(context: Context) {
+            c.invoke(T::class.java.newInstance())
+        }
+    }
+}

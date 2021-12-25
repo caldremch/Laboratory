@@ -70,6 +70,7 @@ dependencies {
     implementation(Deps.leakcanary)
     implementation(Deps.coroutines)
     implementation(Deps.viewbinding)
+    implementation(Deps.jol)
 //    implementation(project(":PickerView"))
     implementation(project(":dialog"))
 //    implementation(project(":matrix-android-lib"))

@@ -5,6 +5,7 @@ import com.caldremch.android.entry.EntryRecyclerView
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
 import com.caldremch.laboratory.basic.GenericityL
+import com.caldremch.laboratory.basic.InstanceGenerationLaboratory
 import com.caldremch.laboratory.ktx.entry
 import com.caldremch.laboratory.ktx.html
 
@@ -30,6 +31,9 @@ class BrowserFragment : LaboratoryFragment() {
         list.add(html("ThreadLocal", "https://www.cnblogs.com/fengzheng/p/8690253.html"))
         list.add(html("Generics", "file:android_asset/Genericity.html"))
         list.add(entry(GenericityL()){
+            it.a()
+        })
+        list.add(entry<InstanceGenerationLaboratory> {
             it.a()
         })
         val rv = findViewById<EntryRecyclerView>(R.id.rv)

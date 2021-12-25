@@ -99,6 +99,9 @@ object Deps {
     const val activity = "androidx.activity:activity-ktx:1.3.1"
     const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
 
+
+    const val jol = "org.openjdk.jol:jol-core:0.16"
+
     /**
      * 添加默认的maven url
 
