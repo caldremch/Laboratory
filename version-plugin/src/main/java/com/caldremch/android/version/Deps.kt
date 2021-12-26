@@ -77,7 +77,7 @@ object Deps {
     const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.7.0"
     const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.7"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
-    const val viewbinding = "com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1"
+    const val viewbinding = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3"
 
 
     //maven url

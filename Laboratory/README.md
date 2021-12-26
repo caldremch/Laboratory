@@ -19,8 +19,16 @@
 ## 二、Android
 
 
+## 三、C/C++
 
-## 三、工具
+1. [Linux IO模式及 select、poll、epoll详解](https://segmentfault.com/a/1190000003063859)
+
+
+## 四、github项目参考
+
+1. [IO-Multiplexing](https://github.com/Liu-YT/IO-Multiplexing)
+
+## 五、工具
 
 * Android Studio
 * javap -p(Show all classes and members) -s(Print internal type signatures) -v(Print additional information) -c(Disassemble the code) -l(Print line number and local variable tables)

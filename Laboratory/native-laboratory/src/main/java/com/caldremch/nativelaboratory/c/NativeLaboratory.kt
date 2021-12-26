@@ -18,7 +18,12 @@ object NativeLaboratory {
     }
 
 
-    external fun startServer()
+    external fun startSelectServer()
+    external fun startPollServer()
+    external fun startEpollServer()
 
+    external fun startSelectClient()
+    external fun startPollClient()
+    external fun startEpollClient()
 
 }
