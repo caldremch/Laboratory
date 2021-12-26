@@ -3,7 +3,7 @@
 //
 //https://github.com/Liu-YT/IO-Multiplexing
 
-#include "nl_server.h"
+#include "nl_select_server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -12,8 +12,13 @@
 #include <time.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <strings.h>
+#include <nl-log.h>
 
-int nl_server_start() {
+log_handler g_nl_log_handler;
+
+
+int nl_select_server_start() {
 
     int serverfd, acceptfd;
 
@@ -22,15 +27,15 @@ int nl_server_start() {
     struct sockaddr_in local_address;
 
     unsigned int nl_server_port, listener_sum;
-    nl_server_port = 7777;
+    nl_server_port = 7778;
     listener_sum = 10;
     serverfd = socket(AF_INET, SOCK_STREAM, 0);
     if (serverfd == -1) {
-        perror("socket error");
+        nl_perror("socket error");
         return -1;
     }
 
-    printf("socket success: %d\n", serverfd);
+    nl_printf("socket success: %d\n", serverfd);
 
     local_address.sin_family = AF_INET;
     //https://baike.baidu.com/item/htons%28%29/10081963
@@ -42,19 +47,19 @@ int nl_server_start() {
 
     //绑定端口
     if (bind(serverfd, (struct sockaddr *) &local_address, sizeof(struct sockaddr)) == -1) {
-        perror("bind error");
+        nl_perror("bind error");
         return -2;
     }
 
-    printf("bind ok\n");
+    nl_printf("bind ok\n");
 
 
     if (listen(serverfd, listener_sum) == -1) {
-        perror("listener_error:\n");
+        nl_perror("listener_error:\n");
         return -3;
     }
 
-    printf("listen ok\n");
+    nl_printf("listen ok\n");
 
 // 监控文件描述符集合(可以理解为一个列表, 用于存储fd)
     fd_set client_fd_set;
@@ -99,13 +104,13 @@ int nl_server_start() {
 //max_sock为什么要+1, 第一个参数是指集合中所有文件描述符的范围, 即所有文件描述符的最大值加1，不能错！
         ret = select(max_sock + 1, &client_fd_set, NULL, NULL, &tv);
 
-        printf("文件描述符发生变化:%d\n", ret);
+        nl_printf("文件描述符发生变化:%d\n", ret);
 
         if (ret < 0) {
-            perror("select error\n");
+            nl_perror("select error\n");
             break;
         } else if (ret == 0) {
-            printf("timeout \n");
+            nl_printf("timeout \n");
             continue;
         }
 
@@ -119,14 +124,14 @@ int nl_server_start() {
              * 以便进行接下来的处理操作。当描述符fd在描述符集fdset中返回非零值，否则，返回零
              */
             if (FD_ISSET(client_sock_fd[i], &client_fd_set)) {//不在则返回0
-                printf("start recv from client[%d]\n", i);
+                nl_printf("start recv from client[%d]\n", i);
                 ret = recv(client_sock_fd[i], buffer, sizeof(buffer), 0);//最后一个参数一般设置为0
                 if (ret <= 0) {
-                    printf("client[%d] close\n", i);
+                    nl_printf("client[%d] close\n", i);
                     close(client_sock_fd[i]);
                     client_sock_fd[i] = 0;
                 } else {
-                    printf("recv from client[%d] %s\n", i, buffer);
+                    nl_printf("recv from client[%d] %s\n", i, buffer);
                 }
             }
 
@@ -140,7 +145,7 @@ int nl_server_start() {
             size_t size = sizeof(struct sockaddr_in);
             int sock_client = accept(serverfd, (struct sockaddr *) (&client_addr), (unsigned int *) &size);
             if (sock_client < 0) {
-                perror("accept error\n");
+                nl_perror("accept error\n");
                 continue;
             }
 
@@ -150,22 +155,22 @@ int nl_server_start() {
                 bzero(buffer, 0);
                 strcpy(buffer, "this is server! welcome\n");
                 send(sock_client, buffer, sizeof(buffer), 0);
-                printf("\nnew connection client[%d] %s:%d\n", conn_count - 1, inet_ntoa(client_addr.sin_addr),
+                nl_printf("\nnew connection client[%d] %s:%d\n", conn_count - 1, inet_ntoa(client_addr.sin_addr),
                        ntohs(client_addr.sin_port));
                 bzero(buffer, sizeof(buffer));
                 ret = recv(sock_client, buffer, sizeof(buffer), 0);
                 if (ret < 0) {
-                    perror("recv error\n");
+                    nl_perror("recv error\n");
                     close(serverfd);
                     return -1;
                 }
 
-                printf("recv: %s\n", buffer);
+                nl_printf("recv: %s\n", buffer);
                 if (sock_client > max_sock) {
                     max_sock = sock_client;
                 }
             } else {
-                printf("max conn, quit!\n");
+                nl_printf("max conn, quit!\n");
                 break;
             }
         }
@@ -180,6 +185,10 @@ int nl_server_start() {
 
     close(serverfd);
     return 0;
+}
+
+void nl_server_init(void (*log_handler)(const char *)) {
+    g_nl_log_handler = log_handler;
 }
 
 /**

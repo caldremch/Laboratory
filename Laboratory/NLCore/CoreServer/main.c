@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "nl_client.h"
+#include "nl_select_server.h"
 int main() {
     printf("Hello, World!\n");
-    nl_client();
+    nl_select_server_start();
     return 0;
 }
