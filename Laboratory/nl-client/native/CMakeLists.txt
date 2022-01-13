@@ -14,11 +14,13 @@ find_library(
 
               log )
 
-set(NLLOG ${CMAKE_CURRENT_SOURCE_DIR}/../NLCore/NLLog)
-add_subdirectory(${NLLOG} NLLog)
-
+set(NLCLIENT ${CMAKE_CURRENT_SOURCE_DIR}/../../NLCore/CoreClient)
+#set(NLLOG ${CMAKE_CURRENT_SOURCE_DIR}/../NLCore/NLLog)
+add_subdirectory(${NLCLIENT}  CoreClient)
+#add_subdirectory(${NLLOG} NLLog)
 target_link_libraries(
         native-lib
-        NLLog
+        CoreClient
+#        NLLog
         ${log-lib} )
 
