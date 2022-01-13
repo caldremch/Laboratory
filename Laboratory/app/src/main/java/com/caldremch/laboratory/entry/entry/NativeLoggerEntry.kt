@@ -23,9 +23,7 @@ class NativeLoggerEntry : IEntry {
     }
 
     override fun onClick(context: Context) {
-        val path = context.getExternalFilesDir("test_mmap")?.absolutePath + "/a.txt"
-//        NativeLogger.saveToFile(path, "i am content hahahh")
-//        val a = 1 / 0
-//        Process.killProcess(Process.myPid())
+
+
     }
 }
