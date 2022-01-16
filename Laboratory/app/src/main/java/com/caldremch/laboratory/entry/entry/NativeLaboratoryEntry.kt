@@ -15,7 +15,7 @@ import com.caldremch.nativelaboratory.c.RenderActionEngine
  *
  * @date 2021/1/24 19:45
  *
- * @description
+ * @description  由jni层调用回调
  *
  *
  */

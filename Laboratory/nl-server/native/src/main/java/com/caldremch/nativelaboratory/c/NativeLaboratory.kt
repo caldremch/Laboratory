@@ -16,14 +16,7 @@ object NativeLaboratory {
     init {
         System.loadLibrary("native-lib")
     }
-
-
     external fun startSelectServer()
     external fun startPollServer()
     external fun startEpollServer()
-
-    external fun startSelectClient()
-    external fun startPollClient()
-    external fun startEpollClient()
-
 }
