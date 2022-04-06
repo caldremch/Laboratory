@@ -21,4 +21,8 @@ class FloatingIntent(
     var tag: String = targetClass.javaClass.canonicalName ?: ""
 ){
     var `when` :Long = 0 //延迟多久执行
+    override fun toString(): String {
+        return "FloatingIntent(targetClass=$targetClass, bundle=$bundle, tag='$tag', `when`=$`when`)"
+    }
+
 }

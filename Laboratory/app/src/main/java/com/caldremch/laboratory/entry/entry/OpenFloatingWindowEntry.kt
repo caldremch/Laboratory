@@ -33,7 +33,7 @@ class OpenFloatingWindowEntry : IEntry {
         }
 
         //开启10个线程
-        for (x in 0..10) {
+        for (x in 0 until 2) {
             Thread {
                 //展示悬浮窗
                 val bundle = Bundle()

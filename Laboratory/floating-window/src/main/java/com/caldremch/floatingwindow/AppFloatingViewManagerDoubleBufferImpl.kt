@@ -3,6 +3,7 @@ package com.caldremch.floatingwindow
 import android.content.Context
 import android.util.Log
 import com.caldremch.floatingwindow.callback.FloatingViewOnShow
+import com.caldremch.floatingwindow.model.FloatViewBuffer
 import java.util.*
 
 /**
@@ -17,68 +18,62 @@ import java.util.*
  *
  *
  */
-class AppFloatingViewManagerImpl : IFloatingViewManager {
+class AppFloatingViewManagerDoubleBufferImpl : IFloatingViewManager {
 
     private val TAG = "FloatingViewTAG"
     private val mWindowManager = AppViewManager.INSTANCE.windowManager
     private val mContext: Context by lazy { Utils.context }
-
-    //    private val mFloatingViews: MutableList<AbsFloatingView> by lazy { mutableListOf() }
-    private val mFloatingViews: LinkedList<AbsFloatingView> by lazy { LinkedList() }
+    private val buffer = FloatViewBuffer()
+    private var dismissPreFloatingView = true
 
     override fun attachToRecover() {
         try {
-            for (floatingView in mFloatingViews) {
+            buffer.front?.let {
                 //重新显示View
                 mWindowManager.addView(
-                    floatingView.realFloatingView,
-                    floatingView.systemLayoutParams
+                    it.virtualView.realFloatingView,
+                    it.virtualView.systemLayoutParams
                 )
-                floatingView.status = FloatingViewEnum.ATTACH
+                it.virtualView.status = FloatingViewEnum.ATTACH
                 //重新显示, 不需要更新信息(一般是从后台切换回来)
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
 
-    private var showOnlyType = false
-    private var dismissPreFloatingView = true
-
-
     override fun attach(floatingIntent: FloatingIntent) {
         try {
-            //同类型只展示一个
 
-
-            if (showOnlyType) {
-                for (floatingView in mFloatingViews) {
-                    if (floatingIntent.targetClass.isInstance(floatingView)) {
-                        //更新信息
-                        floatingView.onUpdate(floatingIntent.bundle)
-                        return
-                    }
-                }
+            if (buffer.front != null) {
+                //将当前窗口切换到back, 准备被销毁
+                buffer.back = buffer.front
+                buffer.front = null
             }
 
             val floatVirtualView = floatingIntent.targetClass.newInstance()
             if (dismissPreFloatingView) {
                 floatVirtualView.floatingViewOnShow = object : FloatingViewOnShow {
                     override fun onShow() {
-
+                        //删除intent
+                        Log.d(TAG, "onShow: 销毁${buffer.back}")
+                        buffer.back?.let { destroy(it.intent) }
                     }
                 }
             }
-            mFloatingViews.add(floatVirtualView)
             floatVirtualView.performCreate(mContext)
             mWindowManager.addView(
                 floatVirtualView.realFloatingView,
                 floatVirtualView.systemLayoutParams
             )
+            buffer.front = FloatViewBuffer.Node(floatingIntent, floatVirtualView)
+            Log.d(TAG, "onShow: 展示${buffer.front}")
             floatVirtualView.status = FloatingViewEnum.ATTACH
             floatVirtualView.onResume()
             floatVirtualView.onUpdate(floatingIntent.bundle) //数据设置
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -86,25 +81,19 @@ class AppFloatingViewManagerImpl : IFloatingViewManager {
 
 
     override fun detach() {
-        val it = mFloatingViews.iterator()
-        while (it.hasNext()) {
-            val virtualFloatingView = it.next()
-            virtualFloatingView.status = FloatingViewEnum.DETACH
-            mWindowManager.removeView(virtualFloatingView.realFloatingView) //移除
+        buffer.front?.let {
+            it.virtualView.status = FloatingViewEnum.DETACH
+            mWindowManager.removeView(it.virtualView.realFloatingView) //移除
         }
     }
 
 
     override fun destroy(floatingIntent: FloatingIntent) {
-        val it = mFloatingViews.iterator()
-        while (it.hasNext()) {
-            val virtualFloatingView = it.next()
-            if (floatingIntent.targetClass.isInstance(virtualFloatingView)) {
-                mWindowManager.removeView(virtualFloatingView.realFloatingView) //移除
-                virtualFloatingView.onDestroy()
-                mFloatingViews.remove(virtualFloatingView)
+        buffer.findByIntent(floatingIntent)?.let {
+            if (it.virtualView.mRootView!!.isAttachedToWindow) {
+                mWindowManager.removeView(it.virtualView.realFloatingView) //移除
             }
-
+            it.virtualView.onDestroy()
         }
     }
 

@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public class FVSchedule {
 
     private volatile LinkedList<FloatingIntent> messageQueue = new LinkedList<>();
-    private final static Handler ANDROID_MAIN_EXECUTOR = new Handler(Looper.getMainLooper());
+    public final static Handler ANDROID_MAIN_EXECUTOR = new Handler(Looper.getMainLooper());
 
     private final static String TAG = "FloatingViewTAG";
 

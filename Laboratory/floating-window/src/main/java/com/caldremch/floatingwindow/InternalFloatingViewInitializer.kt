@@ -24,10 +24,10 @@ internal object InternalFloatingViewInitializer {
     val EXECUTOR = FVSchedule()
 
     fun init(app: Application) {
-
         Utils.context = app
         UtilsActivityLifecycleImpl.INSTANCE.init(app)
         registerAppStatusChangedListener()
+        UtilsActivityLifecycleImpl.INSTANCE.addOnAppStatusChangedListener(FloatingViewLauncher.handler)
     }
 
     /**
@@ -39,6 +39,7 @@ internal object InternalFloatingViewInitializer {
             override fun onForeground() {
                 AppViewManager.INSTANCE.attachToRecover()
             }
+
             override fun onBackground() {
                 AppViewManager.INSTANCE.detach()
             }

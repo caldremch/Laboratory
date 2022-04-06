@@ -42,17 +42,15 @@ internal class AppViewManager : IFloatingViewManager {
         ensureViewManager().detach()
     }
 
-
     override fun destroy(floatingIntent: FloatingIntent) {
         ensureViewManager().destroy(floatingIntent)
     }
-
 
     @Synchronized
     private fun ensureViewManager(): IFloatingViewManager {
         return _floatingViewManager
             ?: kotlin.run {
-                AppFloatingViewManagerImpl()
+                AppFloatingViewManagerDoubleBufferImpl()
             }.also {
                 _floatingViewManager = it
             }

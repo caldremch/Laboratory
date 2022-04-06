@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import androidx.core.view.GravityCompat
+import com.caldremch.floatingwindow.callback.FloatingViewOnShow
 import kotlin.math.abs
 
 /**
@@ -37,6 +38,7 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
     private var mFloatingViewHeight = 0
     private var mFloatingViewWidth = 0
     private lateinit var mFloatingViewLayoutParams: FloatingViewLayoutParams
+    var floatingViewOnShow: FloatingViewOnShow? = null
     protected var mWindowManager = AppViewManager.INSTANCE.windowManager
 
 
@@ -93,6 +95,7 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
                 animator.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         animPreStatus = FloatingViewAnimStatusEnum.DONE
+                        floatingViewOnShow?.onShow()
                     }
                 })
                 animator.start()
@@ -438,11 +441,11 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
     }
 
     override fun onEnterBackground() {
-
+        Log.d(TAG, "onEnterBackground: ")
     }
 
     override fun onEnterForeground() {
-
+        Log.d(TAG, "onEnterBackground: ")
     }
 
 
