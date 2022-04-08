@@ -20,20 +20,20 @@ import java.util.*
  *
  *
  */
-class FloatingViewHandler(private val flowQueue: Deque<FloatingIntent>) :
+internal class FloatingViewHandler(private val floatMsgQueue: Deque<FloatingIntent>) :
     OnAppStatusChangedListener,
     Handler(Looper.getMainLooper()) {
     var isRunning = false
     private var onForeground = true
     override fun handleMessage(msg: Message) {
-        if (flowQueue.isEmpty()) {
+        if (floatMsgQueue.isEmpty()) {
             isRunning = false
             removeCallbacksAndMessages(null)
             return
         }
-        val msg = flowQueue.poll()
-        if (onForeground) {
-            AppViewManager.INSTANCE.attach(msg)
+        val floatMsg = floatMsgQueue.poll()
+        if (onForeground  && floatMsg !=null) {
+            AppViewManager.INSTANCE.attach(floatMsg)
         }
         sendEmptyMessageDelayed(1, 3000)
     }
@@ -44,7 +44,6 @@ class FloatingViewHandler(private val flowQueue: Deque<FloatingIntent>) :
 
     override fun onBackground() {
         onForeground = false
-
     }
 
 }

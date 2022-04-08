@@ -21,8 +21,6 @@ import java.util.concurrent.Executors
  */
 internal object InternalFloatingViewInitializer {
 
-    val EXECUTOR = FVSchedule()
-
     fun init(app: Application) {
         Utils.context = app
         UtilsActivityLifecycleImpl.INSTANCE.init(app)

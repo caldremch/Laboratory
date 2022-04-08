@@ -1,22 +1,27 @@
 package com.caldremch.floatingwindow
 
+import android.content.res.Resources
 import android.view.MotionEvent
 import android.view.View
-import com.caldremch.floatingwindow.UIUtils.dp2px
-import com.caldremch.floatingwindow.TouchProxy.TouchState
-import com.caldremch.floatingwindow.UIUtils
-import com.caldremch.floatingwindow.TouchProxy
 
 /**
  * @author wanglikun
  * touch 事件代理 解决点击和触摸事件的冲突
  */
  class TouchProxy(private var mEventListener: OnTouchEventListener?) {
+
+
     private var mLastX = 0
     private var mLastY = 0
     private var mStartX = 0
     private var mStartY = 0
     private var mState = TouchState.STATE_STOP
+
+    fun dp2px(dpValue: Float): Int {
+        val scale = Resources.getSystem().displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
+
     fun setEventListener(eventListener: OnTouchEventListener?) {
         mEventListener = eventListener
     }

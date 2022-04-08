@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * <pre>
  *     author: blankj
- *     blog  : http://blankj.com
+ *     blog  : http://blankj.comafterNodeAccess
  *     time  : 2020/03/19
  *     desc  :
  * </pre>

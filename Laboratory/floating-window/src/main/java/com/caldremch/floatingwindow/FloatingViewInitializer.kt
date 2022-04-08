@@ -18,12 +18,10 @@ import java.util.concurrent.Executors
  */
 class FloatingViewInitializer {
 
-
     class Builder(private val app: Application) {
         fun build() {
             //开始初始化逻辑
             InternalFloatingViewInitializer.init(app)
-
         }
     }
 
