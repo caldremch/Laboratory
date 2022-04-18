@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.caldremch.floatingwindow.AbsFloatingView
 import com.caldremch.floatingwindow.FloatingViewLayoutParams
 import com.caldremch.laboratory.R
@@ -20,7 +21,7 @@ import com.caldremch.laboratory.R
  *
  * @date 2022/4/1 15:54
  *
- * @description
+ * @descriptionsimple_floating_view
  *
  *
  */

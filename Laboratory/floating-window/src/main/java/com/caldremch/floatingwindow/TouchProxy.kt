@@ -1,6 +1,7 @@
 package com.caldremch.floatingwindow
 
 import android.content.res.Resources
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
@@ -69,18 +70,22 @@ import android.view.View
                     && event.eventTime - event.downTime < MIN_TAP_TIME
                 ) {
                     v.performClick()
+                    Log.d("performCreate", "performCreate: 回到用这里的???")
                 }
                 mState = TouchState.STATE_STOP
             }
             else -> {}
         }
-        return true
+        return false
     }
 
     interface OnTouchEventListener {
         fun onMove(x: Int, y: Int, dx: Int, dy: Int)
         fun onUp(x: Int, y: Int)
         fun onDown(x: Int, y: Int)
+        fun onItemClick(){
+
+        }
     }
 
     companion object {

@@ -1,8 +1,7 @@
 package com.caldremch.floatingwindow
 
 import android.content.Context
-import android.util.Log
-import com.caldremch.floatingwindow.callback.FloatingViewOnShow
+import com.caldremch.floatingwindow.callback.InternalFloatingViewOnShow
 import java.util.*
 
 /**
@@ -64,7 +63,7 @@ class AppFloatingViewManagerImpl : IFloatingViewManager {
 
             val floatVirtualView = floatingIntent.targetClass.newInstance()
             if (dismissPreFloatingView) {
-                floatVirtualView.floatingViewOnShow = object : FloatingViewOnShow {
+                floatVirtualView.floatingViewOnShow = object : InternalFloatingViewOnShow {
                     override fun onShow() {
 
                     }

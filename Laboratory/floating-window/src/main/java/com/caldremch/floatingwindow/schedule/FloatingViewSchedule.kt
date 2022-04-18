@@ -3,7 +3,7 @@ package com.caldremch.floatingwindow.schedule
 import android.os.SystemClock
 import android.util.Log
 import com.caldremch.floatingwindow.FloatingIntent
-import com.caldremch.floatingwindow.FloatingViewLauncher
+import com.caldremch.floatingwindow.FloatingViewManager
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -48,7 +48,7 @@ class FloatingViewSchedule {
                     block(message.`when`)
                 }
                 //阻塞超时后, 继续执行
-                FloatingViewLauncher.launchFloating(message.targetClass, message.bundle)
+                FloatingViewManager.launchFloating(message.targetClass, message.bundle)
                 //出队
                 messageQueue.poll()
             }

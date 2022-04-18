@@ -4,6 +4,8 @@ import android.app.Application
 import com.caldremch.common.util.CommonLog
 import com.caldremch.common.util.DefaultLogger
 import com.caldremch.floatingwindow.FloatingViewInitializer
+import com.caldremch.floatingwindow.callback.OnFloatingViewShow
+import com.caldremch.laboratory.util.FloatingViewType
 import com.caldremch.utils.ActivityDelegate
 import com.caldremch.utils.FileUtils
 import com.caldremch.utils.ToastUtils
@@ -24,7 +26,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FloatingViewInitializer.Builder(this).build()
+        FloatingViewInitializer.Builder(this)
+//            .setOnShow(object : OnFloatingViewShow {
+//                override fun onSound(type: Int): Int {
+//                    return if (type == FloatingViewType.TYPE2) R.raw.type_2 else R.raw.type_1
+//                }
+//            })
+            .build()
         ToastUtils.init(this)
 //        CrashHandler.instance.init(this)
         FileUtils.init(this)

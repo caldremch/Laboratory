@@ -1,11 +1,7 @@
 package com.caldremch.floatingwindow
 
 import android.app.Application
-import android.widget.Toast
-import com.caldremch.floatingwindow.schedule.FVSchedule
-import com.caldremch.floatingwindow.schedule.FloatingViewSchedule
-import com.caldremch.floatingwindow.schedule.FloatingViewThreadFactory
-import java.util.concurrent.Executors
+import com.caldremch.floatingwindow.callback.OnFloatingViewShow
 
 /**
  *
@@ -21,11 +17,13 @@ import java.util.concurrent.Executors
  */
 internal object InternalFloatingViewInitializer {
 
+    var onShow: OnFloatingViewShow? = null
+
     fun init(app: Application) {
         Utils.context = app
         UtilsActivityLifecycleImpl.INSTANCE.init(app)
         registerAppStatusChangedListener()
-        UtilsActivityLifecycleImpl.INSTANCE.addOnAppStatusChangedListener(FloatingViewLauncher.handler)
+        UtilsActivityLifecycleImpl.INSTANCE.addOnAppStatusChangedListener(FloatingViewManager.handler)
     }
 
     /**

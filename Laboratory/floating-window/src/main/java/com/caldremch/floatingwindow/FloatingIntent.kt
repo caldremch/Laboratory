@@ -18,11 +18,11 @@ import android.os.Bundle
 class FloatingIntent(
     var targetClass: Class<out AbsFloatingView>,
     var bundle: Bundle? = null,
-    var tag: String = targetClass.javaClass.canonicalName ?: ""
+    var floatViewType:Int = 0,
 ){
     var `when` :Long = 0 //延迟多久执行
     override fun toString(): String {
-        return "FloatingIntent(targetClass=$targetClass, bundle=$bundle, tag='$tag', `when`=$`when`)"
+        return "FloatingIntent(targetClass=$targetClass, bundle=$bundle,  `when`=$`when`)"
     }
 
 }

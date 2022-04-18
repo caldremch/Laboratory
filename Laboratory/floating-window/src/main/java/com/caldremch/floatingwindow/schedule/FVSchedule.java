@@ -2,11 +2,10 @@ package com.caldremch.floatingwindow.schedule;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.caldremch.floatingwindow.FloatingIntent;
-import com.caldremch.floatingwindow.FloatingViewLauncher;
+import com.caldremch.floatingwindow.FloatingViewManager;
 
 import java.util.LinkedList;
 
@@ -48,7 +47,7 @@ public class FVSchedule {
                     ANDROID_MAIN_EXECUTOR.post(new Runnable() {
                         @Override
                         public void run() {
-                            FloatingViewLauncher.INSTANCE.launchFloating(message.getTargetClass(), message.getBundle());
+                            FloatingViewManager.INSTANCE.launchFloating(message.getTargetClass(), message.getBundle());
                         }
                     });
                     //出队

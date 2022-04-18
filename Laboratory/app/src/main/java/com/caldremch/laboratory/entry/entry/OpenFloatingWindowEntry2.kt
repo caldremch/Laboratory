@@ -3,7 +3,7 @@ package com.caldremch.laboratory.entry.entry
 import android.content.Context
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
-import com.caldremch.floatingwindow.FloatingViewLauncher
+import com.caldremch.floatingwindow.FloatingViewManager
 import com.caldremch.floatingwindow.FloatingViewUtil
 import com.caldremch.laboratory.floatingview.SimpleFloatView
 
@@ -29,7 +29,7 @@ class OpenFloatingWindowEntry2 : IEntry {
             FloatingViewUtil.requestDrawOverlays(context)
             return
         }
-        FloatingViewLauncher.destroyFloating(SimpleFloatView::class.java)
+        FloatingViewManager.destroyFloating(SimpleFloatView::class.java)
     }
 
 }

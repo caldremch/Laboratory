@@ -6,12 +6,13 @@ package com.caldremch.floatingwindow.callback
  *
  * @email finishmo@qq.com
  *
- * @date 2022/4/2 18:08
+ * @date 2022/4/12 18:15
  *
  * @description
  *
  *
  */
-interface FloatingViewOnShow {
-    fun onShow()
+interface OnFloatingViewShow {
+    fun onShow(type:Int){}
+    fun onSound(type:Int):Int
 }

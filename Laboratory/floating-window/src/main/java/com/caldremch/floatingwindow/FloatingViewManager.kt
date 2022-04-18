@@ -1,8 +1,6 @@
 package com.caldremch.floatingwindow
 
 import android.os.Bundle
-import android.os.CountDownTimer
-import com.caldremch.floatingwindow.schedule.FVSchedule
 import com.caldremch.floatingwindow.schedule.FloatingViewHandler
 import java.util.*
 
@@ -18,7 +16,7 @@ import java.util.*
  *
  *
  */
-object FloatingViewLauncher {
+object FloatingViewManager {
 
     private val flowQueue: Deque<FloatingIntent> = LinkedList()
 
@@ -27,6 +25,26 @@ object FloatingViewLauncher {
      */
 
     internal val handler by lazy { FloatingViewHandler(flowQueue) }
+
+
+
+    private var disableIns = hashSetOf<String>()
+
+    fun disableFloatingViewIn(className: String) {
+        disableIns.add(className)
+    }
+
+    @Synchronized
+    fun enqueue(
+        targetClass: Class<out AbsFloatingView>,
+        bundle: Bundle? = null, type:Int
+    ) {
+        flowQueue.offer(FloatingIntent(targetClass, bundle, type))
+        if (!handler.isRunning) {
+            handler.isRunning = true
+            handler.sendEmptyMessage(1)
+        }
+    }
 
     @Synchronized
     fun enqueue(

@@ -22,9 +22,9 @@ import java.util.*
  *
  **/
 @Entry
-class OpenFloatingWindowEntry : IEntry {
+class OpenFloatingWindowEntry1 : IEntry {
     override fun getTitle(): String {
-        return "开启悬浮窗-type1"
+        return "开启悬浮窗-type2"
     }
 
 
@@ -35,8 +35,17 @@ class OpenFloatingWindowEntry : IEntry {
         }
         //展示悬浮窗
         val bundle = Bundle()
-        bundle.putString("content", "我是悬浮窗啊type1:${Random().nextInt(10000)}")
-        FloatingViewManager.enqueue(SimpleFloatView::class.java, bundle, FloatingViewType.TYPE1)
+        bundle.putString("content", "我是悬浮窗啊type2:${Random().nextInt(10000)}")
+        FloatingViewManager.enqueue(SimpleFloatView::class.java, bundle, FloatingViewType.TYPE2)
+//        //开启10个线程
+//        for (x in 0 until 2) {
+//            Thread {
+//                //展示悬浮窗
+//                val bundle = Bundle()
+//                bundle.putString("content", "我是悬浮窗啊${x}:${Random().nextInt(10000)}")
+//                FloatingViewManager.enqueue(SimpleFloatView::class.java, bundle)
+//            }.start()
+//        }
     }
 
 

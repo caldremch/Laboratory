@@ -14,7 +14,7 @@ import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import androidx.core.view.GravityCompat
-import com.caldremch.floatingwindow.callback.FloatingViewOnShow
+import com.caldremch.floatingwindow.callback.InternalFloatingViewOnShow
 import kotlin.math.abs
 
 /**
@@ -38,7 +38,7 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
     private var mFloatingViewHeight = 0
     private var mFloatingViewWidth = 0
     private lateinit var mFloatingViewLayoutParams: FloatingViewLayoutParams
-    var floatingViewOnShow: FloatingViewOnShow? = null
+    var floatingViewOnShow: InternalFloatingViewOnShow? = null
     protected var mWindowManager = AppViewManager.INSTANCE.windowManager
 
 
