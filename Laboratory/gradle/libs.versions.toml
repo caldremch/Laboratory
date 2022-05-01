@@ -1,0 +1,6 @@
+[versions]
+entry-version = "1.6.2"
+
+[libraries]
+entry = "io.github.caldremch:entry:1.6.3"
+entry-compiler = { module = "io.github.caldremch:entry-compiler", version.ref = "entry-version" }
