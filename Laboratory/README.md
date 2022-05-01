@@ -1,8 +1,26 @@
 
+# 项目启动必备
+
+在.gradle中添加文件 gradle.properties
+```gradle
+signing.keyId=
+signing.password=
+signing.secretKeyRingFile=
+ossrhUsername=
+ossrhPassword=
+myPublishedGroupId=
+myDeveloperId=
+myDeveloperName=
+myDeveloperEmail=
+myLicenseName=
+myLicenseUrl=
+```
+
 代码来源参考
 -----------------
 
 ## 一、Java
+
 
 ### JVM
 

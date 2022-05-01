@@ -16,6 +16,7 @@ buildscript{
 
 
 dependencyResolutionManagement {
+
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
@@ -36,10 +37,11 @@ include(":common")
 include(":utils")
 include(":picker-view")
 includeBuild("../version-plugin")
-include(":native-laboratory")
-include(":nl-server")
-include(":nl-client")
-include(":nl-client:native")
-include(":nl-server:native")
+//include(":native-laboratory")
+//include(":nl-server")
+//include(":nl-client")
+//include(":nl-client:native")
+//include(":nl-server:native")
 include(":data-struct-helper")
 include(":floating-window")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import com.caldremch.android.annotation.entry.Entry
 import com.caldremch.android.annotation.entry.IEntry
-import com.caldremch.nativelaboratory.c.NativeLaboratory
-import com.caldremch.nativelaboratory.c.RenderActionEngine
+//import com.caldremch.nativelaboratory.c.NativeLaboratory
+//import com.caldremch.nativelaboratory.c.RenderActionEngine
 
 /**
  *
@@ -29,11 +29,11 @@ class NativeLaboratoryEntry : IEntry {
     var h = 0;
 
     override fun onClick(context: Context) {
-        if (RenderActionEngine.callback == null) {
-            RenderActionEngine.callback = {
-                Log.d("NativeLaboratoryEntry", "onClick: $it  ${it.w},${it.h}")
-            }
-        }
-        NativeLaboratory.postRenderAction(w++, h++)
+//        if (RenderActionEngine.callback == null) {
+//            RenderActionEngine.callback = {
+//                Log.d("NativeLaboratoryEntry", "onClick: $it  ${it.w},${it.h}")
+//            }
+//        }
+//        NativeLaboratory.postRenderAction(w++, h++)
     }
 }
