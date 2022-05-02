@@ -32,105 +32,10 @@ object BintrayConst {
 }
 
 object Deps {
-
-    //maven publication name
-    const val a_name_whatever_you_want = "a_name_whatever_you_want"
-
     //version
     const val minSdk = 21
     const val compileSdk = 31
     const val targetSdk = 31
     const val versionCode = 1
-    const val versionName = "1.0"
-    const val applicationId = "com.caldremch.android.laboratory"
-    const val kotlin_version = "1.6.10"
-
-    //support
-    const val appcompat = "androidx.appcompat:appcompat:1.3.1"
-    const val constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-    const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val ktx = "androidx.core:core-ktx:1.7.0"
-    const val kotlin_stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-    const val design = "com.google.android.material:material:1.4.0"
-    const val gson = "com.google.code.gson:gson:2.6.2"
-    const val junit = "junit:junit:4.13.2"
-    const val junit_ext = "androidx.test.ext:junit:1.1.3"
-    const val espresso_core = "androidx.test.espresso:espresso-core:3.4.0"
-
-    //android dep
-    const val recyclerview = "androidx.recyclerview:recyclerview:1.1.0"
-
-    //third part
-    const val glide = "com.github.bumptech.glide:glide:4.10.0"
-    const val recyclerview_animators = "jp.wasabeef:recyclerview-animators:3.0.0"
-    const val immersionbar = "com.gyf.immersionbar:immersionbar:3.0.0"
-    const val BaseRecyclerViewAdapterHelper =
-        "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
-    const val lottie = "com.airbnb.android:lottie:3.4.1"
-    const val eventbus = "org.greenrobot:eventbus:3.2.0"
-    const val refresh = "com.scwang.smart:refresh-layout-kernel:2.0.1"
-    const val refresh_header_falsify = "com.scwang.smart:refresh-header-falsify:2.0.1"
-    const val refresh_footer_classics = "com.scwang.smart:refresh-footer-classics:2.0.1"
-    const val refresh_header_classics = "com.scwang.smart:refresh-header-classics:2.0.1"
-    const val banner = "com.youth.banner:banner:2.0.12"
-    const val MagicIndicator = "com.github.hackware1993:MagicIndicator:1.7.0"
-    const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.7"
-    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
-    const val viewbinding = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3"
-
-
-    //maven url
-    const val maven_aliyun_public = "http://maven.aliyun.com/nexus/content/groups/public/"
-    const val maven_aliyun_jcenter = "https://maven.aliyun.com/nexus/content/repositories/jcenter"
-    const val maven_aliyun_google = "https://maven.aliyun.com/nexus/content/repositories/google"
-    const val maven_jitpack = "https://jitpack.io"
-
-    //plugin
-    const val auto_service = "com.google.auto.service:auto-service:1.0-rc6"
-    const val javapoet = "com.squareup:javapoet:1.10.0"
-    const val kotlin_stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jdk8-$kotlin_version"
-
-    private const val entry_version = "1.6.2"
-    const val entry = "io.github.caldremch:entry:1.6.3"
-    const val entry_compiler = "io.github.caldremch:entry-compiler:$entry_version"
-
-    //支持result register
-    const val activity = "androidx.activity:activity-ktx:1.3.1"
-    const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
-
-
-    const val jol = "org.openjdk.jol:jol-core:0.16"
-
-    /**
-     * 添加默认的maven url
-
-    fun addDefaultRepo(repositoryHandler: RepositoryHandler) {
-    //本地仓库
-    repositoryHandler.mavenLocal()
-    //优先查找镜像地址
-    repositoryHandler.maven(url = maven_aliyun_public)
-    repositoryHandler.maven(url = maven_aliyun_jcenter)
-    repositoryHandler.maven(url = maven_aliyun_google)
-    //官方地址
-    repositoryHandler.mavenCentral()
-    repositoryHandler.google()
-    repositoryHandler.jcenter()
-    repositoryHandler.maven { setUrl(Deps.maven_jitpack) }
-
-    }*/
-
-    /**
-     * find properties in local.properties
-     */
-//    fun findInLocalProperties(project: Project, key: String): String? {
-//        val properties = java.util.Properties()
-//        properties.load(project.rootProject.file("local.properties").inputStream())
-//        return properties.getProperty(key)
-//    }
-
-    fun addUsualDep() {
-
-    }
 }
 
