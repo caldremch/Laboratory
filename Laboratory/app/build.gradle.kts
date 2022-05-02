@@ -10,7 +10,7 @@ plugins {
 android {
     compileSdk = Deps.compileSdk
     defaultConfig {
-        applicationId  = Deps.applicationId
+        applicationId  = libs.versions.applicationId.get()
         minSdk = Deps.minSdk
         targetSdk = Deps.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -58,36 +58,34 @@ android {
 
 
 dependencies {
-    implementation("com.yanzhenjie:permission:2.0.3")
-    implementation(Deps.kotlin_stdlib)
-    implementation(Deps.appcompat)
-    implementation(Deps.ktx)
-    implementation("androidx.activity:activity-ktx:1.3.1")
-    implementation("androidx.fragment:fragment-ktx:1.4.0")
-    implementation(Deps.constraintlayout)
-    implementation(Deps.recyclerview)
-    implementation(Deps.BaseRecyclerViewAdapterHelper)
-    implementation(Deps.cardview)
-    implementation(Deps.design)
-    implementation(Deps.glide)
-    implementation(Deps.leakcanary)
-    implementation(Deps.coroutines)
-    implementation(Deps.viewbinding)
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.kotlin.coroutines.android)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.design)
+    implementation(libs.androidx.junit)
+    implementation(libs.androidx.junit.ext)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.kotlin.ktx)
+    implementation(libs.baseRecyclerViewAdapterHelper)
+    implementation(libs.glide)
+    implementation(libs.leakcanary)
+    implementation(libs.viewbinding)
+    implementation(libs.permission)
     implementation(projects.dialog)
     implementation(projects.widget)
     implementation(projects.utils)
     implementation(projects.common)
     implementation(projects.imageCore)
     implementation(projects.floatingWindow)
-    implementation(libs.entry)
-    implementation(Deps.eventbus)
-    implementation("com.caldremch.android:http:1.0.0")
-    kapt(libs.entry.compiler)
-    implementation(Deps.coroutines)
-    testImplementation(Deps.junit)
-    androidTestImplementation(Deps.junit_ext)
-    androidTestImplementation(Deps.espresso_core)
-
+    implementation(libs.caldremch.entry)
+    implementation(libs.eventbus)
+    implementation(libs.caldremch.http)
+    kapt(libs.caldremch.entry.compiler)
 }
 
 //ext.unusedResourcesSet = new HashSet<String>();
