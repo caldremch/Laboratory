@@ -39,6 +39,11 @@
         <activity android:name=".activity.PageListAdapterActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".BrowserActivity" />
+        <activity android:name=".navigation.NavigationMainActivity"  android:exported="true">
+
+            <nav-graph android:value="@navigation/navigation"/>
+
+        </activity>
 
         <provider
             android:exported="false"

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@+id/login_main">
+
+    <fragment
+        android:id="@+id/login_main"
+        android:name="com.caldremch.laboratory.navigation.NavigationLoginMainFragment"
+        android:label="fragment_navigation_login_main"
+        tools:layout="@layout/fragment_navigation_login_main">
+        <action
+            android:id="@+id/action_login"
+            app:destination="@id/login"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_register"
+            app:destination="@id/register"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/login"
+        android:name="com.caldremch.laboratory.navigation.NavigationLoginFragment"
+        tools:layout="@layout/fragment_navigation_login">
+        <action
+            android:id="@+id/action_login_to_login_main"
+            app:destination="@id/login_main" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/register"
+        android:name="com.caldremch.laboratory.navigation.NavigationRegisterFragment"
+        tools:layout="@layout/fragment_navigation_register">
+        <action
+            android:id="@+id/action_register_to_login_main2"
+            app:destination="@id/login_main" />
+        <argument
+            android:name="btnName"
+            android:defaultValue="我是默认的" />
+        <deepLink app:uri="www.caldremch.com/{btnName}" />
+    </fragment>
+</navigation>

@@ -89,6 +89,8 @@ dependencies {
     implementation(projects.floatingWindow)
     implementation(libs.caldremch.entry)
     implementation(libs.eventbus)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     implementation(libs.caldremch.http)
     kapt(libs.caldremch.entry.compiler)
 }

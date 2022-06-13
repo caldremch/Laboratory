@@ -35,7 +35,8 @@ myLicenseUrl=
 
 
 ## 二、Android
-
+1. [jetpack-navigation](https://developer.android.google.cn/jetpack/androidx/releases/navigation)
+2. [Android 屏幕适配终结者](https://blankj.com/2018/12/18/android-adapt-screen-killer/)
 
 ## 三、C/C++
 
