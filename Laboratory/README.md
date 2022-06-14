@@ -37,6 +37,9 @@ myLicenseUrl=
 ## 二、Android
 1. [jetpack-navigation](https://developer.android.google.cn/jetpack/androidx/releases/navigation)
 2. [Android 屏幕适配终结者](https://blankj.com/2018/12/18/android-adapt-screen-killer/)
+3. [koin-android](https://insert-koin.io/docs/reference/koin-android)
+4. [Koin in Android: 更简单的依赖注入](https://juejin.cn/post/6844904202586554382)
+5. [依赖注入框架Koin（一）知识预览](https://www.csdn.net/tags/MtTaIg4sNjgwMzM2LWJsb2cO0O0O.html)
 
 ## 三、C/C++
 
