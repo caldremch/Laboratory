@@ -41,6 +41,8 @@ myLicenseUrl=
 4. [Koin in Android: 更简单的依赖注入](https://juejin.cn/post/6844904202586554382)
 5. [依赖注入框架Koin（一）知识预览](https://www.csdn.net/tags/MtTaIg4sNjgwMzM2LWJsb2cO0O0O.html)
 5. [多模块koin加载方式(组件化开发)](https://insert-koin.io/docs/reference/koin-core/start-koin/)
+5. [Jetpack新成员，App Startup一篇就懂](https://blog.csdn.net/guolin_blog/article/details/108026357)
+5. [探究 | App Startup真的能减少启动耗时吗](https://cloud.tencent.com/developer/article/1765027)
 
 ## 三、C/C++
 
