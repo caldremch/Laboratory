@@ -40,6 +40,7 @@ myLicenseUrl=
 3. [koin-android](https://insert-koin.io/docs/reference/koin-android)
 4. [Koin in Android: 更简单的依赖注入](https://juejin.cn/post/6844904202586554382)
 5. [依赖注入框架Koin（一）知识预览](https://www.csdn.net/tags/MtTaIg4sNjgwMzM2LWJsb2cO0O0O.html)
+5. [多模块koin加载方式(组件化开发)](https://insert-koin.io/docs/reference/koin-core/start-koin/)
 
 ## 三、C/C++
 
