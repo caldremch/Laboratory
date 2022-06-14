@@ -6,6 +6,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.caldremch.common.base.AbsBaseFragment
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.databinding.FragmentNavigationLoginMainBinding
+import org.koin.android.ext.android.getKoin
+import org.koin.core.logger.Level
 
 /**
  * Created by Leon on 2022/6/13
@@ -20,6 +22,10 @@ class NavigationLoginMainFragment : AbsBaseFragment() {
     }
 
     override fun initView() {
+
+        println("试一下?")
+        getKoin().logger.log(Level.ERROR, "假假按揭啊")
+
         binding.btnLogin.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_login)
         }
