@@ -58,3 +58,4 @@ caldremch-entry = "io.github.caldremch:entry:1.6.3"
 caldremch-entry-compiler = { module = "io.github.caldremch:entry-compiler", version.ref = "entry-version" }
 permission = "com.yanzhenjie:permission:2.0.3"
 mmkv = "com.tencent:mmkv-static:1.2.2"
+startup = "androidx.startup:startup-runtime:1.1.1"

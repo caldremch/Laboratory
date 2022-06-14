@@ -86,6 +86,7 @@ dependencies {
     implementation(projects.utils)
     implementation(projects.common)
     implementation(projects.imageCore)
+    implementation(projects.libStartupA)
     implementation(projects.floatingWindow)
     implementation(libs.caldremch.entry)
     implementation(libs.eventbus)
