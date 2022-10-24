@@ -1,6 +1,3 @@
-[submodule "Laboratory/common"]
-	path = Laboratory/common
-	url = git@github.com:android-module/common.git
 [submodule "Laboratory/dialog"]
 	path = Laboratory/dialog
 	url = git@github.com:android-module/dialog.git
