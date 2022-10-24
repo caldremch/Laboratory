@@ -93,13 +93,15 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
                     mWindowManager.updateViewLayout(mRootView!!, params)
                 }
                 animator.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         animPreStatus = FloatingViewAnimStatusEnum.DONE
                         floatingViewOnShow?.onShow()
                     }
                 })
                 animator.start()
             }
+
+            else ->{}
         }
     }
 
@@ -303,12 +305,15 @@ open abstract class AbsFloatingView : FloatingViewLifeCycle, TouchProxy.OnTouchE
                     }
                 }
                 animator.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         animPreStatus = FloatingViewAnimStatusEnum.DONE
                         AppViewManager.INSTANCE.destroy(FloatingIntent(this@AbsFloatingView::class.java))
                     }
                 })
                 animator.start()
+            }
+            else->{
+
             }
         }
     }
