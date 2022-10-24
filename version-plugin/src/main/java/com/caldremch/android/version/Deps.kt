@@ -34,8 +34,8 @@ object BintrayConst {
 object Deps {
     //version
     const val minSdk = 21
-    const val compileSdk = 31
-    const val targetSdk = 31
+    const val compileSdk = 33
+    const val targetSdk = 33
     const val versionCode = 1
 }
 
