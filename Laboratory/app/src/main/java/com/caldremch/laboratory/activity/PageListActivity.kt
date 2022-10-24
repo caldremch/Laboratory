@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.caldremch.common.base.BaseActivity
-import com.caldremch.common.helper.EventManager
+import com.caldremch.common.base.AbsActivity
+import com.caldremch.common.utils.EventManager
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.bean.TestData
 import com.caldremch.laboratory.databinding.ActivityPageListBinding
@@ -29,7 +29,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  * @describe
  *
  **/
-class PageListActivity : BaseActivity<Any>(),
+class PageListActivity : AbsActivity(),
     IPageDelegate<TestData> {
 
     private val TAG = "PageListActivity"
@@ -38,18 +38,9 @@ class PageListActivity : BaseActivity<Any>(),
 
     private val binding by viewBinding(ActivityPageListBinding::bind)
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_page_list
-    }
+    override val layoutId: Int
+        get() = R.layout.activity_page_list
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        Log.d(TAG, "onCreate: ${activityManager.appTasks.size}")
-        activityManager.appTasks.forEach {
-            Log.d(TAG, "onCreate: ${it.taskInfo.taskId}")
-        }
-    }
 
     override fun initView() {
 
@@ -120,7 +111,7 @@ class PageListActivity : BaseActivity<Any>(),
         adapter: BaseQuickAdapter<*, *>,
         position: Int
     ) {
-        EventManager.post(OpenActEvent())
+        // TODO:
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? {

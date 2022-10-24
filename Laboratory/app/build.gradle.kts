@@ -83,8 +83,8 @@ dependencies {
     implementation(libs.permission)
     implementation(projects.dialog)
     implementation(projects.widget)
+    implementation(projects.libBasicWeb)
     implementation(projects.utils)
-    implementation(projects.common)
     implementation(projects.imageCore)
     implementation(projects.libStartupA)
     implementation(projects.floatingWindow)
@@ -96,6 +96,10 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.android.compat)
     implementation(libs.koin.android.navigation)
+    implementation(libs.android.common.databinding)
+    implementation(libs.android.common)
+    implementation(libs.android.logger)
+    implementation(libs.titleBar)
     kapt(libs.caldremch.entry.compiler)
 }
 

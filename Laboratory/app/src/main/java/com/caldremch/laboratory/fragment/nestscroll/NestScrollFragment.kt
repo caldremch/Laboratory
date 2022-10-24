@@ -20,9 +20,8 @@ class NestScrollFragment() : LaboratoryFragment() {
         return "嵌套滑动"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_nest_scroll
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_nest_scroll
 
     override fun initData() {
 

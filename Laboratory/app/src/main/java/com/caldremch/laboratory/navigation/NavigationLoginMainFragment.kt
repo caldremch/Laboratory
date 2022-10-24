@@ -3,7 +3,7 @@ package com.caldremch.laboratory.navigation
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.caldremch.common.base.AbsBaseFragment
+import com.caldremch.common.base.AbsFragment
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.databinding.FragmentNavigationLoginMainBinding
 import org.koin.android.ext.android.getKoin
@@ -12,14 +12,13 @@ import org.koin.core.logger.Level
 /**
  * Created by Leon on 2022/6/13
  */
-class NavigationLoginMainFragment : AbsBaseFragment() {
+class NavigationLoginMainFragment : AbsFragment() {
 
 
     private val binding by viewBinding(FragmentNavigationLoginMainBinding::bind)
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_navigation_login_main
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_navigation_login_main
 
     override fun initView() {
 

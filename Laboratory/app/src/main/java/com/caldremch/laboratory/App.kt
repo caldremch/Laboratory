@@ -1,12 +1,8 @@
 package com.caldremch.laboratory
 
 import android.app.Application
-import com.caldremch.common.util.CommonLog
-import com.caldremch.common.util.DefaultLogger
 import com.caldremch.floatingwindow.FloatingViewInitializer
-import com.caldremch.floatingwindow.callback.OnFloatingViewShow
 import com.caldremch.laboratory.loginmvp.mvpModules
-import com.caldremch.laboratory.util.FloatingViewType
 import com.caldremch.utils.ActivityDelegate
 import com.caldremch.utils.FileUtils
 import com.caldremch.utils.ToastUtils
@@ -14,7 +10,6 @@ import com.caldremch.utils.Utils
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
 
 /**
  *
@@ -42,10 +37,7 @@ class App : Application() {
 //        CrashHandler.instance.init(this)
         FileUtils.init(this)
         Utils.init(this)
-        CommonLog.logger = DefaultLogger()
-        CommonLog.d { "好的" }
         ActivityDelegate.init(this)
-
         startKoin {
             androidLogger()
             androidContext(this@App)

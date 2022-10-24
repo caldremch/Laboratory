@@ -45,9 +45,8 @@ class NetWatchDogFragment() : LaboratoryFragment() {
         )
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_watch_dog
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_watch_dog
 
     override fun initData() {
         netWatchDog.register()

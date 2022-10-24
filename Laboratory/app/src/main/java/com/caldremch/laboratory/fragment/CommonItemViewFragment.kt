@@ -20,9 +20,8 @@ class CommonItemViewFragment() : LaboratoryFragment() {
         return "CommonItemView Demo"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_common_item_view
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_common_item_view
 
     override fun initData() {
 

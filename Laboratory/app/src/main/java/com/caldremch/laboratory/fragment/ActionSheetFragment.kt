@@ -15,9 +15,7 @@ import com.caldremch.laboratory.base.LaboratoryFragment
  *
  **/
 class ActionSheetFragment : LaboratoryFragment() {
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_action_sheet
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_action_sheet
 
 }

@@ -32,9 +32,8 @@ class TextViewFragment : LaboratoryFragment() {
         return "textview-demo"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_textview
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_textview
 
     override fun initView() {
         val tv1 = findViewById<TextView>(R.id.tv1)

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>重定向demo测试2</title>
+</head>
+<head>
+    <script>
+
+
+function openNewUrl(){
+
+window.android.loadNewUrl("file:///android_asset/demo/demo-page2.html")
+        window.location.href='file:///android_asset/demo/demo-page3.html';
+}
+
+
+
+    </script>
+
+    <style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+    </style>
+</head>
+<body>
+
+<button onclick="openNewUrl()" class="button">加载一个新的url</button>
+
+
+</body>
+</html>

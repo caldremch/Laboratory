@@ -28,9 +28,8 @@ class BannerFragment : LaboratoryFragment() {
         return "banner demo"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_banner
-    }
+    override val layoutId: Int
+        get() =  R.layout.fragment_banner
 
     override fun initView() {
         val datas = arrayListOf<Drawable>()

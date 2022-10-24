@@ -2,10 +2,10 @@ package com.caldremch.laboratory.loginmvp
 
 import android.util.Log
 import android.widget.Toast
-import com.caldremch.common.base.viewBindingFixed
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
 import com.caldremch.laboratory.databinding.LoginFragmentBinding
+import com.caldremch.laboratory.util.viewBindingFixed
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -47,9 +47,8 @@ class LoginMVPFragment : LaboratoryFragment(), ILoginContract.View {
     }
 
 
-    override fun getLayoutId(): Int {
-        return R.layout.login_fragment
-    }
+    override val layoutId: Int
+        get() = R.layout.login_fragment
 
     override fun initView() {
 

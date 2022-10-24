@@ -35,9 +35,8 @@ class PageListFragment : LaboratoryFragment(), IPageDelegate<TestData> {
         return "分页demo Fragment"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_page_list
-    }
+    override val layoutId: Int
+        get() = R.layout.activity_page_list
 
     override fun initView() {
 

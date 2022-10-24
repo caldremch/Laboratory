@@ -2,11 +2,10 @@ package com.caldremch.laboratory.loginmvvm
 
 import android.util.Log
 import androidx.fragment.app.viewModels
-import com.caldremch.common.base.BaseFragment
-import com.caldremch.common.base.viewBindingFixed
 import com.caldremch.laboratory.R
 import com.caldremch.laboratory.base.LaboratoryFragment
 import com.caldremch.laboratory.databinding.LoginFragmentBinding
+import com.caldremch.laboratory.util.viewBindingFixed
 
 /**
  *
@@ -31,9 +30,8 @@ class LoginFragment : LaboratoryFragment() {
     private val viewModel: LoginViewModel by viewModels()
 
 
-    override fun getLayoutId(): Int {
-        return R.layout.login_fragment
-    }
+    override val layoutId: Int
+        get() = R.layout.login_fragment
 
     override fun initView() {
 

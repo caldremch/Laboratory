@@ -7,10 +7,7 @@ import com.caldremch.laboratory.R
  * Created by Leon on 2022/6/13
  */
 class NavigationMainActivity : AbsActivity() {
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_navigation
-    }
-
+    override val layoutId: Int
+        get() =  R.layout.activity_navigation
 
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // /** 原生实现HTML的ready方法*/
+      (function () {
+        var ie = !!(window.attachEvent && !window.opera);
+        var wk = /webkit\/(\d+)/i.test(navigator.userAgent) && RegExp.$1 < 525;
+        var fn = [];
+        var run = function () {
+          for (var i = 0; i < fn.length; i++) fn[i]();
+        };
+        var d = document;
+        d.ready = function (f) {
+          if (!ie && !wk && d.addEventListener) return d.addEventListener('DOMContentLoaded', f, false);
+          if (fn.push(f) > 1) return;
+          if (ie)
+            (function () {
+              try {
+                d.documentElement.doScroll('left');
+                run();
+              } catch (err) {
+                setTimeout(arguments.callee, 0);
+              }
+            })();
+          else if (wk)
+            var t = setInterval(function () {
+              if (/^(loaded|complete)$/.test(d.readyState)) clearInterval(t), run();
+            }, 0);
+        };
+      })();
+    </script>
+    <style>
+      .button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+<button id="btn" class="button">打开新的链接</button>
+<script>
+      function openNewUrl() {
+        window.location.href='file:///android_asset/demo/demo-page2.html';
+
+      }
+    document.ready(() => {
+    window.android.documentReady('document ready l ');
+        openNewUrl();
+      });
+
+<!--       window.setTimeout(() => {-->
+<!--&lt;!&ndash;            openNewUrl();&ndash;&gt;-->
+<!--            var btn1 = document.getElementById('btn')-->
+<!--             btn1.click();-->
+<!--        }, 5000);-->
+
+      document.getElementById('btn').addEventListener('click', () => {
+        openNewUrl();
+      });
+
+
+    </script>
+</body>
+</html>

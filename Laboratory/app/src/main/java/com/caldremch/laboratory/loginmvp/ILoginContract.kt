@@ -1,7 +1,6 @@
 package com.caldremch.laboratory.loginmvp
 
-import com.caldremch.common.mvp.BaseContract
-import com.caldremch.common.mvp.BaseContractV2
+import com.caldremch.laboratory.loginmvp.mvp.BaseContractV2
 import com.caldremch.laboratory.loginmvvm.UserData
 import io.reactivex.rxjava3.core.Observable
 

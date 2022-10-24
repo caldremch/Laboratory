@@ -2,7 +2,6 @@ package com.caldremch.laboratory.ktx
 
 import android.content.Context
 import com.caldremch.android.annotation.entry.IEntry
-import com.caldremch.laboratory.BrowserActivity
 
 /**
  *
@@ -21,7 +20,7 @@ inline fun html(name: String, html: String): IEntry {
             return name
         }
         override fun onClick(context: Context) {
-            BrowserActivity.open(context, html)
+//            BrowserActivity.open(context, html)
         }
     }
 }

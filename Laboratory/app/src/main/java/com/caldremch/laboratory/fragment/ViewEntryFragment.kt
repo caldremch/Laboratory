@@ -40,9 +40,8 @@ class ViewEntryFragment : LaboratoryFragment() {
 
     val binding by viewBinding(FragmentViewEntryBinding::bind)
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_view_entry
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_view_entry
 
     override fun initView() {
         val delayTime: Long = 3000L

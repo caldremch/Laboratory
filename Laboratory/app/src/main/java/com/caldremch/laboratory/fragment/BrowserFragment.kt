@@ -22,9 +22,8 @@ import com.caldremch.laboratory.ktx.html
  **/
 class BrowserFragment : LaboratoryFragment() {
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_browser
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_browser
 
     override fun initView() {
         val list = arrayListOf<IEntry>()

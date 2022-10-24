@@ -1,6 +1,6 @@
 package com.caldremch.laboratory.loginmvp
 
-import com.caldremch.common.mvp.BasePresenterV2
+import com.caldremch.laboratory.loginmvp.mvp.BasePresenterV2
 
 /**
  * Created by Leon on 2022/6/14

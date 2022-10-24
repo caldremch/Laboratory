@@ -19,7 +19,6 @@ class MultiSelectFragment : LaboratoryFragment() {
         return "多选"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_multi_selected
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_multi_selected
 }

@@ -3,9 +3,9 @@ package com.caldremch.laboratory.base
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import com.caldremch.common.base.BaseFragment
-import com.caldremch.common.widget.TitleBar
+import com.caldremch.common.base.AbsFragment
 import com.caldremch.laboratory.util.FragmentUtil
+import com.hjq.bar.TitleBar
 
 /**
  *
@@ -18,24 +18,20 @@ import com.caldremch.laboratory.util.FragmentUtil
  * @describe
  *
  **/
-open class LaboratoryFragment : BaseFragment<Any>() {
+open class LaboratoryFragment : AbsFragment() {
 
-    override fun getTitleView(): View {
-        val view = TitleBar(requireContext())
-        view.setTitle(getTitle())
-        view.listener = object : TitleBar.Listener {
-            override fun leftClick() {
-                FragmentUtil.remove(context!!, this@LaboratoryFragment)
-            }
-        }
-        return view
-    }
+    protected val TAG = this.javaClass.simpleName
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.setBackgroundColor(Color.WHITE)
-        view.setOnClickListener {  }
-    }
+//    override fun getTitleView(): View {
+//        val view = TitleBar(requireContext())
+//        view.setTitle(getTitle())
+//        view.listener = object : TitleBar.Listener {
+//            override fun leftClick() {
+//                FragmentUtil.remove(context!!, this@LaboratoryFragment)
+//            }
+//        }
+//        return view
+//    }
 
     protected open fun getTitle(): String {
         return "默认标题"
